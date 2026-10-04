@@ -6,31 +6,32 @@
     "delayMin": 45,
     "flags": {},
     "locale": "fr",
-    "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?"
+    "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
+    "priorDelayMin": 90
   },
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:47:16.939Z",
-  "latencyMs": 7403,
-  "promptTokens": 14438,
-  "completionTokens": 830,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:40:27.241Z",
+  "latencyMs": 16231,
+  "promptTokens": 23588,
+  "completionTokens": 2736,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 870,
-      "promptTokens": 2378,
-      "completionTokens": 49,
-      "reasoningChars": 43,
+      "ms": 804,
+      "promptTokens": 2444,
+      "completionTokens": 54,
+      "reasoningChars": 55,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-80000f5e8a4bc42f",
+      "callId": "chatcmpl-tool-ac3afe5b2bb2fa94",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -55,17 +56,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 875,
-      "promptTokens": 2536,
-      "completionTokens": 59,
-      "reasoningChars": 81,
+      "ms": 615,
+      "promptTokens": 2602,
+      "completionTokens": 57,
+      "reasoningChars": 71,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-86481c794fce7ee8",
+      "callId": "chatcmpl-tool-a6fc9f17ed81a53c",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -115,8 +116,8 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 851,
-      "promptTokens": 2797,
+      "ms": 841,
+      "promptTokens": 2863,
       "completionTokens": 50,
       "reasoningChars": 45,
       "toolCalls": [
@@ -125,7 +126,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ac175c01fdc61ce0",
+      "callId": "chatcmpl-tool-83ef7e27cecf3a1f",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -164,8 +165,8 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 958,
-      "promptTokens": 2953,
+      "ms": 562,
+      "promptTokens": 3019,
       "completionTokens": 47,
       "reasoningChars": 26,
       "toolCalls": [
@@ -174,7 +175,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-911c2da6ee7d4c39",
+      "callId": "chatcmpl-tool-99df596461bc7b94",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -251,10 +252,10 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 3848,
-      "promptTokens": 3774,
-      "completionTokens": 625,
-      "reasoningChars": 1429,
+      "ms": 6472,
+      "promptTokens": 3840,
+      "completionTokens": 1073,
+      "reasoningChars": 2674,
       "toolCalls": [
         "submit_decision"
       ]
@@ -262,6 +263,170 @@
     {
       "kind": "verify",
       "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": false,
+          "detail": "why reads as en; the desk works in fr"
+        },
+        {
+          "id": "reply",
+          "label": "Answers the operator in the operator's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "keep",
+        "ranking": [
+          "keep",
+          "zrh",
+          "fra",
+          "later"
+        ],
+        "summary": "Le camion est maintenant en retard de 45 minutes, donnant une ETA de 19h00 et un slack de 15 minutes avant le besoin à 19h15 ; le risque est watch. On maintient le vol AYC 7841 via LEJ sans coût ni délai supplémentaire.",
+        "why": [
+          "Truck ETA 19:00 (delay +45 min)",
+          "Need by 19:15, slack 15 min",
+          "Risk class watch per calculate_risk",
+          "Option Keep AYC 7841: delay On time, cost CHF 0, risk Medium"
+        ],
+        "reply": "Avant : camion +90 min → ETA 19:45, dépassement de 30 min du besoin à 19:15, risque élevé. Après : camion +45 min → ETA 19:00, slack 15 min, risque watch, on maintient le vol AYC 7841."
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 3887,
+      "promptTokens": 4220,
+      "completionTokens": 819,
+      "reasoningChars": 1787,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": false,
+          "detail": "why reads as en; the desk works in fr"
+        },
+        {
+          "id": "reply",
+          "label": "Answers the operator in the operator's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "keep",
+        "ranking": [
+          "keep",
+          "zrh",
+          "fra",
+          "later"
+        ],
+        "summary": "Le camion est maintenant en retard de 45 minutes, donnant une ETA de 19h00 et un slack de 15 minutes avant le besoin à 19h15 ; le risque est watch. On maintient le vol AYC 7841 via LEJ sans coût ni délai supplémentaire.",
+        "why": [
+          "Truck ETA 19:00 (delay +45 min)",
+          "Need by 19:15, slack 15 min",
+          "Risk class watch per calculate_risk",
+          "Option Keep AYC 7841: delay On time, cost CHF 0, risk Medium"
+        ],
+        "reply": "Avant : camion +90 min → ETA 19:45, dépassement de 30 min du besoin à 19:15, risque élevé. Après : camion +45 min → ETA 19:00, slack 15 min, risque watch, on maintient le vol AYC 7841."
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 3047,
+      "promptTokens": 4600,
+      "completionTokens": 636,
+      "reasoningChars": 1112,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 3,
       "accepted": true,
       "checks": [
         {
@@ -300,6 +465,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "reply",
           "label": "Answers the operator in the operator's language",
           "pass": true
@@ -314,14 +484,14 @@
           "fra",
           "later"
         ],
-        "summary": "Le camion RFS 1840 arrive avec 45 min de retard (ETA 19:00) mais reste dans la fenêtre de manutention jusqu’à 19:15. On conserve le routage actuel AYC 7841 via LEJ sans frais ni nouveau risque.",
+        "summary": "Le camion est maintenant en retard de 45 minutes, donnant une ETA de 19h00 et un slack de 15 minutes avant le besoin à 19h15 ; le risque est watch. On maintient le vol AYC 7841 via LEJ sans coût ni délai supplémentaire.",
         "why": [
-          "Truck delay: +45 min (observed ETA 19:00 LT)",
-          "Need‑by time: 19:15 LT (45 min handling)",
-          "Slack: 15 min before cut‑off 20:00 LT",
-          "Risk class: watch (connection tight)"
+          "ETA du camion 19:00 (retard +45 min)",
+          "Besoin à 19:15, slack 15 min",
+          "Classe de risque watch selon calculate_risk",
+          "Option Keep AYC 7841: délai On time, coût CHF 0, risque Medium"
         ],
-        "reply": "Le camion a 45 min de retard mais la connexion reste dans la fenêtre de manutention ; on garde le vol AYC 7841 via LEJ."
+        "reply": "Avant : camion +90 min → ETA 19:45, dépassement de 30 min du besoin à 19:15, risque élevé. Après : camion +45 min → ETA 19:00, slack 15 min, risque watch, on maintient le vol AYC 7841."
       }
     }
   ],
@@ -334,18 +504,18 @@
       "fra",
       "later"
     ],
-    "summary": "Le camion RFS 1840 arrive avec 45 min de retard (ETA 19:00) mais reste dans la fenêtre de manutention jusqu’à 19:15. On conserve le routage actuel AYC 7841 via LEJ sans frais ni nouveau risque.",
+    "summary": "Le camion est maintenant en retard de 45 minutes, donnant une ETA de 19h00 et un slack de 15 minutes avant le besoin à 19h15 ; le risque est watch. On maintient le vol AYC 7841 via LEJ sans coût ni délai supplémentaire.",
     "why": [
-      "Truck delay: +45 min (observed ETA 19:00 LT)",
-      "Need‑by time: 19:15 LT (45 min handling)",
-      "Slack: 15 min before cut‑off 20:00 LT",
-      "Risk class: watch (connection tight)"
+      "ETA du camion 19:00 (retard +45 min)",
+      "Besoin à 19:15, slack 15 min",
+      "Classe de risque watch selon calculate_risk",
+      "Option Keep AYC 7841: délai On time, coût CHF 0, risque Medium"
     ],
-    "reply": "Le camion a 45 min de retard mais la connexion reste dans la fenêtre de manutention ; on garde le vol AYC 7841 via LEJ."
+    "reply": "Avant : camion +90 min → ETA 19:45, dépassement de 30 min du besoin à 19:15, risque élevé. Après : camion +45 min → ETA 19:00, slack 15 min, risque watch, on maintient le vol AYC 7841."
   },
   "verdict": {
     "accepted": true,
-    "attempts": 1,
+    "attempts": 3,
     "fellBack": false,
     "checks": [
       {
@@ -381,6 +551,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

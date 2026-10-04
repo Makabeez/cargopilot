@@ -10,26 +10,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:44.265Z",
-  "latencyMs": 11268,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:51.676Z",
+  "latencyMs": 7781,
   "promptTokens": 17236,
-  "completionTokens": 1272,
+  "completionTokens": 895,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1034,
+      "ms": 614,
       "promptTokens": 2329,
-      "completionTokens": 51,
-      "reasoningChars": 43,
+      "completionTokens": 54,
+      "reasoningChars": 52,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-afeb9d0c960afb22",
+      "callId": "chatcmpl-tool-a1e4e5a16c82abb8",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 980,
+      "ms": 778,
       "promptTokens": 2487,
-      "completionTokens": 57,
-      "reasoningChars": 72,
+      "completionTokens": 55,
+      "reasoningChars": 63,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a0665b2d3e771a24",
+      "callId": "chatcmpl-tool-8ae1445a61a4f49e",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -114,17 +114,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 930,
+      "ms": 935,
       "promptTokens": 2752,
-      "completionTokens": 75,
-      "reasoningChars": 143,
+      "completionTokens": 76,
+      "reasoningChars": 146,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a42a5824a9413b15",
+      "callId": "chatcmpl-tool-8ae0db8ac1fe0908",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -140,7 +140,7 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1046,
+      "ms": 1010,
       "promptTokens": 2842,
       "completionTokens": 69,
       "reasoningChars": 125,
@@ -150,7 +150,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-addf47252ef1d3ac",
+      "callId": "chatcmpl-tool-9ebb6b2f0f7dd12b",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -189,7 +189,7 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 651,
+      "ms": 970,
       "promptTokens": 2999,
       "completionTokens": 46,
       "reasoningChars": 28,
@@ -199,7 +199,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a669487209e326e4",
+      "callId": "chatcmpl-tool-86ea22a5610608ef",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -276,10 +276,10 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 6626,
+      "ms": 3473,
       "promptTokens": 3827,
-      "completionTokens": 974,
-      "reasoningChars": 2113,
+      "completionTokens": 595,
+      "reasoningChars": 1084,
       "toolCalls": [
         "submit_decision"
       ]
@@ -325,6 +325,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -338,14 +343,13 @@
           "fra",
           "later"
         ],
-        "summary": "The truck from GVA to LEJ is delayed 150 minutes, missing the LEJ cut‑off by 90 minutes, causing a critical connection miss. Re‑route the shipment via Zurich (RFS 2204 → AYC 9864) to deliver by 15 Oct 13:10 LT.",
+        "summary": "The truck ETA of 20:45 misses the LEJ cut‑off of 20:00, leaving a 90‑minute shortfall and triggering a critical connection risk. Rebook the shipment via ZRH using RFS 2204 and AYC 9864 to deliver by 15 Oct 13:10 LT DEL.",
         "why": [
-          "Truck ETA 20:45 LT vs Need‑by 19:15 LT gives 90 min short.",
-          "LEJ GCR cut‑off 20:00 LT with 45 min handling requires arrival by 19:15 LT.",
-          "Rebooking via ZRH uses RFS 2204 departing GVA 18:10, arriving ZRH 19:05, meets ZRH cut‑off 21:30, with 2 200 kg free capacity.",
-          "Option delivers at 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low."
+          "Truck ETA 20:45 LT versus LEJ cut‑off 20:00 LT gives a 90 min shortfall (get_disruption, get_cutoffs).",
+          "Risk class is critical due to connection missed (calculate_risk).",
+          "Option ‘Rebook via ZRH’ has Low risk, +4 h delay, +CHF 180 cost and is allowed (find_alternatives)."
         ],
-        "customer_note": "AWB 615-12345675 : nouvel acheminement via Zurich, livraison prévue le 15 octobre à 13h10 heure locale à Delhi."
+        "customer_note": "AWB 615-12345675 : nouvelle livraison prévue le 15 octobre à 13:10 heure locale à DEL."
       }
     }
   ],
@@ -357,14 +361,13 @@
       "fra",
       "later"
     ],
-    "summary": "The truck from GVA to LEJ is delayed 150 minutes, missing the LEJ cut‑off by 90 minutes, causing a critical connection miss. Re‑route the shipment via Zurich (RFS 2204 → AYC 9864) to deliver by 15 Oct 13:10 LT.",
+    "summary": "The truck ETA of 20:45 misses the LEJ cut‑off of 20:00, leaving a 90‑minute shortfall and triggering a critical connection risk. Rebook the shipment via ZRH using RFS 2204 and AYC 9864 to deliver by 15 Oct 13:10 LT DEL.",
     "why": [
-      "Truck ETA 20:45 LT vs Need‑by 19:15 LT gives 90 min short.",
-      "LEJ GCR cut‑off 20:00 LT with 45 min handling requires arrival by 19:15 LT.",
-      "Rebooking via ZRH uses RFS 2204 departing GVA 18:10, arriving ZRH 19:05, meets ZRH cut‑off 21:30, with 2 200 kg free capacity.",
-      "Option delivers at 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low."
+      "Truck ETA 20:45 LT versus LEJ cut‑off 20:00 LT gives a 90 min shortfall (get_disruption, get_cutoffs).",
+      "Risk class is critical due to connection missed (calculate_risk).",
+      "Option ‘Rebook via ZRH’ has Low risk, +4 h delay, +CHF 180 cost and is allowed (find_alternatives)."
     ],
-    "customer_note": "AWB 615-12345675 : nouvel acheminement via Zurich, livraison prévue le 15 octobre à 13h10 heure locale à Delhi."
+    "customer_note": "AWB 615-12345675 : nouvelle livraison prévue le 15 octobre à 13:10 heure locale à DEL."
   },
   "verdict": {
     "accepted": true,
@@ -404,6 +407,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

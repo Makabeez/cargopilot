@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:45:57.052Z",
-  "latencyMs": 12510,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:11.365Z",
+  "latencyMs": 9433,
   "promptTokens": 22436,
-  "completionTokens": 1205,
+  "completionTokens": 999,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 920,
+      "ms": 960,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a4cb318f3017d8c6",
+      "callId": "chatcmpl-tool-8ec2aaa8e32fcac1",
       "name": "get_shipment",
       "args": {
         "awb": "074-33019873"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1177,
+      "ms": 943,
       "promptTokens": 2482,
-      "completionTokens": 57,
-      "reasoningChars": 71,
+      "completionTokens": 51,
+      "reasoningChars": 57,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-832cb6a2d6a2bd3f",
+      "callId": "chatcmpl-tool-879eb8bf5232df9c",
       "name": "get_disruption",
       "args": {
         "awb": "074-33019873"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1206,
+      "ms": 869,
       "promptTokens": 2647,
-      "completionTokens": 73,
-      "reasoningChars": 131,
+      "completionTokens": 55,
+      "reasoningChars": 60,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8a96a95436fddef0",
+      "callId": "chatcmpl-tool-bae2417404a45267",
       "name": "get_cutoffs",
       "args": {
         "awb": "074-33019873"
@@ -124,17 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1492,
+      "ms": 1165,
       "promptTokens": 2725,
-      "completionTokens": 140,
-      "reasoningChars": 371,
+      "completionTokens": 164,
+      "reasoningChars": 419,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bef2813fc76356c1",
+      "callId": "chatcmpl-tool-9462e7131da0f2de",
       "name": "check_connection",
       "args": {
         "awb": "074-33019873"
@@ -144,12 +144,12 @@
         "facts": [],
         "note": "No check connection issue recorded for this file."
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
       "turn": 5,
-      "ms": 828,
+      "ms": 593,
       "promptTokens": 2801,
       "completionTokens": 48,
       "reasoningChars": 51,
@@ -159,7 +159,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b577734671671054",
+      "callId": "chatcmpl-tool-b4644ebca1496464",
       "name": "get_capacity",
       "args": {
         "awb": "074-33019873"
@@ -175,17 +175,17 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 943,
+      "ms": 832,
       "promptTokens": 2900,
-      "completionTokens": 58,
-      "reasoningChars": 76,
+      "completionTokens": 57,
+      "reasoningChars": 74,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8edbb97724b50b19",
+      "callId": "chatcmpl-tool-a178436158f10ba3",
       "name": "calculate_risk",
       "args": {
         "awb": "074-33019873"
@@ -224,17 +224,17 @@
     {
       "kind": "model",
       "turn": 7,
-      "ms": 834,
+      "ms": 831,
       "promptTokens": 3052,
-      "completionTokens": 46,
-      "reasoningChars": 28,
+      "completionTokens": 52,
+      "reasoningChars": 52,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bed00f2a22b87511",
+      "callId": "chatcmpl-tool-b68b92252d95bb2f",
       "name": "find_alternatives",
       "args": {
         "awb": "074-33019873"
@@ -287,10 +287,10 @@
     {
       "kind": "model",
       "turn": 8,
-      "ms": 5108,
+      "ms": 3240,
       "promptTokens": 3500,
-      "completionTokens": 729,
-      "reasoningChars": 1623,
+      "completionTokens": 518,
+      "reasoningChars": 967,
       "toolCalls": [
         "submit_decision"
       ]
@@ -336,6 +336,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -348,14 +353,14 @@
           "later",
           "split"
         ],
-        "summary": "The booked flight AYC 610 has no PMC positions, making the current plan blocked and risk critical. Rebook onto AYC 614 with a PMC, incurring +11h delay and +CHF 40 cost.",
+        "summary": "The booked flight AYC 610 has zero PMC positions, making the current plan blocked. Rebook onto AYC 614 which has two PMC positions, accepting an +11 h delay and +CHF 40 cost.",
         "why": [
-          "Weight 1850 kg needs 1 PMC but free kg is 2400 and PMC positions are 0 on AYC 610.",
-          "AYC 614 offers 2 PMC positions, allowing the build to stay intact.",
-          "Rebooking onto AYC 614 results in a revised ETA of 16 Oct 02:15 LT DXB, a delay of +11 h.",
-          "Cost increase is +CHF 40 and risk is assessed as Low."
+          "AYC 610 shows 0 PMC positions while the shipment needs 1 PMC (blocked).",
+          "AYC 614 offers 2 PMC positions, keeping the build intact (allowed).",
+          "Later option incurs +11 h delay and +CHF 40 cost with Low risk.",
+          "Split option keeps on‑time ETA but requires breaking the PMC into half + loose, yielding High risk."
         ],
-        "customer_note": "AWB 074-33019873 will be moved to flight AYC 614, arriving DXB on 16 Oct 02:15 LT (delayed +11h)."
+        "customer_note": "AWB 074-33019873 will be moved to flight AYC 614, arriving DXB on 16 Oct 02:15 LT (delay +11 h)."
       }
     }
   ],
@@ -366,14 +371,14 @@
       "later",
       "split"
     ],
-    "summary": "The booked flight AYC 610 has no PMC positions, making the current plan blocked and risk critical. Rebook onto AYC 614 with a PMC, incurring +11h delay and +CHF 40 cost.",
+    "summary": "The booked flight AYC 610 has zero PMC positions, making the current plan blocked. Rebook onto AYC 614 which has two PMC positions, accepting an +11 h delay and +CHF 40 cost.",
     "why": [
-      "Weight 1850 kg needs 1 PMC but free kg is 2400 and PMC positions are 0 on AYC 610.",
-      "AYC 614 offers 2 PMC positions, allowing the build to stay intact.",
-      "Rebooking onto AYC 614 results in a revised ETA of 16 Oct 02:15 LT DXB, a delay of +11 h.",
-      "Cost increase is +CHF 40 and risk is assessed as Low."
+      "AYC 610 shows 0 PMC positions while the shipment needs 1 PMC (blocked).",
+      "AYC 614 offers 2 PMC positions, keeping the build intact (allowed).",
+      "Later option incurs +11 h delay and +CHF 40 cost with Low risk.",
+      "Split option keeps on‑time ETA but requires breaking the PMC into half + loose, yielding High risk."
     ],
-    "customer_note": "AWB 074-33019873 will be moved to flight AYC 614, arriving DXB on 16 Oct 02:15 LT (delayed +11h)."
+    "customer_note": "AWB 074-33019873 will be moved to flight AYC 614, arriving DXB on 16 Oct 02:15 LT (delay +11 h)."
   },
   "verdict": {
     "accepted": true,
@@ -413,6 +418,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

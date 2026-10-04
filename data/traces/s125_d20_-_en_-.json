@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:55.537Z",
-  "latencyMs": 10500,
-  "promptTokens": 22502,
-  "completionTokens": 863,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:59.936Z",
+  "latencyMs": 11143,
+  "promptTokens": 22668,
+  "completionTokens": 1333,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1062,
+      "ms": 820,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b8408cf32ac9aa3d",
+      "callId": "chatcmpl-tool-b280b88bb269684a",
       "name": "get_shipment",
       "args": {
         "awb": "125-88342111"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 655,
+      "ms": 839,
       "promptTokens": 2487,
-      "completionTokens": 55,
-      "reasoningChars": 63,
+      "completionTokens": 56,
+      "reasoningChars": 70,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a73710b723516d17",
+      "callId": "chatcmpl-tool-8098b3e3672a0659",
       "name": "get_disruption",
       "args": {
         "awb": "125-88342111"
@@ -102,7 +102,7 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1161,
+      "ms": 877,
       "promptTokens": 2683,
       "completionTokens": 55,
       "reasoningChars": 72,
@@ -112,7 +112,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9227546858bb5daa",
+      "callId": "chatcmpl-tool-84c8c8e20cb7f30a",
       "name": "get_cutoffs",
       "args": {
         "awb": "125-88342111"
@@ -127,17 +127,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 994,
+      "ms": 1069,
       "promptTokens": 2761,
-      "completionTokens": 52,
-      "reasoningChars": 60,
+      "completionTokens": 100,
+      "reasoningChars": 214,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b14437c5120d0fae",
+      "callId": "chatcmpl-tool-aae57677f029fe04",
       "name": "check_connection",
       "args": {
         "awb": "125-88342111"
@@ -153,7 +153,7 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 1075,
+      "ms": 809,
       "promptTokens": 2848,
       "completionTokens": 48,
       "reasoningChars": 51,
@@ -163,7 +163,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bc4d95aa5f50931c",
+      "callId": "chatcmpl-tool-aa518c098b64ce5c",
       "name": "get_capacity",
       "args": {
         "awb": "125-88342111"
@@ -178,64 +178,17 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 997,
+      "ms": 1191,
       "promptTokens": 2924,
-      "completionTokens": 59,
-      "reasoningChars": 89,
-      "toolCalls": [
-        "calculate_risk"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-88a68b3c51598bc5",
-      "name": "calculate_risk",
-      "args": {
-        "awb": "125-88342111"
-      },
-      "output": {
-        "risk": "high",
-        "classification": "CDG connection at risk",
-        "rule": [],
-        "drivers": [
-          {
-            "measure": "CDG ETA",
-            "value": "21:00",
-            "assessment": "bad"
-          },
-          {
-            "measure": "Need by",
-            "value": "20:52",
-            "assessment": "bad"
-          },
-          {
-            "measure": "Cut-off",
-            "value": "21:05",
-            "assessment": "neutral"
-          },
-          {
-            "measure": "Gap",
-            "value": "8 min short",
-            "assessment": "bad"
-          }
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 7,
-      "ms": 1046,
-      "promptTokens": 3076,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "completionTokens": 131,
+      "reasoningChars": 282,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b4895b6c1c482929",
+      "callId": "chatcmpl-tool-acafd825e2f8ac5a",
       "name": "find_alternatives",
       "args": {
         "awb": "125-88342111"
@@ -273,11 +226,58 @@
     },
     {
       "kind": "model",
+      "turn": 7,
+      "ms": 800,
+      "promptTokens": 3242,
+      "completionTokens": 98,
+      "reasoningChars": 256,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b7ededad6df7ae3c",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "risk": "high",
+        "classification": "CDG connection at risk",
+        "rule": [],
+        "drivers": [
+          {
+            "measure": "CDG ETA",
+            "value": "21:00",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Need by",
+            "value": "20:52",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Cut-off",
+            "value": "21:05",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Gap",
+            "value": "8 min short",
+            "assessment": "bad"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
       "turn": 8,
-      "ms": 3509,
+      "ms": 4736,
       "promptTokens": 3394,
-      "completionTokens": 493,
-      "reasoningChars": 1038,
+      "completionTokens": 791,
+      "reasoningChars": 1836,
       "toolCalls": [
         "submit_decision"
       ]
@@ -323,6 +323,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -335,12 +340,14 @@
           "fra",
           "keep"
         ],
-        "summary": "The CDG connection is at high risk due to an 8‑minute gap (ETA 21:00 vs needed by 20:52). Rebooking via FRA avoids the risk with a low‑risk alternative.",
+        "summary": "The CDG connection is at risk: the truck arrives at 21:00 while the freight must be cleared by 20:52, leaving an 8‑minute shortfall. To avoid missing the connection, rebook the shipment via FRA.",
         "why": [
-          "CDG ETA 21:00, need‑by 20:52, cut‑off 21:05 → 8 min short (high risk).",
-          "Rebook via FRA adds +6 h delay, cost +CHF 150, risk Low, and respects all constraints."
+          "CDG ETA 21:00, need‑by 20:52, cut‑off 21:05 → 8 min short (check_connection)",
+          "Truck delay +20 min observed (get_disruption)",
+          "Keep CDG connection option: risk High, delay On time, cost CHF 0 (find_alternatives)",
+          "Rebook via FRA option: risk Low, delay +6 h, cost +CHF 150 (find_alternatives)"
         ],
-        "customer_note": "AWB 125-88342111 : nouvel ETA prévu le 15 octobre à 07:30 heure locale à JFK suite au réacheminement via Francfort."
+        "customer_note": "Votre expédition AWB 125-88342111 arrivera désormais à JFK le 15 octobre à 07:30 heure locale."
       }
     }
   ],
@@ -351,12 +358,14 @@
       "fra",
       "keep"
     ],
-    "summary": "The CDG connection is at high risk due to an 8‑minute gap (ETA 21:00 vs needed by 20:52). Rebooking via FRA avoids the risk with a low‑risk alternative.",
+    "summary": "The CDG connection is at risk: the truck arrives at 21:00 while the freight must be cleared by 20:52, leaving an 8‑minute shortfall. To avoid missing the connection, rebook the shipment via FRA.",
     "why": [
-      "CDG ETA 21:00, need‑by 20:52, cut‑off 21:05 → 8 min short (high risk).",
-      "Rebook via FRA adds +6 h delay, cost +CHF 150, risk Low, and respects all constraints."
+      "CDG ETA 21:00, need‑by 20:52, cut‑off 21:05 → 8 min short (check_connection)",
+      "Truck delay +20 min observed (get_disruption)",
+      "Keep CDG connection option: risk High, delay On time, cost CHF 0 (find_alternatives)",
+      "Rebook via FRA option: risk Low, delay +6 h, cost +CHF 150 (find_alternatives)"
     ],
-    "customer_note": "AWB 125-88342111 : nouvel ETA prévu le 15 octobre à 07:30 heure locale à JFK suite au réacheminement via Francfort."
+    "customer_note": "Votre expédition AWB 125-88342111 arrivera désormais à JFK le 15 octobre à 07:30 heure locale."
   },
   "verdict": {
     "accepted": true,
@@ -396,6 +405,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

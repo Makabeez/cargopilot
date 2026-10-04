@@ -22,7 +22,14 @@ export function operatorScenario(base: Scenario, text: string): Scenario {
   } else if (command.type === "delay" && shipment.usesDelay) {
     delayMin = clampDelay(command.mode === "add" ? base.delayMin + command.minutes : command.minutes);
   }
-  return { ...base, delayMin, flags, locale, operatorMessage: text };
+  return {
+    ...base,
+    delayMin,
+    flags,
+    locale,
+    operatorMessage: text,
+    ...(delayMin !== base.delayMin ? { priorDelayMin: base.delayMin } : {}),
+  };
 }
 
 const CHIP_FOR: Partial<Record<string, FlagKey>> = {

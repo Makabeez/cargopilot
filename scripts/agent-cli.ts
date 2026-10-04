@@ -15,7 +15,7 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync, existsSync, rename
 import { join } from "node:path";
 import { SHIPMENTS } from "../src/lib/cargo/engine";
 import { isValidAwb } from "../src/lib/agent/awb";
-import { DEFAULT_BASE_URL, DEFAULT_MODEL, runLiveAgent, runRulesAgent } from "../src/lib/agent/agent";
+import { DEFAULT_BASE_URL, DEFAULT_MODEL, groundingFor, runLiveAgent, runRulesAgent } from "../src/lib/agent/agent";
 import { evalMatrix, fullRulesMatrix } from "../src/lib/agent/matrix";
 import { buildContext, executeTool } from "../src/lib/agent/tools";
 import { verifyDecision } from "../src/lib/agent/verifier";
@@ -86,15 +86,24 @@ async function pool<T, R>(items: T[], n: number, fn: (t: T, i: number) => Promis
   return out;
 }
 
+/**
+ * Checks every recording must still pass. Archived runs are re-verified with the
+ * checks that existed when they were recorded (newer checks such as "language"
+ * apply from prompt v4 on), so history stays reproducible as the verifier grows.
+ */
+const promptNum = (r: AgentRun) => Number((r.promptVersion ?? "v1").replace(/\D/g, "")) || 1;
+const CORE_CHECKS = new Set(["tools", "option", "allowed", "ranking", "risk", "figures", "refs", "reply", "customer"]);
+
 /** Re-check a recorded decision against tool outputs recomputed from scratch. */
-function reverify(run: AgentRun) {
+function reverify(run: AgentRun, coreOnly = false) {
   const ctx = buildContext(run.scenario);
   const toolSteps = run.steps.filter((s): s is ToolStep => s.kind === "tool" && !s.error);
   const called = toolSteps.map((s) => s.name);
   const fresh = toolSteps.map((s) => JSON.stringify(executeTool(s.name, s.args, ctx)));
   const recorded = toolSteps.map((s) => JSON.stringify(s.output));
   const outputsMatch = fresh.every((f, i) => f === recorded[i]);
-  const checks = verifyDecision(run.decision, ctx, called, [...fresh, run.scenario.operatorMessage ?? "", "Wed 14 Oct 2026, 17:42 local time (GVA)"]);
+  const all = verifyDecision(run.decision, ctx, called, groundingFor(run.scenario, fresh));
+  const checks = coreOnly ? all.filter((c) => CORE_CHECKS.has(c.id)) : all;
   return { outputsMatch, checks, pass: checks.every((c) => c.pass) };
 }
 
@@ -265,7 +274,7 @@ async function judge() {
     let bad = 0;
     let drift = 0;
     for (const t of traces) {
-      const r = reverify(t);
+      const r = reverify(t, promptNum(t) < 4);
       if (!r.outputsMatch) drift++;
       // A recorded fallback run is honest data, not a tampering signal; only accepted ones must re-verify.
       if (t.verdict.accepted && !r.pass) {
@@ -288,7 +297,7 @@ async function judge() {
     const hist = loadTraces(join(dir, "traces"));
     let bad = 0;
     for (const t of hist) {
-      const r = reverify(t);
+      const r = reverify(t, promptNum(t) < 4);
       if (!r.outputsMatch || (t.verdict.accepted && !r.pass)) bad++;
     }
     const rep = buildReport(hist);

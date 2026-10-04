@@ -12,16 +12,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:18.808Z",
-  "latencyMs": 12307,
-  "promptTokens": 25385,
-  "completionTokens": 1151,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:33.047Z",
+  "latencyMs": 6241,
+  "promptTokens": 16295,
+  "completionTokens": 651,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 818,
+      "ms": 852,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -31,7 +31,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8ce8bec98f517687",
+      "callId": "chatcmpl-tool-8dcaec2f05089826",
       "name": "get_shipment",
       "args": {
         "awb": "131-77881204"
@@ -56,17 +56,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 943,
+      "ms": 643,
       "promptTokens": 2486,
-      "completionTokens": 56,
-      "reasoningChars": 68,
+      "completionTokens": 57,
+      "reasoningChars": 72,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8f4ef03c12a08ea1",
+      "callId": "chatcmpl-tool-aa431841d86c1679",
       "name": "get_disruption",
       "args": {
         "awb": "131-77881204"
@@ -103,17 +103,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1206,
+      "ms": 856,
       "promptTokens": 2644,
       "completionTokens": 74,
-      "reasoningChars": 136,
+      "reasoningChars": 135,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-af7f98c840d892ff",
+      "callId": "chatcmpl-tool-ad70fe61d79a9e76",
       "name": "get_cutoffs",
       "args": {
         "awb": "131-77881204"
@@ -128,93 +128,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 874,
+      "ms": 865,
       "promptTokens": 2722,
-      "completionTokens": 68,
-      "reasoningChars": 122,
-      "toolCalls": [
-        "check_connection"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-98a0772dc7b3034a",
-      "name": "check_connection",
-      "args": {
-        "awb": "131-77881204"
-      },
-      "output": {
-        "applicable": false,
-        "facts": [],
-        "note": "No check connection issue recorded for this file."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 5,
-      "ms": 1101,
-      "promptTokens": 2798,
-      "completionTokens": 48,
-      "reasoningChars": 51,
-      "toolCalls": [
-        "get_capacity"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-86a83145cc787e24",
-      "name": "get_capacity",
-      "args": {
-        "awb": "131-77881204"
-      },
-      "output": {
-        "applicable": false,
-        "facts": [],
-        "note": "No get capacity issue recorded for this file."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 6,
-      "ms": 990,
-      "promptTokens": 2874,
-      "completionTokens": 56,
-      "reasoningChars": 69,
-      "toolCalls": [
-        "check_restrictions"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-a903c46574324ef9",
-      "name": "check_restrictions",
-      "args": {
-        "awb": "131-77881204"
-      },
-      "output": {
-        "applicable": true,
-        "facts": [
-          "EXCURSION CONFIRMED · QA hold"
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 7,
-      "ms": 828,
-      "promptTokens": 2954,
-      "completionTokens": 59,
-      "reasoningChars": 89,
+      "completionTokens": 70,
+      "reasoningChars": 131,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-98113221a4277c8b",
+      "callId": "chatcmpl-tool-af511656096578d2",
       "name": "calculate_risk",
       "args": {
         "awb": "131-77881204"
@@ -250,18 +174,18 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 1014,
-      "promptTokens": 3098,
-      "completionTokens": 49,
-      "reasoningChars": 34,
+      "turn": 5,
+      "ms": 889,
+      "promptTokens": 2866,
+      "completionTokens": 46,
+      "reasoningChars": 28,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a9f2ac47cd14a642",
+      "callId": "chatcmpl-tool-94274f0ef3057021",
       "name": "find_alternatives",
       "args": {
         "awb": "131-77881204"
@@ -311,11 +235,11 @@
     },
     {
       "kind": "model",
-      "turn": 9,
-      "ms": 4532,
-      "promptTokens": 3480,
-      "completionTokens": 687,
-      "reasoningChars": 1575,
+      "turn": 6,
+      "ms": 2136,
+      "promptTokens": 3248,
+      "completionTokens": 350,
+      "reasoningChars": 555,
       "toolCalls": [
         "submit_decision"
       ]
@@ -361,6 +285,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -372,13 +301,13 @@
         "ranking": [
           "hold"
         ],
-        "summary": "Excursion confirmed (+9.2 °C for 34 min) triggers critical risk; the booked flight cannot be used. Recommend placing the shipment on QA hold pending release.",
+        "summary": "Excursion confirmed at 9.2 °C for 34 min, exceeding the 30‑min rule; the booked flight cannot be used. Place the shipment on QA hold pending product owner release.",
         "why": [
-          "Probe measured 9.2 °C for 34 min, exceeding the +2/+8 °C rule (30 min limit) → excursion confirmed (check_restrictions: EXCURSION CONFIRMED · QA hold).",
-          "Booked flight AYC 880 GVA–SIN is blocked because a confirmed excursion cannot be tendered as in‑range pharma (find_alternatives option fly status blocked).",
-          "QA hold option is allowed, incurs +12 h delay, cost CHF 0, risk Low (find_alternatives option hold)."
+          "Probe measured 9.2 °C for 34 min, which breaches the +2/+8 °C rule after 30 min.",
+          "Risk class is critical per calculate_risk.",
+          "Option 'hold' is allowed with Low risk and does not violate any hard constraint."
         ],
-        "customer_note": "AWB 131-77881204 – shipment placed on QA hold; new ETA pending QA release."
+        "customer_note": "AWB 131-77881204: Shipment placed on QA hold; revised ETA pending release."
       }
     }
   ],
@@ -388,13 +317,13 @@
     "ranking": [
       "hold"
     ],
-    "summary": "Excursion confirmed (+9.2 °C for 34 min) triggers critical risk; the booked flight cannot be used. Recommend placing the shipment on QA hold pending release.",
+    "summary": "Excursion confirmed at 9.2 °C for 34 min, exceeding the 30‑min rule; the booked flight cannot be used. Place the shipment on QA hold pending product owner release.",
     "why": [
-      "Probe measured 9.2 °C for 34 min, exceeding the +2/+8 °C rule (30 min limit) → excursion confirmed (check_restrictions: EXCURSION CONFIRMED · QA hold).",
-      "Booked flight AYC 880 GVA–SIN is blocked because a confirmed excursion cannot be tendered as in‑range pharma (find_alternatives option fly status blocked).",
-      "QA hold option is allowed, incurs +12 h delay, cost CHF 0, risk Low (find_alternatives option hold)."
+      "Probe measured 9.2 °C for 34 min, which breaches the +2/+8 °C rule after 30 min.",
+      "Risk class is critical per calculate_risk.",
+      "Option 'hold' is allowed with Low risk and does not violate any hard constraint."
     ],
-    "customer_note": "AWB 131-77881204 – shipment placed on QA hold; new ETA pending QA release."
+    "customer_note": "AWB 131-77881204: Shipment placed on QA hold; revised ETA pending release."
   },
   "verdict": {
     "accepted": true,
@@ -434,6 +363,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

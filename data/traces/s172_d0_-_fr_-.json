@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:47:06.322Z",
-  "latencyMs": 10247,
-  "promptTokens": 19483,
-  "completionTokens": 1078,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:40:12.066Z",
+  "latencyMs": 15169,
+  "promptTokens": 26509,
+  "completionTokens": 2025,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 846,
+      "ms": 803,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-922a4e2413221043",
+      "callId": "chatcmpl-tool-945910cd545b53de",
       "name": "get_shipment",
       "args": {
         "awb": "172-44091832"
@@ -54,7 +54,7 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 951,
+      "ms": 646,
       "promptTokens": 2493,
       "completionTokens": 55,
       "reasoningChars": 63,
@@ -64,7 +64,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b0d7ef50334e3c67",
+      "callId": "chatcmpl-tool-a3624a52624ffccf",
       "name": "get_disruption",
       "args": {
         "awb": "172-44091832"
@@ -94,22 +94,22 @@
           }
         ]
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1168,
+      "ms": 1153,
       "promptTokens": 2648,
-      "completionTokens": 121,
-      "reasoningChars": 309,
+      "completionTokens": 118,
+      "reasoningChars": 297,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-99cf63865aca6b14",
+      "callId": "chatcmpl-tool-87d305a8cb17aad1",
       "name": "get_cutoffs",
       "args": {
         "awb": "172-44091832"
@@ -124,17 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1493,
+      "ms": 1373,
       "promptTokens": 2726,
-      "completionTokens": 188,
-      "reasoningChars": 564,
+      "completionTokens": 164,
+      "reasoningChars": 436,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8939352b5939bcd1",
+      "callId": "chatcmpl-tool-85cecaf8508efc39",
       "name": "check_connection",
       "args": {
         "awb": "172-44091832"
@@ -149,8 +149,34 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 1022,
+      "ms": 710,
       "promptTokens": 2802,
+      "completionTokens": 48,
+      "reasoningChars": 51,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9bb59946237c1448",
+      "name": "get_capacity",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "AYC 9006 DGR position open · AYC 9012 open"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 812,
+      "promptTokens": 2888,
       "completionTokens": 58,
       "reasoningChars": 76,
       "toolCalls": [
@@ -159,7 +185,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b896a1f4015e22ff",
+      "callId": "chatcmpl-tool-9868a01f6562db61",
       "name": "calculate_risk",
       "args": {
         "awb": "172-44091832"
@@ -197,9 +223,9 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 895,
-      "promptTokens": 2964,
+      "turn": 7,
+      "ms": 854,
+      "promptTokens": 3050,
       "completionTokens": 46,
       "reasoningChars": 28,
       "toolCalls": [
@@ -208,7 +234,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b5bd2895f5233dbf",
+      "callId": "chatcmpl-tool-9c6b1f6ab15f5806",
       "name": "find_alternatives",
       "args": {
         "awb": "172-44091832"
@@ -272,11 +298,11 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 3872,
-      "promptTokens": 3521,
-      "completionTokens": 556,
-      "reasoningChars": 1110,
+      "turn": 8,
+      "ms": 4367,
+      "promptTokens": 3607,
+      "completionTokens": 718,
+      "reasoningChars": 1554,
       "toolCalls": [
         "submit_decision"
       ]
@@ -284,6 +310,87 @@
     {
       "kind": "verify",
       "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": false,
+          "detail": "summary reads as en, why reads as en; the desk works in fr"
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "critical",
+        "recommended_option_id": "freighter",
+        "ranking": [
+          "freighter",
+          "next",
+          "return"
+        ],
+        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries, creating a critical risk. Move the shipment to freighter AYC 9006 via GVA–FRA–NRT.",
+        "why": [
+          "Weight 186 kg, commodity UN3480 PI965.",
+          "Booked aircraft AYC 176 pax is illegal for this DG (PI965 forbidden on passenger).",
+          "Freighter AYC 9006 GVA–FRA–NRT accepts UN3480 PI965, capacity confirmed.",
+          "Revised ETA 16 Oct 06:40 LT NRT, delay +7 h, cost +CHF 260, risk Low."
+        ],
+        "customer_note": "AWB 172-44091832 will now arrive NRT 16 Oct 06:40 LT."
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 9,
+      "ms": 4447,
+      "promptTokens": 3966,
+      "completionTokens": 764,
+      "reasoningChars": 1637,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -322,6 +429,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -335,13 +447,14 @@
           "next",
           "return"
         ],
-        "summary": "Le vol passager AYC 176 refuse les marchandises dangereuses UN3480. Il faut réacheminer l'AWB sur le fret AYC 9006.",
+        "summary": "Le vol passager réservé AYC 176 ne peut pas transporter les batteries lithium-ion UN3480, ce qui crée un risque critique. Nous recommandons de déplacer l'envoi vers le fret AYC 9006 via GVA–FRA–NRT.",
         "why": [
-          "Risk calculé : critical (DG refusé sur avion passager).",
-          "Option freighter : statut allowed, risque Low, délai +7 h, coût +CHF 260, ETA révisée 16 Oct 06:40 LT NRT.",
-          "Option next : statut allowed, risque Medium, délai +26 h, coût +CHF 260, ETA 17 Oct 01:10 LT NRT."
+          "Poids 186 kg, marchandise UN3480 lithium ion batteries.",
+          "Avion réservé AYC 176 passagers interdit pour cette marchandise dangereuse (PI965 interdit sur avion passager).",
+          "Freight AYC 9006 accepte UN3480 PI965, capacité confirmée.",
+          "Nouvel ETA 16 Oct 06:40 LT NRT, délai +7 h, coût +CHF 260, risque Low."
         ],
-        "customer_note": "AWB 172-44091832: new ETA 16 Oct 06:40 LT NRT after rebooking on freighter AYC 9006."
+        "customer_note": "AWB 172-44091832 will now arrive NRT 16 Oct 06:40 LT."
       }
     }
   ],
@@ -353,17 +466,18 @@
       "next",
       "return"
     ],
-    "summary": "Le vol passager AYC 176 refuse les marchandises dangereuses UN3480. Il faut réacheminer l'AWB sur le fret AYC 9006.",
+    "summary": "Le vol passager réservé AYC 176 ne peut pas transporter les batteries lithium-ion UN3480, ce qui crée un risque critique. Nous recommandons de déplacer l'envoi vers le fret AYC 9006 via GVA–FRA–NRT.",
     "why": [
-      "Risk calculé : critical (DG refusé sur avion passager).",
-      "Option freighter : statut allowed, risque Low, délai +7 h, coût +CHF 260, ETA révisée 16 Oct 06:40 LT NRT.",
-      "Option next : statut allowed, risque Medium, délai +26 h, coût +CHF 260, ETA 17 Oct 01:10 LT NRT."
+      "Poids 186 kg, marchandise UN3480 lithium ion batteries.",
+      "Avion réservé AYC 176 passagers interdit pour cette marchandise dangereuse (PI965 interdit sur avion passager).",
+      "Freight AYC 9006 accepte UN3480 PI965, capacité confirmée.",
+      "Nouvel ETA 16 Oct 06:40 LT NRT, délai +7 h, coût +CHF 260, risque Low."
     ],
-    "customer_note": "AWB 172-44091832: new ETA 16 Oct 06:40 LT NRT after rebooking on freighter AYC 9006."
+    "customer_note": "AWB 172-44091832 will now arrive NRT 16 Oct 06:40 LT."
   },
   "verdict": {
     "accepted": true,
-    "attempts": 1,
+    "attempts": 2,
     "fellBack": false,
     "checks": [
       {
@@ -399,6 +513,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

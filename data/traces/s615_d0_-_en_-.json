@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:31.124Z",
-  "latencyMs": 8657,
-  "promptTokens": 17193,
-  "completionTokens": 763,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:42.008Z",
+  "latencyMs": 9275,
+  "promptTokens": 26875,
+  "completionTokens": 845,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1113,
+      "ms": 656,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a03b1b830240d4a0",
+      "callId": "chatcmpl-tool-96a51e032357abde",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1034,
+      "ms": 603,
       "promptTokens": 2487,
-      "completionTokens": 57,
-      "reasoningChars": 71,
+      "completionTokens": 56,
+      "reasoningChars": 72,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8cd52533eb6280f7",
+      "callId": "chatcmpl-tool-9909029e19c78289",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -114,17 +114,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1048,
+      "ms": 1008,
       "promptTokens": 2744,
-      "completionTokens": 51,
-      "reasoningChars": 49,
+      "completionTokens": 55,
+      "reasoningChars": 72,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b3ae962805c88098",
+      "callId": "chatcmpl-tool-83878909ddea359c",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -140,17 +140,95 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1042,
+      "ms": 761,
       "promptTokens": 2834,
-      "completionTokens": 69,
-      "reasoningChars": 125,
+      "completionTokens": 44,
+      "reasoningChars": 29,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-905343e9f5a012a7",
+      "name": "check_connection",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "ETA 18:15 vs required 19:15 · 60 min slack"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 685,
+      "promptTokens": 2920,
+      "completionTokens": 48,
+      "reasoningChars": 51,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-83d547bb0490744c",
+      "name": "get_capacity",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "AYC 7841 free 2,400 kg · AYC 7842 free 410 kg · AYC 7843 free 3,100 kg · AYC 9864 free 2,200 kg"
+        ]
+      },
+      "ms": 1
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 1018,
+      "promptTokens": 3049,
+      "completionTokens": 55,
+      "reasoningChars": 73,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-bb1c786fdfbf211e",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "General cargo, height 100 cm, no embargo"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 890,
+      "promptTokens": 3127,
+      "completionTokens": 50,
+      "reasoningChars": 45,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-87a27f13f0cb6b37",
+      "callId": "chatcmpl-tool-ab2a3cc750b12f9e",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -188,18 +266,18 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 860,
-      "promptTokens": 2989,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "turn": 8,
+      "ms": 980,
+      "promptTokens": 3282,
+      "completionTokens": 49,
+      "reasoningChars": 33,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b14a3d8e2aaf1df7",
+      "callId": "chatcmpl-tool-89cdb7eee0c22fc0",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -275,11 +353,11 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 3559,
-      "promptTokens": 3810,
-      "completionTokens": 485,
-      "reasoningChars": 883,
+      "turn": 9,
+      "ms": 2672,
+      "promptTokens": 4103,
+      "completionTokens": 434,
+      "reasoningChars": 763,
       "toolCalls": [
         "submit_decision"
       ]
@@ -323,6 +401,11 @@
           "id": "refs",
           "label": "Every flight, truck and AWB reference is real",
           "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
         }
       ],
       "submitted": {
@@ -334,12 +417,12 @@
           "fra",
           "later"
         ],
-        "summary": "The truck ETA is 18:15, meeting the 19:15 handling need and 20:00 cut‑off, so the connection holds with 60 min slack. Keep the shipment on AYC 7841 via LEJ.",
+        "summary": "The truck arrives at LEJ at 18:15 with 60 minutes slack before the 19:15 handling deadline, so the current connection holds. Keep the shipment on AYC 7841 via LEJ.",
         "why": [
-          "Truck ETA 18:15 (+0 min) vs Need‑by 19:15 gives 60 min slack.",
-          "Cut‑off 20:00 provides an additional 45 min buffer.",
-          "Risk calculated as ok (connection holding).",
-          "Keep option: Low risk, CHF 0 cost, on‑time ETA 15 Oct 09:05 LT DEL."
+          "Truck ETA 18:15 vs required 19:15 gives 60 min slack (check_connection).",
+          "Risk calculated as ok with good truck ETA and 60 min slack (calculate_risk).",
+          "Option Keep AYC 7841 via LEJ is allowed, Low risk, no extra cost (find_alternatives).",
+          "Alternative options involve delays (+4h to +18h) and/or extra cost (find_alternatives)."
         ]
       }
     }
@@ -353,12 +436,12 @@
       "fra",
       "later"
     ],
-    "summary": "The truck ETA is 18:15, meeting the 19:15 handling need and 20:00 cut‑off, so the connection holds with 60 min slack. Keep the shipment on AYC 7841 via LEJ.",
+    "summary": "The truck arrives at LEJ at 18:15 with 60 minutes slack before the 19:15 handling deadline, so the current connection holds. Keep the shipment on AYC 7841 via LEJ.",
     "why": [
-      "Truck ETA 18:15 (+0 min) vs Need‑by 19:15 gives 60 min slack.",
-      "Cut‑off 20:00 provides an additional 45 min buffer.",
-      "Risk calculated as ok (connection holding).",
-      "Keep option: Low risk, CHF 0 cost, on‑time ETA 15 Oct 09:05 LT DEL."
+      "Truck ETA 18:15 vs required 19:15 gives 60 min slack (check_connection).",
+      "Risk calculated as ok with good truck ETA and 60 min slack (calculate_risk).",
+      "Option Keep AYC 7841 via LEJ is allowed, Low risk, no extra cost (find_alternatives).",
+      "Alternative options involve delays (+4h to +18h) and/or extra cost (find_alternatives)."
     ]
   },
   "verdict": {
@@ -399,6 +482,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       }
     ]

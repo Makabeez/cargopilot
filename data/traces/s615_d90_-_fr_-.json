@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:48.529Z",
-  "latencyMs": 9052,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:53.648Z",
+  "latencyMs": 11670,
   "promptTokens": 17228,
-  "completionTokens": 1092,
+  "completionTokens": 1962,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 616,
+      "ms": 795,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-86dc8c3febf2cdd1",
+      "callId": "chatcmpl-tool-a9f718ee2de4ec5e",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1017,
+      "ms": 683,
       "promptTokens": 2487,
       "completionTokens": 65,
-      "reasoningChars": 122,
+      "reasoningChars": 123,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a7d57cd2087bd285",
+      "callId": "chatcmpl-tool-b15052a7f880e625",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -114,17 +114,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1034,
+      "ms": 650,
       "promptTokens": 2748,
-      "completionTokens": 55,
-      "reasoningChars": 72,
+      "completionTokens": 57,
+      "reasoningChars": 84,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b457ed0190ef5f74",
+      "callId": "chatcmpl-tool-9cd3f7efd8dea6b8",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -140,7 +140,7 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 820,
+      "ms": 657,
       "promptTokens": 2838,
       "completionTokens": 69,
       "reasoningChars": 125,
@@ -150,7 +150,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ba9f7f02c5df9ba6",
+      "callId": "chatcmpl-tool-8378a32197765e25",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -189,7 +189,7 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 965,
+      "ms": 816,
       "promptTokens": 2996,
       "completionTokens": 46,
       "reasoningChars": 28,
@@ -199,7 +199,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a15571aed4f82c54",
+      "callId": "chatcmpl-tool-b3846f2a949dfe33",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -276,10 +276,10 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 4599,
+      "ms": 8067,
       "promptTokens": 3830,
-      "completionTokens": 803,
-      "reasoningChars": 1476,
+      "completionTokens": 1671,
+      "reasoningChars": 4299,
       "toolCalls": [
         "submit_decision"
       ]
@@ -325,8 +325,8 @@
           "pass": true
         },
         {
-          "id": "customer",
-          "label": "Customer note cites the AWB in the customer's language",
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
           "pass": true
         }
       ],
@@ -336,18 +336,13 @@
         "ranking": [
           "zrh",
           "fra",
-          "keep",
-          "later"
+          "later",
+          "keep"
         ],
-        "summary": "Le camion RFS 1840 arrive à 19:45 alors que le besoin est à 19:15, laissant un manque de 30 min pour la manutention à LEJ. On propose le réacheminement via ZRH (RFS 2204 + AYC 9864) avec livraison prévue le 15 oct. à 13:10 LT DEL.",
+        "summary": "Le camion RFS 1840 arrive à 19:45 alors que la manutention requise est terminée à 19:15, laissant un déficit de 30 minutes avant le cut‑off de 20:00. Nous recommandons de réacheminer l’AWB 615-12345675 via ZRH (option « Rebook via ZRH ») pour éviter le dépassement.",
         "why": [
-          "Truck ETA 19:45 LT, Need by 19:15 LT, Gap 30 min short (per disruption and cutoffs).",
-          "Option Rebook via ZRH: delay +4 h, cost +CHF 180, risk Low.",
-          "Option Keep AYC 7841 via LEJ: would need station exception, risk High.",
-          "Option Rebook via FRA: delay +9 h, cost +CHF 90, risk Medium.",
-          "Option Wait for AYC 7843: delay +18 h, risk High."
-        ],
-        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre 2026 à 13:10 heure locale à Delhi suite au réacheminement via ZRH."
+          "- Selon calculate_risk, le gap est de 30 min short (truck ETA 19:45, Need by 19:15, Cut-off 20:00).\n- Option zrh : RFS 2204 départ GVA 18:10, arrivée ZRH 19:05, cut‑off 21:30, capacité libre 2 200 kg, coût +CHF 180, risque Low.\n- Option fra : poids libre 900 kg, volume LD3 4,3 m³ contre 4,2 m³ construit, coût +CHF 90, risque Medium.\n- Option later : espace libre 3 100 kg, fenêtre client manquée d’un jour complet, délai +18 h, coût CHF 0, risque High."
+        ]
       }
     }
   ],
@@ -357,18 +352,13 @@
     "ranking": [
       "zrh",
       "fra",
-      "keep",
-      "later"
+      "later",
+      "keep"
     ],
-    "summary": "Le camion RFS 1840 arrive à 19:45 alors que le besoin est à 19:15, laissant un manque de 30 min pour la manutention à LEJ. On propose le réacheminement via ZRH (RFS 2204 + AYC 9864) avec livraison prévue le 15 oct. à 13:10 LT DEL.",
+    "summary": "Le camion RFS 1840 arrive à 19:45 alors que la manutention requise est terminée à 19:15, laissant un déficit de 30 minutes avant le cut‑off de 20:00. Nous recommandons de réacheminer l’AWB 615-12345675 via ZRH (option « Rebook via ZRH ») pour éviter le dépassement.",
     "why": [
-      "Truck ETA 19:45 LT, Need by 19:15 LT, Gap 30 min short (per disruption and cutoffs).",
-      "Option Rebook via ZRH: delay +4 h, cost +CHF 180, risk Low.",
-      "Option Keep AYC 7841 via LEJ: would need station exception, risk High.",
-      "Option Rebook via FRA: delay +9 h, cost +CHF 90, risk Medium.",
-      "Option Wait for AYC 7843: delay +18 h, risk High."
-    ],
-    "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre 2026 à 13:10 heure locale à Delhi suite au réacheminement via ZRH."
+      "- Selon calculate_risk, le gap est de 30 min short (truck ETA 19:45, Need by 19:15, Cut-off 20:00).\n- Option zrh : RFS 2204 départ GVA 18:10, arrivée ZRH 19:05, cut‑off 21:30, capacité libre 2 200 kg, coût +CHF 180, risque Low.\n- Option fra : poids libre 900 kg, volume LD3 4,3 m³ contre 4,2 m³ construit, coût +CHF 90, risque Medium.\n- Option later : espace libre 3 100 kg, fenêtre client manquée d’un jour complet, délai +18 h, coût CHF 0, risque High."
+    ]
   },
   "verdict": {
     "accepted": true,
@@ -411,8 +401,8 @@
         "pass": true
       },
       {
-        "id": "customer",
-        "label": "Customer note cites the AWB in the customer's language",
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       }
     ]

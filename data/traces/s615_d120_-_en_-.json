@@ -10,26 +10,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:40.681Z",
-  "latencyMs": 9504,
-  "promptTokens": 17236,
-  "completionTokens": 1059,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:51.299Z",
+  "latencyMs": 8626,
+  "promptTokens": 20296,
+  "completionTokens": 1012,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 815,
+      "ms": 772,
       "promptTokens": 2329,
-      "completionTokens": 51,
-      "reasoningChars": 43,
+      "completionTokens": 53,
+      "reasoningChars": 49,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8bea2f91499a5b90",
+      "callId": "chatcmpl-tool-9053990841a54783",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 902,
+      "ms": 1001,
       "promptTokens": 2487,
-      "completionTokens": 57,
-      "reasoningChars": 72,
+      "completionTokens": 55,
+      "reasoningChars": 63,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-abc431e3e4d983a7",
+      "callId": "chatcmpl-tool-9d8ecd214c109d67",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -109,22 +109,48 @@
           }
         ]
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 3,
-      "ms": 883,
+      "ms": 1308,
       "promptTokens": 2752,
-      "completionTokens": 74,
-      "reasoningChars": 136,
+      "completionTokens": 163,
+      "reasoningChars": 342,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-932fef14b3feba8e",
+      "name": "check_connection",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "ETA 20:15 is after the cut-off"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 879,
+      "promptTokens": 2829,
+      "completionTokens": 70,
+      "reasoningChars": 113,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a8c3e729e6840d90",
+      "callId": "chatcmpl-tool-833158fe899f5df9",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -139,18 +165,18 @@
     },
     {
       "kind": "model",
-      "turn": 4,
-      "ms": 1091,
-      "promptTokens": 2842,
-      "completionTokens": 69,
-      "reasoningChars": 126,
+      "turn": 5,
+      "ms": 719,
+      "promptTokens": 2919,
+      "completionTokens": 50,
+      "reasoningChars": 45,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a28da06f4b471b98",
+      "callId": "chatcmpl-tool-90ad0b138c5f90f9",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -188,18 +214,18 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 931,
-      "promptTokens": 2999,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "turn": 6,
+      "ms": 759,
+      "promptTokens": 3076,
+      "completionTokens": 46,
+      "reasoningChars": 28,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b5d7043000af1a53",
+      "callId": "chatcmpl-tool-83ddbd1764843030",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -275,11 +301,11 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 4881,
-      "promptTokens": 3827,
-      "completionTokens": 761,
-      "reasoningChars": 1398,
+      "turn": 7,
+      "ms": 3184,
+      "promptTokens": 3904,
+      "completionTokens": 575,
+      "reasoningChars": 1105,
       "toolCalls": [
         "submit_decision"
       ]
@@ -325,6 +351,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -338,13 +369,13 @@
           "fra",
           "later"
         ],
-        "summary": "The truck ETA of 20:15 misses the LEJ cut‑off of 20:00, causing a critical connection miss. Rebook via ZRH (RFS 2204 → AYC 9864) for delivery at 15 Oct 13:10 LT DEL.",
+        "summary": "The truck ETA of 20:15 exceeds the LEJ cut‑off of 20:00, causing the connection on AYC 7841 to be missed. Rebook the shipment via ZRH using RFS 2204 and AYC 9864.",
         "why": [
-          "Truck ETA 20:15, need‑by 19:15, cut‑off 20:00 → 60 min short.",
-          "Risk class critical (connection missed).",
-          "Option ZRH: RFS 2204 departs GVA 18:10, arrives ZRH 19:05, cut‑off 21:30, free capacity 2,200 kg, delay +4 h, cost +CHF 180, risk Low."
+          "Truck ETA 20:15 is after LEJ cut‑off 20:00 (60 min short).",
+          "Need‑by time 19:15 is also missed.",
+          "Option ZRH provides Low risk, +4 h delay, +CHF 180 cost, and fits capacity."
         ],
-        "customer_note": "AWB 615-12345675 sera livré le 15 octobre à 13:10 heure locale à DEL."
+        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13:10 heure locale à Delhi."
       }
     }
   ],
@@ -356,13 +387,13 @@
       "fra",
       "later"
     ],
-    "summary": "The truck ETA of 20:15 misses the LEJ cut‑off of 20:00, causing a critical connection miss. Rebook via ZRH (RFS 2204 → AYC 9864) for delivery at 15 Oct 13:10 LT DEL.",
+    "summary": "The truck ETA of 20:15 exceeds the LEJ cut‑off of 20:00, causing the connection on AYC 7841 to be missed. Rebook the shipment via ZRH using RFS 2204 and AYC 9864.",
     "why": [
-      "Truck ETA 20:15, need‑by 19:15, cut‑off 20:00 → 60 min short.",
-      "Risk class critical (connection missed).",
-      "Option ZRH: RFS 2204 departs GVA 18:10, arrives ZRH 19:05, cut‑off 21:30, free capacity 2,200 kg, delay +4 h, cost +CHF 180, risk Low."
+      "Truck ETA 20:15 is after LEJ cut‑off 20:00 (60 min short).",
+      "Need‑by time 19:15 is also missed.",
+      "Option ZRH provides Low risk, +4 h delay, +CHF 180 cost, and fits capacity."
     ],
-    "customer_note": "AWB 615-12345675 sera livré le 15 octobre à 13:10 heure locale à DEL."
+    "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13:10 heure locale à Delhi."
   },
   "verdict": {
     "accepted": true,
@@ -402,6 +433,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

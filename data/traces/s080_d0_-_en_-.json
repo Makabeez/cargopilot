@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:30.278Z",
-  "latencyMs": 10400,
-  "promptTokens": 22211,
-  "completionTokens": 953,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:39.291Z",
+  "latencyMs": 7228,
+  "promptTokens": 16267,
+  "completionTokens": 785,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1014,
+      "ms": 833,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-982fdcb18e9af8ad",
+      "callId": "chatcmpl-tool-a2049ef5ce7c80ce",
       "name": "get_shipment",
       "args": {
         "awb": "080-22991006"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1061,
+      "ms": 715,
       "promptTokens": 2477,
-      "completionTokens": 70,
-      "reasoningChars": 137,
+      "completionTokens": 56,
+      "reasoningChars": 72,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ad17b3d147ee012d",
+      "callId": "chatcmpl-tool-9079980b78dcf2a3",
       "name": "get_disruption",
       "args": {
         "awb": "080-22991006"
@@ -99,7 +99,7 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 958,
+      "ms": 759,
       "promptTokens": 2628,
       "completionTokens": 74,
       "reasoningChars": 135,
@@ -109,7 +109,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ac238ef0c685f297",
+      "callId": "chatcmpl-tool-8df8f0e80424986f",
       "name": "get_cutoffs",
       "args": {
         "awb": "080-22991006"
@@ -124,67 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1027,
+      "ms": 1029,
       "promptTokens": 2706,
-      "completionTokens": 68,
-      "reasoningChars": 122,
-      "toolCalls": [
-        "check_connection"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-a74f1a4b99baa725",
-      "name": "check_connection",
-      "args": {
-        "awb": "080-22991006"
-      },
-      "output": {
-        "applicable": false,
-        "facts": [],
-        "note": "No check connection issue recorded for this file."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 5,
-      "ms": 986,
-      "promptTokens": 2782,
       "completionTokens": 53,
-      "reasoningChars": 66,
-      "toolCalls": [
-        "get_capacity"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-879e3d9c35b41cc6",
-      "name": "get_capacity",
-      "args": {
-        "awb": "080-22991006"
-      },
-      "output": {
-        "applicable": false,
-        "facts": [],
-        "note": "No get capacity issue recorded for this file."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 6,
-      "ms": 1213,
-      "promptTokens": 2858,
-      "completionTokens": 112,
-      "reasoningChars": 249,
+      "reasoningChars": 55,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a30c4ab5bcdb72c2",
+      "callId": "chatcmpl-tool-b0cfbb36c5277b0c",
       "name": "calculate_risk",
       "args": {
         "awb": "080-22991006"
@@ -220,9 +170,9 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 797,
-      "promptTokens": 3006,
+      "turn": 5,
+      "ms": 831,
+      "promptTokens": 2854,
       "completionTokens": 47,
       "reasoningChars": 26,
       "toolCalls": [
@@ -231,7 +181,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-811ca817de86cdc7",
+      "callId": "chatcmpl-tool-a8c9b3c776f3d053",
       "name": "find_alternatives",
       "args": {
         "awb": "080-22991006"
@@ -281,11 +231,11 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 3344,
-      "promptTokens": 3425,
-      "completionTokens": 475,
-      "reasoningChars": 790,
+      "turn": 6,
+      "ms": 3060,
+      "promptTokens": 3273,
+      "completionTokens": 501,
+      "reasoningChars": 989,
       "toolCalls": [
         "submit_decision"
       ]
@@ -331,6 +281,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -343,14 +298,13 @@
           "repack",
           "active"
         ],
-        "summary": "The gel life is short by 2 hours, making the current gels unsuitable for the GVA–YYZ lane. Repack with fresh gels restores qualification and keeps the shipment on AYC 330 on time.",
+        "summary": "The gel life is short by 2 hours, making the current gels unsuitable for delivery. Repack with fresh gels restores qualification and keeps the shipment on schedule.",
         "why": [
-          "Gel life qualified 14 h, lane 16 h – short 2 h (disruption).",
-          "Repack restores qualification and makes AYC 330, revised ETA 15 Oct 21:00 LT YYZ, delay On time.",
-          "Cost +CHF 60, risk Low.",
-          "Active box alternative costs +CHF 220, same ETA and risk Low."
+          "Gel life qualified 14 h, lane 16 h – 2 h short (disruption signal).",
+          "Repack option adds +CHF 60, risk Low, revised ETA 15 Oct 21:00 LT YYZ (on time).",
+          "Active box option adds +CHF 220, same ETA and risk Low but higher cost."
         ],
-        "customer_note": "AWB 080-22991006: repacked with fresh gels, expected arrival YYZ 15 Oct 21:00 local time."
+        "customer_note": "AWB 080-22991006: Your clinical samples will be repacked with fresh gels and are expected to arrive in Toronto on 15 Oct 2026 at 21:00 local time."
       }
     }
   ],
@@ -361,14 +315,13 @@
       "repack",
       "active"
     ],
-    "summary": "The gel life is short by 2 hours, making the current gels unsuitable for the GVA–YYZ lane. Repack with fresh gels restores qualification and keeps the shipment on AYC 330 on time.",
+    "summary": "The gel life is short by 2 hours, making the current gels unsuitable for delivery. Repack with fresh gels restores qualification and keeps the shipment on schedule.",
     "why": [
-      "Gel life qualified 14 h, lane 16 h – short 2 h (disruption).",
-      "Repack restores qualification and makes AYC 330, revised ETA 15 Oct 21:00 LT YYZ, delay On time.",
-      "Cost +CHF 60, risk Low.",
-      "Active box alternative costs +CHF 220, same ETA and risk Low."
+      "Gel life qualified 14 h, lane 16 h – 2 h short (disruption signal).",
+      "Repack option adds +CHF 60, risk Low, revised ETA 15 Oct 21:00 LT YYZ (on time).",
+      "Active box option adds +CHF 220, same ETA and risk Low but higher cost."
     ],
-    "customer_note": "AWB 080-22991006: repacked with fresh gels, expected arrival YYZ 15 Oct 21:00 local time."
+    "customer_note": "AWB 080-22991006: Your clinical samples will be repacked with fresh gels and are expected to arrive in Toronto on 15 Oct 2026 at 21:00 local time."
   },
   "verdict": {
     "accepted": true,
@@ -408,6 +361,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

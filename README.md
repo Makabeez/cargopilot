@@ -4,7 +4,8 @@
 
 Built for the Nebius × NVIDIA Global AI Hackathon, **Best Apps & Agents** track.
 
-- **Live demo:** _add the deployment URL here_
+- **Live demo:** https://cargopilot-eta.vercel.app. The agent panel runs Nemotron live on Nebius Token Factory.
+- **Watch the verifier catch Nemotron:** https://cargopilot-eta.vercel.app/?replay=v1, then type "What if the truck is delayed another 30 minutes?" on file 615-12345675. That replays a real prompt-v1 run.
 - **Video (≤ 3 min):** _add the link here_
 - **Check it in one command, no key needed:** `npm ci && npm run judge-demo`
 

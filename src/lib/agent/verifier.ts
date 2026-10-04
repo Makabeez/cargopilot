@@ -299,6 +299,24 @@ export function verifyDecision(
     detail: badRefs.length ? `Unknown references: ${badRefs.join(", ")}` : undefined,
   });
 
+  {
+    // summary + why are for the duty officer: same language as the operator.
+    // Summary and evidence bullets are judged separately, so one cannot mask the other.
+    const parts = [
+      ["summary", guessLanguage(decision.summary)],
+      ["why", guessLanguage(decision.why.join(" "))],
+    ] as const;
+    const wrong = parts.filter(([, lang]) => lang !== null && lang !== ctx.scenario.locale);
+    checks.push({
+      id: "language",
+      label: "Summary and evidence are in the duty officer's language",
+      pass: wrong.length === 0,
+      detail: wrong.length
+        ? `${wrong.map(([k, lang]) => `${k} reads as ${lang}`).join(", ")}; the desk works in ${ctx.scenario.locale}`
+        : undefined,
+    });
+  }
+
   if (ctx.scenario.operatorMessage?.trim()) {
     const lang = decision.reply ? guessLanguage(decision.reply) : null;
     const ok = !!decision.reply && (lang === null || lang === ctx.scenario.locale);

@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:45:45.952Z",
-  "latencyMs": 11092,
-  "promptTokens": 19513,
-  "completionTokens": 991,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:00.312Z",
+  "latencyMs": 10784,
+  "promptTokens": 22543,
+  "completionTokens": 1208,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1232,
+      "ms": 921,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a1353cfdf9bb4b49",
+      "callId": "chatcmpl-tool-82ecb6ffec703ace",
       "name": "get_shipment",
       "args": {
         "awb": "172-44091832"
@@ -49,22 +49,22 @@
         "customer": "Helvetia Cell AG",
         "customer_language": "English"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 2,
-      "ms": 775,
+      "ms": 974,
       "promptTokens": 2493,
-      "completionTokens": 55,
-      "reasoningChars": 63,
+      "completionTokens": 56,
+      "reasoningChars": 72,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a6339798fd3f0648",
+      "callId": "chatcmpl-tool-87f46fc6badc540d",
       "name": "get_disruption",
       "args": {
         "awb": "172-44091832"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1412,
+      "ms": 1544,
       "promptTokens": 2648,
-      "completionTokens": 89,
-      "reasoningChars": 179,
+      "completionTokens": 146,
+      "reasoningChars": 414,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bf2c3682d294b73b",
+      "callId": "chatcmpl-tool-8633c3f161d4bdf5",
       "name": "get_cutoffs",
       "args": {
         "awb": "172-44091832"
@@ -124,17 +124,42 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1955,
+      "ms": 738,
       "promptTokens": 2726,
-      "completionTokens": 132,
-      "reasoningChars": 347,
+      "completionTokens": 68,
+      "reasoningChars": 122,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a5cb6f8f4481a32f",
+      "name": "check_connection",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check connection issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 837,
+      "promptTokens": 2802,
+      "completionTokens": 48,
+      "reasoningChars": 51,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bad740de9dfc10f5",
+      "callId": "chatcmpl-tool-b2fb0a6699f3b116",
       "name": "get_capacity",
       "args": {
         "awb": "172-44091832"
@@ -149,18 +174,18 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 1020,
-      "promptTokens": 2812,
-      "completionTokens": 58,
-      "reasoningChars": 76,
+      "turn": 6,
+      "ms": 839,
+      "promptTokens": 2888,
+      "completionTokens": 57,
+      "reasoningChars": 73,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8c094019121c70c5",
+      "callId": "chatcmpl-tool-80574b5d6f5ab609",
       "name": "calculate_risk",
       "args": {
         "awb": "172-44091832"
@@ -198,18 +223,18 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 799,
-      "promptTokens": 2974,
-      "completionTokens": 46,
-      "reasoningChars": 28,
+      "turn": 7,
+      "ms": 983,
+      "promptTokens": 3050,
+      "completionTokens": 49,
+      "reasoningChars": 33,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9e068a1414110346",
+      "callId": "chatcmpl-tool-89d5990037f81dfd",
       "name": "find_alternatives",
       "args": {
         "awb": "172-44091832"
@@ -269,15 +294,15 @@
           }
         ]
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 3897,
-      "promptTokens": 3531,
-      "completionTokens": 557,
-      "reasoningChars": 1084,
+      "turn": 8,
+      "ms": 3945,
+      "promptTokens": 3607,
+      "completionTokens": 730,
+      "reasoningChars": 1592,
       "toolCalls": [
         "submit_decision"
       ]
@@ -323,6 +348,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -336,13 +366,14 @@
           "next",
           "return"
         ],
-        "summary": "The booked passenger flight AYC 176 is prohibited from carrying UN3480 lithium ion batteries, causing a critical DG rejection. Move the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT.",
+        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 PI965 lithium batteries (DGR reject). Move the shipment to freighter AYC 9006 via GVA–FRA–NRT.",
         "why": [
-          "Risk class is critical due to DG refused on passenger aircraft (AYC 176 pax).",
-          "Freighter AYC 9006 is allowed, has capacity, and adds +7 h delay at +CHF 260 cost.",
-          "Alternative freighter AYC 9012 adds +26 h delay for same cost and Medium risk; return adds +48 h delay with High risk."
+          "Risk class is critical (calculated_risk.risk = critical) due to DG refused on passenger.",
+          "Booked aircraft AYC 176 pax is illegal for commodity UN3480 PI965 (rule: CRITICAL · booked aircraft illegal for commodity).",
+          "Allowed option freighter AYC 9006 has Low risk, +7 h delay, +CHF 260 cost, and accepts the cargo.",
+          "Alternative next freighter AYC 9012 is Medium risk (+26 h delay, same cost); return to shipper is High risk (+48 h delay)."
         ],
-        "customer_note": "AWB 172-44091832: new ETA 16 Oct 06:40 LT NRT after moving to freighter AYC 9006."
+        "customer_note": "AWB 172-44091832: new ETA 16 Oct 06:40 LT NRT (delay +7 h) after moving to freighter AYC 9006."
       }
     }
   ],
@@ -354,13 +385,14 @@
       "next",
       "return"
     ],
-    "summary": "The booked passenger flight AYC 176 is prohibited from carrying UN3480 lithium ion batteries, causing a critical DG rejection. Move the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT.",
+    "summary": "The booked passenger flight AYC 176 cannot carry UN3480 PI965 lithium batteries (DGR reject). Move the shipment to freighter AYC 9006 via GVA–FRA–NRT.",
     "why": [
-      "Risk class is critical due to DG refused on passenger aircraft (AYC 176 pax).",
-      "Freighter AYC 9006 is allowed, has capacity, and adds +7 h delay at +CHF 260 cost.",
-      "Alternative freighter AYC 9012 adds +26 h delay for same cost and Medium risk; return adds +48 h delay with High risk."
+      "Risk class is critical (calculated_risk.risk = critical) due to DG refused on passenger.",
+      "Booked aircraft AYC 176 pax is illegal for commodity UN3480 PI965 (rule: CRITICAL · booked aircraft illegal for commodity).",
+      "Allowed option freighter AYC 9006 has Low risk, +7 h delay, +CHF 260 cost, and accepts the cargo.",
+      "Alternative next freighter AYC 9012 is Medium risk (+26 h delay, same cost); return to shipper is High risk (+48 h delay)."
     ],
-    "customer_note": "AWB 172-44091832: new ETA 16 Oct 06:40 LT NRT after moving to freighter AYC 9006."
+    "customer_note": "AWB 172-44091832: new ETA 16 Oct 06:40 LT NRT (delay +7 h) after moving to freighter AYC 9006."
   },
   "verdict": {
     "accepted": true,
@@ -400,6 +432,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

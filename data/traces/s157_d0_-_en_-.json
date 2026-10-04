@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:47:02.561Z",
-  "latencyMs": 9898,
-  "promptTokens": 25552,
-  "completionTokens": 788,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:40:11.085Z",
+  "latencyMs": 6763,
+  "promptTokens": 16378,
+  "completionTokens": 663,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1099,
+      "ms": 582,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-92e0236cab461eda",
+      "callId": "chatcmpl-tool-b5f27de38514155d",
       "name": "get_shipment",
       "args": {
         "awb": "157-88001233"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 712,
+      "ms": 996,
       "promptTokens": 2483,
-      "completionTokens": 55,
-      "reasoningChars": 63,
+      "completionTokens": 65,
+      "reasoningChars": 123,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-848f02abbd062559",
+      "callId": "chatcmpl-tool-a85fdce034c1120e",
       "name": "get_disruption",
       "args": {
         "awb": "157-88001233"
@@ -97,22 +97,22 @@
           }
         ]
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
       "turn": 3,
-      "ms": 921,
+      "ms": 954,
       "promptTokens": 2677,
-      "completionTokens": 64,
-      "reasoningChars": 112,
+      "completionTokens": 51,
+      "reasoningChars": 56,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-80b67e46130bed94",
+      "callId": "chatcmpl-tool-a90bb52b7cf3589f",
       "name": "get_cutoffs",
       "args": {
         "awb": "157-88001233"
@@ -128,92 +128,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 906,
+      "ms": 1012,
       "promptTokens": 2753,
-      "completionTokens": 51,
-      "reasoningChars": 63,
-      "toolCalls": [
-        "check_connection"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-a36bbc20cb123c8b",
-      "name": "check_connection",
-      "args": {
-        "awb": "157-88001233"
-      },
-      "output": {
-        "applicable": false,
-        "facts": [],
-        "note": "No check connection issue recorded for this file."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 5,
-      "ms": 728,
-      "promptTokens": 2829,
-      "completionTokens": 53,
-      "reasoningChars": 66,
-      "toolCalls": [
-        "get_capacity"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-9c5ff581c05c38b3",
-      "name": "get_capacity",
-      "args": {
-        "awb": "157-88001233"
-      },
-      "output": {
-        "applicable": false,
-        "facts": [],
-        "note": "No get capacity issue recorded for this file."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 6,
-      "ms": 893,
-      "promptTokens": 2905,
-      "completionTokens": 57,
-      "reasoningChars": 75,
-      "toolCalls": [
-        "check_restrictions"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-b35efa33f0ff9ff0",
-      "name": "check_restrictions",
-      "args": {
-        "awb": "157-88001233"
-      },
-      "output": {
-        "applicable": false,
-        "facts": [],
-        "note": "No check restrictions issue recorded for this file."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 7,
-      "ms": 1022,
-      "promptTokens": 2982,
-      "completionTokens": 50,
-      "reasoningChars": 45,
+      "completionTokens": 69,
+      "reasoningChars": 126,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8b6d3a1557faaf4a",
+      "callId": "chatcmpl-tool-9d6a2e4334d8d43b",
       "name": "calculate_risk",
       "args": {
         "awb": "157-88001233"
@@ -251,18 +176,18 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 837,
-      "promptTokens": 3138,
-      "completionTokens": 50,
-      "reasoningChars": 39,
+      "turn": 5,
+      "ms": 873,
+      "promptTokens": 2909,
+      "completionTokens": 46,
+      "reasoningChars": 28,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-93106bd8b310cb25",
+      "callId": "chatcmpl-tool-9db8b03335215d23",
       "name": "find_alternatives",
       "args": {
         "awb": "157-88001233"
@@ -300,11 +225,11 @@
     },
     {
       "kind": "model",
-      "turn": 9,
-      "ms": 2779,
-      "promptTokens": 3456,
-      "completionTokens": 354,
-      "reasoningChars": 631,
+      "turn": 6,
+      "ms": 2345,
+      "promptTokens": 3227,
+      "completionTokens": 378,
+      "reasoningChars": 600,
       "toolCalls": [
         "submit_decision"
       ]
@@ -348,6 +273,11 @@
           "id": "refs",
           "label": "Every flight, truck and AWB reference is real",
           "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
         }
       ],
       "submitted": {
@@ -357,12 +287,11 @@
           "rush",
           "roll"
         ],
-        "summary": "The shipment is on schedule with dock ETA 17:47 and acceptance closing at 18:30, giving 43 minutes slack. Keep the current plan (Priority door) to avoid unnecessary cost and delay.",
+        "summary": "The truck arrives at 17:47 with 43 minutes slack before the PER acceptance closes at 18:30. Keep the shipment on the booked flight AYC 090 via the priority door option.",
         "why": [
-          "Dock ETA 17:47, acceptance closes 18:30, slack 43 min (good).",
-          "Risk class is ok (Acceptance holding).",
-          "Option rush (Priority door) has Low risk, on-time ETA, zero cost.",
-          "Option roll adds +14 h delay, Medium risk, zero cost."
+          "Truck ETA 17:47, acceptance close 18:30, slack 43 min (calculate_risk).",
+          "Priority door option keeps cheese on AYC 090, revised ETA 15 Oct 00:40 LT MAD, delay On time, cost CHF 0, risk Low (find_alternatives).",
+          "Roll option would miss the close, cause +14 h delay, cost CHF 0, risk Medium (find_alternatives)."
         ]
       }
     }
@@ -374,12 +303,11 @@
       "rush",
       "roll"
     ],
-    "summary": "The shipment is on schedule with dock ETA 17:47 and acceptance closing at 18:30, giving 43 minutes slack. Keep the current plan (Priority door) to avoid unnecessary cost and delay.",
+    "summary": "The truck arrives at 17:47 with 43 minutes slack before the PER acceptance closes at 18:30. Keep the shipment on the booked flight AYC 090 via the priority door option.",
     "why": [
-      "Dock ETA 17:47, acceptance closes 18:30, slack 43 min (good).",
-      "Risk class is ok (Acceptance holding).",
-      "Option rush (Priority door) has Low risk, on-time ETA, zero cost.",
-      "Option roll adds +14 h delay, Medium risk, zero cost."
+      "Truck ETA 17:47, acceptance close 18:30, slack 43 min (calculate_risk).",
+      "Priority door option keeps cheese on AYC 090, revised ETA 15 Oct 00:40 LT MAD, delay On time, cost CHF 0, risk Low (find_alternatives).",
+      "Roll option would miss the close, cause +14 h delay, cost CHF 0, risk Medium (find_alternatives)."
     ]
   },
   "verdict": {
@@ -420,6 +348,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       }
     ]

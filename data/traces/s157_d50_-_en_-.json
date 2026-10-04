@@ -10,26 +10,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:47:06.053Z",
-  "latencyMs": 10882,
-  "promptTokens": 22599,
-  "completionTokens": 958,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:40:11.988Z",
+  "latencyMs": 10099,
+  "promptTokens": 25576,
+  "completionTokens": 1050,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 963,
+      "ms": 631,
       "promptTokens": 2329,
-      "completionTokens": 54,
-      "reasoningChars": 52,
+      "completionTokens": 51,
+      "reasoningChars": 43,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8dc91ffb0d0bce55",
+      "callId": "chatcmpl-tool-a23211c2bc73ffed",
       "name": "get_shipment",
       "args": {
         "awb": "157-88001233"
@@ -54,7 +54,7 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 823,
+      "ms": 938,
       "promptTokens": 2483,
       "completionTokens": 57,
       "reasoningChars": 72,
@@ -64,7 +64,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a4f8ca808842b24a",
+      "callId": "chatcmpl-tool-9dc1d75fb71566b1",
       "name": "get_disruption",
       "args": {
         "awb": "157-88001233"
@@ -102,17 +102,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1138,
+      "ms": 1052,
       "promptTokens": 2680,
-      "completionTokens": 58,
-      "reasoningChars": 84,
+      "completionTokens": 74,
+      "reasoningChars": 135,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a604f4c0313c61ed",
+      "callId": "chatcmpl-tool-92201fc593dbbe46",
       "name": "get_cutoffs",
       "args": {
         "awb": "157-88001233"
@@ -128,17 +128,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1790,
+      "ms": 1321,
       "promptTokens": 2756,
-      "completionTokens": 165,
-      "reasoningChars": 392,
+      "completionTokens": 145,
+      "reasoningChars": 379,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-89461ee120593a98",
+      "callId": "chatcmpl-tool-82ade2e9f380228c",
       "name": "check_connection",
       "args": {
         "awb": "157-88001233"
@@ -153,7 +153,7 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 1028,
+      "ms": 831,
       "promptTokens": 2832,
       "completionTokens": 48,
       "reasoningChars": 51,
@@ -163,7 +163,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8a8ac5ef79f95c17",
+      "callId": "chatcmpl-tool-9544c421f53c0c8f",
       "name": "get_capacity",
       "args": {
         "awb": "157-88001233"
@@ -173,71 +173,47 @@
         "facts": [],
         "note": "No get capacity issue recorded for this file."
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 6,
-      "ms": 1451,
+      "ms": 1535,
       "promptTokens": 2908,
-      "completionTokens": 121,
-      "reasoningChars": 278,
+      "completionTokens": 147,
+      "reasoningChars": 365,
       "toolCalls": [
-        "find_alternatives"
+        "check_restrictions"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b7c0cdcfd8aeec05",
-      "name": "find_alternatives",
+      "callId": "chatcmpl-tool-907d2e82c2211cad",
+      "name": "check_restrictions",
       "args": {
         "awb": "157-88001233"
       },
       "output": {
-        "summary": [],
-        "options": [
-          {
-            "option_id": "rush",
-            "title": "Priority door",
-            "via": "AYC 090 GVA–MAD",
-            "revised_eta": "15 Oct 00:40 LT MAD",
-            "delay": "On time",
-            "cost": "CHF 0",
-            "risk": "Low",
-            "status": "blocked",
-            "constraint_check": "Dock ETA 18:37, acceptance closes 18:30. A priority door keeps the cheese on AYC 090 if the truck is still legal.",
-            "action": "Meet RFS 441 at door 2 and accept ahead of the loose queue."
-          },
-          {
-            "option_id": "roll",
-            "title": "Roll to the next MAD",
-            "via": "AYC 092",
-            "revised_eta": "16 Oct 01:10 LT MAD",
-            "delay": "+14 h",
-            "cost": "CHF 0",
-            "risk": "Medium",
-            "status": "allowed",
-            "constraint_check": "Legal fallback once the 18:30 close is missed. The product is perishable — say so in the customer note.",
-            "action": "Book AYC 092 and keep the cheese in the cooler. Do not leave it on the export floor."
-          }
-        ]
+        "applicable": false,
+        "facts": [],
+        "note": "No check restrictions issue recorded for this file."
       },
       "ms": 0
     },
     {
       "kind": "model",
       "turn": 7,
-      "ms": 1002,
-      "promptTokens": 3227,
-      "completionTokens": 48,
-      "reasoningChars": 36,
+      "ms": 584,
+      "promptTokens": 2985,
+      "completionTokens": 50,
+      "reasoningChars": 45,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-aee63905250c5b04",
+      "callId": "chatcmpl-tool-9872ec14671d7bfe",
       "name": "calculate_risk",
       "args": {
         "awb": "157-88001233"
@@ -276,10 +252,59 @@
     {
       "kind": "model",
       "turn": 8,
-      "ms": 2684,
-      "promptTokens": 3384,
-      "completionTokens": 407,
-      "reasoningChars": 674,
+      "ms": 765,
+      "promptTokens": 3142,
+      "completionTokens": 46,
+      "reasoningChars": 28,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b066f55975ab05ed",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "rush",
+            "title": "Priority door",
+            "via": "AYC 090 GVA–MAD",
+            "revised_eta": "15 Oct 00:40 LT MAD",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "Low",
+            "status": "blocked",
+            "constraint_check": "Dock ETA 18:37, acceptance closes 18:30. A priority door keeps the cheese on AYC 090 if the truck is still legal.",
+            "action": "Meet RFS 441 at door 2 and accept ahead of the loose queue."
+          },
+          {
+            "option_id": "roll",
+            "title": "Roll to the next MAD",
+            "via": "AYC 092",
+            "revised_eta": "16 Oct 01:10 LT MAD",
+            "delay": "+14 h",
+            "cost": "CHF 0",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Legal fallback once the 18:30 close is missed. The product is perishable — say so in the customer note.",
+            "action": "Book AYC 092 and keep the cheese in the cooler. Do not leave it on the export floor."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 9,
+      "ms": 2439,
+      "promptTokens": 3461,
+      "completionTokens": 432,
+      "reasoningChars": 632,
       "toolCalls": [
         "submit_decision"
       ]
@@ -325,6 +350,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -336,12 +366,13 @@
         "ranking": [
           "roll"
         ],
-        "summary": "The truck arrived at 18:37, missing the 18:30 PER acceptance cutoff by 7 minutes, creating a critical risk. Roll the shipment to the next flight AYC 092, arriving in Madrid on 16 Oct 01:10 LT.",
+        "summary": "The truck RFS 441 arrives at 18:37, seven minutes after the 18:30 PER acceptance close, causing a critical risk of missing the flight. Roll the shipment to the next available flight AYC 092, delivering at 16 Oct 01:10 LT MAD with no extra cost.",
         "why": [
-          "Dock ETA 18:37, acceptance close 18:30 → 7 min short (critical risk).",
-          "Rolling to AYC 092 adds +14 h delay, cost CHF 0, risk Medium."
+          "Dock ETA 18:37, acceptance closes 18:30 → 7 min short (get_disruption, get_cutoffs)",
+          "Risk class critical due to acceptance missed (calculate_risk)",
+          "Allowed option Roll to the next MAD via AYC 092, delay +14 h, cost CHF 0, risk Medium (find_alternatives)"
         ],
-        "customer_note": "AWB 157-88001233 : votre envoi sera livré à Madrid le 16 octobre à 01:10 heure locale."
+        "customer_note": "AWB 157-88001233 : votre envoi sera livré le 16 octobre à 01h10 heure locale à Madrid."
       }
     }
   ],
@@ -351,12 +382,13 @@
     "ranking": [
       "roll"
     ],
-    "summary": "The truck arrived at 18:37, missing the 18:30 PER acceptance cutoff by 7 minutes, creating a critical risk. Roll the shipment to the next flight AYC 092, arriving in Madrid on 16 Oct 01:10 LT.",
+    "summary": "The truck RFS 441 arrives at 18:37, seven minutes after the 18:30 PER acceptance close, causing a critical risk of missing the flight. Roll the shipment to the next available flight AYC 092, delivering at 16 Oct 01:10 LT MAD with no extra cost.",
     "why": [
-      "Dock ETA 18:37, acceptance close 18:30 → 7 min short (critical risk).",
-      "Rolling to AYC 092 adds +14 h delay, cost CHF 0, risk Medium."
+      "Dock ETA 18:37, acceptance closes 18:30 → 7 min short (get_disruption, get_cutoffs)",
+      "Risk class critical due to acceptance missed (calculate_risk)",
+      "Allowed option Roll to the next MAD via AYC 092, delay +14 h, cost CHF 0, risk Medium (find_alternatives)"
     ],
-    "customer_note": "AWB 157-88001233 : votre envoi sera livré à Madrid le 16 octobre à 01:10 heure locale."
+    "customer_note": "AWB 157-88001233 : votre envoi sera livré le 16 octobre à 01h10 heure locale à Madrid."
   },
   "verdict": {
     "accepted": true,
@@ -396,6 +428,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:09.570Z",
-  "latencyMs": 9091,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:25.466Z",
+  "latencyMs": 7578,
   "promptTokens": 16135,
-  "completionTokens": 1026,
+  "completionTokens": 756,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 939,
+      "ms": 790,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9ca3cba9ada4973b",
+      "callId": "chatcmpl-tool-8d3607db5c2757a5",
       "name": "get_shipment",
       "args": {
         "awb": "176-55287190"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 852,
+      "ms": 962,
       "promptTokens": 2477,
-      "completionTokens": 51,
-      "reasoningChars": 46,
+      "completionTokens": 52,
+      "reasoningChars": 60,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9d6185d10312a337",
+      "callId": "chatcmpl-tool-86fc4e9dda22b096",
       "name": "get_disruption",
       "args": {
         "awb": "176-55287190"
@@ -99,7 +99,7 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1050,
+      "ms": 934,
       "promptTokens": 2623,
       "completionTokens": 58,
       "reasoningChars": 84,
@@ -109,7 +109,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-922ad717c75bffc4",
+      "callId": "chatcmpl-tool-a1f0bd3e6a1837a6",
       "name": "get_cutoffs",
       "args": {
         "awb": "176-55287190"
@@ -125,17 +125,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1194,
+      "ms": 1123,
       "promptTokens": 2704,
-      "completionTokens": 91,
-      "reasoningChars": 141,
+      "completionTokens": 105,
+      "reasoningChars": 216,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8876a5418f055689",
+      "callId": "chatcmpl-tool-88605d4add660e8f",
       "name": "calculate_risk",
       "args": {
         "awb": "176-55287190"
@@ -174,17 +174,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 826,
+      "ms": 769,
       "promptTokens": 2856,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "completionTokens": 46,
+      "reasoningChars": 28,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9c0282b33359cfc0",
+      "callId": "chatcmpl-tool-a866bc0e9215b985",
       "name": "find_alternatives",
       "args": {
         "awb": "176-55287190"
@@ -223,10 +223,10 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 4229,
+      "ms": 2998,
       "promptTokens": 3146,
-      "completionTokens": 725,
-      "reasoningChars": 1748,
+      "completionTokens": 441,
+      "reasoningChars": 896,
       "toolCalls": [
         "submit_decision"
       ]
@@ -270,6 +270,11 @@
           "id": "refs",
           "label": "Every flight, truck and AWB reference is real",
           "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
         }
       ],
       "submitted": {
@@ -279,11 +284,11 @@
           "chase",
           "offload"
         ],
-        "summary": "The SLI document is missing, creating a high risk, but there is still a window before the 18:55 acceptance close if the SLI is obtained now. Recommend chasing the SLI now to keep the booked GVA→BOM flight.",
+        "summary": "The SLI document is missing, creating a high risk situation, but chasing it now keeps the freight on the original flight and on‑time. If the SLI does not arrive by 18:15, offload to AYC 308 as the fallback.",
         "why": [
-          "SLI missing (risk driver) – acceptance closes at 18:55, screening requires ~40 min.",
-          "Chase option keeps same flight, revised ETA 15 Oct 09:50 LT BOM, delay On time, cost CHF 0, risk Medium.",
-          "Offload option would move to AYC 308, revised ETA 16 Oct 11:20 LT BOM, delay +22 h, cost CHF 0, risk High."
+          "SLI missing (get_disruption: SLI value Missing, state risk)",
+          "GVA acceptance closes 18:55 with screening ~40 min (get_cutoffs: GVA acceptance 18:55 · screening ~40 min)",
+          "Chase the SLI now option: revised ETA 15 Oct 09:50 LT BOM, delay On time, cost CHF 0, risk Medium (find_alternatives option chase)"
         ]
       }
     }
@@ -295,11 +300,11 @@
       "chase",
       "offload"
     ],
-    "summary": "The SLI document is missing, creating a high risk, but there is still a window before the 18:55 acceptance close if the SLI is obtained now. Recommend chasing the SLI now to keep the booked GVA→BOM flight.",
+    "summary": "The SLI document is missing, creating a high risk situation, but chasing it now keeps the freight on the original flight and on‑time. If the SLI does not arrive by 18:15, offload to AYC 308 as the fallback.",
     "why": [
-      "SLI missing (risk driver) – acceptance closes at 18:55, screening requires ~40 min.",
-      "Chase option keeps same flight, revised ETA 15 Oct 09:50 LT BOM, delay On time, cost CHF 0, risk Medium.",
-      "Offload option would move to AYC 308, revised ETA 16 Oct 11:20 LT BOM, delay +22 h, cost CHF 0, risk High."
+      "SLI missing (get_disruption: SLI value Missing, state risk)",
+      "GVA acceptance closes 18:55 with screening ~40 min (get_cutoffs: GVA acceptance 18:55 · screening ~40 min)",
+      "Chase the SLI now option: revised ETA 15 Oct 09:50 LT BOM, delay On time, cost CHF 0, risk Medium (find_alternatives option chase)"
     ]
   },
   "verdict": {
@@ -340,6 +345,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       }
     ]

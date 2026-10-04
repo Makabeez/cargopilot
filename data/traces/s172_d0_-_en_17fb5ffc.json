@@ -11,26 +11,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:47:24.344Z",
-  "latencyMs": 9444,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:40:32.094Z",
+  "latencyMs": 7150,
   "promptTokens": 13847,
-  "completionTokens": 1048,
+  "completionTokens": 1022,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1028,
+      "ms": 661,
       "promptTokens": 2369,
-      "completionTokens": 66,
-      "reasoningChars": 98,
+      "completionTokens": 62,
+      "reasoningChars": 83,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-aa8538b8d790e8b5",
+      "callId": "chatcmpl-tool-8a8b100ec646f959",
       "name": "get_shipment",
       "args": {
         "awb": "172-44091832"
@@ -55,17 +55,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1088,
+      "ms": 704,
       "promptTokens": 2533,
-      "completionTokens": 78,
-      "reasoningChars": 156,
+      "completionTokens": 69,
+      "reasoningChars": 132,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bc6c4bf588d58553",
+      "callId": "chatcmpl-tool-ac1dd5b27fa1ed9d",
       "name": "get_disruption",
       "args": {
         "awb": "172-44091832"
@@ -100,17 +100,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 853,
+      "ms": 632,
       "promptTokens": 2688,
-      "completionTokens": 50,
-      "reasoningChars": 45,
+      "completionTokens": 55,
+      "reasoningChars": 62,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-84e4d0010806bd1e",
+      "callId": "chatcmpl-tool-a848b58b17c1c40f",
       "name": "calculate_risk",
       "args": {
         "awb": "172-44091832"
@@ -149,17 +149,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1039,
+      "ms": 802,
       "promptTokens": 2850,
-      "completionTokens": 63,
-      "reasoningChars": 94,
+      "completionTokens": 47,
+      "reasoningChars": 26,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b05bd7aa261256e4",
+      "callId": "chatcmpl-tool-9fa81cb019d59e6a",
       "name": "find_alternatives",
       "args": {
         "awb": "172-44091832"
@@ -224,10 +224,10 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 5435,
+      "ms": 4351,
       "promptTokens": 3407,
-      "completionTokens": 791,
-      "reasoningChars": 1475,
+      "completionTokens": 789,
+      "reasoningChars": 1710,
       "toolCalls": [
         "submit_decision"
       ]
@@ -273,6 +273,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "reply",
           "label": "Answers the operator in the operator's language",
           "pass": true
@@ -291,14 +296,15 @@
           "next",
           "return"
         ],
-        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries (PI965) as it is forbidden on passenger aircraft. Move the shipment to freighter AYC 9006 GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h, +CHF 260).",
+        "summary": "The shipment contains UN3480 lithium ion batteries packed alone (PI965), which is forbidden on the passenger flight AYC 176. Move the freight to the freighter AYC 9006 (GVA–FRA–NRT) arriving 16 Oct 06:40 LT NRT.",
         "why": [
-          "Risk class is critical due to DG refused on passenger (UN3480 PI965 on AYC 176 pax).",
-          "Freighter AYC 9006 is allowed, Low risk, +7 h delay, +CHF 260 cost, capacity confirmed.",
-          "Alternative Next freighter AYC 9012 is Medium risk, +26 h delay, same cost; Return to shipper is High risk, +48 h delay."
+          "Risk class is critical due to DG refused on passenger (AYC 176 pax illegal for UN3480 PI965).",
+          "Freighter AYC 9006 is allowed, adds +7 h delay, costs +CHF 260, and has Low risk.",
+          "Alternative Next freighter AYC 9012 adds +26 h delay, same cost, Medium risk.",
+          "Return to shipper adds +48 h delay, zero cost, High risk."
         ],
-        "reply": "No, the passenger flight AYC 176 cannot accept UN3480 lithium ion batteries (PI965) as it is forbidden on passenger aircraft. We must move the shipment to freighter AYC 9006.",
-        "customer_note": "AWB 172-44091832: Your shipment will now travel on freighter AYC 9006 GVA–FRA–NRT, arriving at NRT on 16 Oct 06:40 local time (delay +7 hours)."
+        "reply": "No, the batteries cannot be placed on the passenger flight because PI965 lithium ion batteries are forbidden on passenger aircraft.",
+        "customer_note": "AWB 172-44091832: new ETA 16 Oct 06:40 LT NRT (delay +7 h) after moving to freighter AYC 9006."
       }
     }
   ],
@@ -310,14 +316,15 @@
       "next",
       "return"
     ],
-    "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries (PI965) as it is forbidden on passenger aircraft. Move the shipment to freighter AYC 9006 GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h, +CHF 260).",
+    "summary": "The shipment contains UN3480 lithium ion batteries packed alone (PI965), which is forbidden on the passenger flight AYC 176. Move the freight to the freighter AYC 9006 (GVA–FRA–NRT) arriving 16 Oct 06:40 LT NRT.",
     "why": [
-      "Risk class is critical due to DG refused on passenger (UN3480 PI965 on AYC 176 pax).",
-      "Freighter AYC 9006 is allowed, Low risk, +7 h delay, +CHF 260 cost, capacity confirmed.",
-      "Alternative Next freighter AYC 9012 is Medium risk, +26 h delay, same cost; Return to shipper is High risk, +48 h delay."
+      "Risk class is critical due to DG refused on passenger (AYC 176 pax illegal for UN3480 PI965).",
+      "Freighter AYC 9006 is allowed, adds +7 h delay, costs +CHF 260, and has Low risk.",
+      "Alternative Next freighter AYC 9012 adds +26 h delay, same cost, Medium risk.",
+      "Return to shipper adds +48 h delay, zero cost, High risk."
     ],
-    "reply": "No, the passenger flight AYC 176 cannot accept UN3480 lithium ion batteries (PI965) as it is forbidden on passenger aircraft. We must move the shipment to freighter AYC 9006.",
-    "customer_note": "AWB 172-44091832: Your shipment will now travel on freighter AYC 9006 GVA–FRA–NRT, arriving at NRT on 16 Oct 06:40 local time (delay +7 hours)."
+    "reply": "No, the batteries cannot be placed on the passenger flight because PI965 lithium ion batteries are forbidden on passenger aircraft.",
+    "customer_note": "AWB 172-44091832: new ETA 16 Oct 06:40 LT NRT (delay +7 h) after moving to freighter AYC 9006."
   },
   "verdict": {
     "accepted": true,
@@ -357,6 +364,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

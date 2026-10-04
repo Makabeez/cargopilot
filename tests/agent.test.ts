@@ -209,8 +209,9 @@ test("verifier: piece counts, French clock times, quoted-only delays and costs",
   assert.deepEqual(ids(dims, "5 pieces fit the belly; piece 3 goes main deck.", "main", "critical"), []);
   assert.equal(ids(dims, "9 pieces fit the belly.", "main", "critical").length, 1);
   const hero: Scenario = { shipmentId: "s615", delayMin: 90, flags: {}, locale: "en" };
-  assert.deepEqual(ids(hero, "Le camion arrive à 19 h 45, besoin pour 19 h 15.", "zrh", "high"), []);
-  assert.equal(ids(hero, "Le camion arrive à 19 h 52.", "zrh", "high").length, 1);
+  const heroFr: Scenario = { ...hero, locale: "fr" };
+  assert.deepEqual(ids(heroFr, "Le camion arrive à 19 h 45, besoin pour 19 h 15.", "zrh", "high"), []);
+  assert.equal(ids(heroFr, "Le camion arrive à 19 h 52.", "zrh", "high").length, 1);
   assert.equal(ids(hero, "Via ZRH: +5 h.", "zrh", "high").length, 1);
   assert.equal(ids(hero, "Via ZRH for CHF 270.", "zrh", "high").length, 1);
   assert.deepEqual(ids(hero, "Via ZRH: +4 h, +CHF 180; AYC 7842 is 370 kg short.", "zrh", "high"), []);
@@ -254,4 +255,53 @@ test("decision coercion: option ids arrive as '[keep]', \"'zrh'\" or 'zrh, fra'"
   assert.deepEqual(d.why, ["w"]);
   assert.deepEqual(coerceDecision({ risk: "ok", recommended_option_id: "keep", ranking: ["[keep]"], summary: "", why: [] }).decision!.ranking, ["keep"]);
   assert.match(coerceDecision({ risk: "Low", recommended_option_id: "zrh", ranking: [], summary: "", why: [] }).error!, /Low/);
+});
+
+test("operator turn: the applied change is carried to the model and grounded", async () => {
+  const { operatorScenario } = await import("../src/lib/agent/matrix");
+  const sc = operatorScenario(HERO, "What if the truck is delayed another 30 minutes?");
+  assert.equal(sc.delayMin, 120);
+  assert.equal(sc.priorDelayMin, 90);
+  assert.equal(scenarioKey(sc), scenarioKey({ ...sc, priorDelayMin: undefined }), "prior delay is not part of the key");
+  assert.equal(operatorScenario(HERO, "Why this call?").priorDelayMin, undefined);
+  const { fetchImpl, seen } = scripted([
+    { tool_calls: [{ name: "calculate_risk", args: AWB }, { name: "find_alternatives", args: AWB }, { name: "check_connection", args: AWB }] },
+    {
+      tool_calls: [
+        {
+          name: "submit_decision",
+          args: {
+            risk: "critical",
+            recommended_option_id: "zrh",
+            ranking: ["zrh", "fra", "later"],
+            summary: "The truck now reaches LEJ after the 20:00 cut-off. Rebook via ZRH.",
+            why: ["ETA 20:15 against the 19:15 deadline: 60 min short.", "Rebook via ZRH: +4 h, +CHF 180."],
+            reply: "Delay goes from 90 min to 120 min: ETA 19:45 becomes 20:15, now past the 20:00 cut-off, so we rebook via ZRH.",
+          },
+        },
+      ],
+    },
+  ]);
+  const run = await runLiveAgent(sc, { apiKey: "test", fetchImpl });
+  assert.equal(run.verdict.accepted, true, JSON.stringify(run.verdict.checks.filter((c) => !c.pass)));
+  const user = (seen[0] as { messages: { role: string; content: string }[] }).messages[1].content;
+  assert.match(user, /ALREADY applied/);
+  assert.match(user, /now 120 min \(it was 90 min\)/);
+});
+
+test("verifier: summary and evidence must be in the desk's language", () => {
+  const sc: Scenario = { ...HERO, locale: "fr" };
+  const ctx = buildContext(sc);
+  const tools = ["calculate_risk", "find_alternatives", "check_connection"];
+  const outs = tools.map((t) => JSON.stringify(executeTool(t, { awb: ctx.shipment.awb }, ctx)));
+  const d: Decision = {
+    risk: "high",
+    recommended_option_id: "zrh",
+    ranking: ["zrh"],
+    summary: "Le camion arrive trop tard pour la fenêtre de manutention, on passe le fret par ZRH.",
+    why: ["The truck is late for the handling window and the flight is gone for the freight."],
+  };
+  const failed = (x: Decision) => verifyDecision(x, ctx, tools, outs).filter((c) => !c.pass).map((c) => c.id);
+  assert.deepEqual(failed({ ...d, summary: "The truck is late for the handling window, we move the freight to the ZRH flight." }), ["language"]);
+  assert.deepEqual(failed({ ...d, why: ["Le camion est en retard pour la fenêtre de manutention du vol."] }), []);
 });

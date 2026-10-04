@@ -6,31 +6,32 @@
     "delayMin": 120,
     "flags": {},
     "locale": "en",
-    "operatorMessage": "What if the truck is delayed another 30 minutes?"
+    "operatorMessage": "What if the truck is delayed another 30 minutes?",
+    "priorDelayMin": 90
   },
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:47:12.465Z",
-  "latencyMs": 13102,
-  "promptTokens": 17488,
-  "completionTokens": 1479,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:40:17.854Z",
+  "latencyMs": 14766,
+  "promptTokens": 14759,
+  "completionTokens": 2515,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1018,
-      "promptTokens": 2371,
-      "completionTokens": 69,
-      "reasoningChars": 117,
+      "ms": 570,
+      "promptTokens": 2438,
+      "completionTokens": 60,
+      "reasoningChars": 77,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b4b265c3bf5dd9d7",
+      "callId": "chatcmpl-tool-af8c2970e70bb082",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -55,17 +56,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1085,
-      "promptTokens": 2529,
-      "completionTokens": 151,
-      "reasoningChars": 471,
+      "ms": 823,
+      "promptTokens": 2596,
+      "completionTokens": 52,
+      "reasoningChars": 61,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b5b0348a3e6c74dc",
+      "callId": "chatcmpl-tool-8ae544d235f6dc77",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -115,43 +116,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1556,
-      "promptTokens": 2794,
-      "completionTokens": 147,
-      "reasoningChars": 541,
-      "toolCalls": [
-        "get_cutoffs"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-8af71b0b6ada5d48",
-      "name": "get_cutoffs",
-      "args": {
-        "awb": "615-12345675"
-      },
-      "output": {
-        "applicable": true,
-        "facts": [
-          "LEJ GCR 20:00 · transfer 45 min · required 19:15"
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 4,
-      "ms": 1563,
-      "promptTokens": 2884,
-      "completionTokens": 124,
-      "reasoningChars": 396,
+      "ms": 976,
+      "promptTokens": 2861,
+      "completionTokens": 50,
+      "reasoningChars": 45,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-959dd970ade043b4",
+      "callId": "chatcmpl-tool-959ac6fbfac126f6",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -189,18 +164,18 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 970,
-      "promptTokens": 3041,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "turn": 4,
+      "ms": 2919,
+      "promptTokens": 3018,
+      "completionTokens": 470,
+      "reasoningChars": 1324,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8df52d8c7fdad05b",
+      "callId": "chatcmpl-tool-a1a0797dd3e9dddc",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -276,11 +251,11 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 6907,
-      "promptTokens": 3869,
-      "completionTokens": 941,
-      "reasoningChars": 2288,
+      "turn": 5,
+      "ms": 9476,
+      "promptTokens": 3846,
+      "completionTokens": 1883,
+      "reasoningChars": 3809,
       "toolCalls": [
         "submit_decision"
       ]
@@ -326,6 +301,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "reply",
           "label": "Answers the operator in the operator's language",
           "pass": true
@@ -344,15 +324,15 @@
           "fra",
           "later"
         ],
-        "summary": "The truck delay causes the shipment to miss the LEJ cut‑off, blocking the current flight. Re‑route via Zurich (RFS 2204 → AYC 9864) is the lowest‑risk allowed option.",
+        "summary": "The truck delay causes a 60‑minute miss of the LEJ cut‑off, putting the connection at critical risk. Recommend rebooking via Zurich (RFS 2204 → AYC 9864) to deliver by 15 Oct 13:10 LT.",
         "why": [
-          "Truck ETA 20:15 LT vs Need‑by 19:15 LT gives a 60 minute shortfall (gap).",
-          "Cut‑off at LEJ is 20:00 LT, so the shipment arrives after the station will not accept it.",
-          "Option ‘Keep AYC 7841 via LEJ’ is blocked due to arriving after the cut‑off.",
-          "Rebook via ZRH provides Low risk, +4 h delay, and costs +CHF 180."
+          "Truck ETA 20:15 LT vs Need‑by 19:15 LT gives a 60‑minute shortfall (gap 60 min short) and misses the LEJ cut‑off 20:00 LT.",
+          "Weight 780 kg exceeds the 410 kg free on AYC 7842, keeping the current flight is blocked.",
+          "Rebooking via ZRH (RFS 2204 → AYC 9864) delivers at 15 Oct 13:10 LT (+4 h) with cost +CHF 180 and Low risk.",
+          "Alternative via FRA gives +9 h delay at +CHF 90 (Medium risk); waiting for AYC 7843 adds +18 h (High risk)."
         ],
-        "reply": "If the truck is delayed another 30 minutes, the miss of the LEJ cut‑off becomes larger, keeping the current flight remains impossible. The best recovery is to re‑route via Zurich (option “Rebook via ZRH”).",
-        "customer_note": "AWB 615-12345675 sera réacheminé via Zurich ; nouvel ETA prévu le 15 octobre à 13:10 LT à Delhi."
+        "reply": "Before: truck ETA 19:45 LT (scheduled 18:15 LT + 90 min), 30 min after need‑by 19:15 LT but still before LEJ cut‑off 20:00 LT. After: truck ETA 20:15 LT (+120 min), 60 min short of need‑by 19:15 LT and past cut‑off 20:00 LT, risk critical; recommend rebooking via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT (+4 h, +CHF 180).",
+        "customer_note": "AWB 615-12345675 : nouvelle livraison prévue le 15 oct. à 13:10 LT (retard de +4 h)."
       }
     }
   ],
@@ -364,15 +344,15 @@
       "fra",
       "later"
     ],
-    "summary": "The truck delay causes the shipment to miss the LEJ cut‑off, blocking the current flight. Re‑route via Zurich (RFS 2204 → AYC 9864) is the lowest‑risk allowed option.",
+    "summary": "The truck delay causes a 60‑minute miss of the LEJ cut‑off, putting the connection at critical risk. Recommend rebooking via Zurich (RFS 2204 → AYC 9864) to deliver by 15 Oct 13:10 LT.",
     "why": [
-      "Truck ETA 20:15 LT vs Need‑by 19:15 LT gives a 60 minute shortfall (gap).",
-      "Cut‑off at LEJ is 20:00 LT, so the shipment arrives after the station will not accept it.",
-      "Option ‘Keep AYC 7841 via LEJ’ is blocked due to arriving after the cut‑off.",
-      "Rebook via ZRH provides Low risk, +4 h delay, and costs +CHF 180."
+      "Truck ETA 20:15 LT vs Need‑by 19:15 LT gives a 60‑minute shortfall (gap 60 min short) and misses the LEJ cut‑off 20:00 LT.",
+      "Weight 780 kg exceeds the 410 kg free on AYC 7842, keeping the current flight is blocked.",
+      "Rebooking via ZRH (RFS 2204 → AYC 9864) delivers at 15 Oct 13:10 LT (+4 h) with cost +CHF 180 and Low risk.",
+      "Alternative via FRA gives +9 h delay at +CHF 90 (Medium risk); waiting for AYC 7843 adds +18 h (High risk)."
     ],
-    "reply": "If the truck is delayed another 30 minutes, the miss of the LEJ cut‑off becomes larger, keeping the current flight remains impossible. The best recovery is to re‑route via Zurich (option “Rebook via ZRH”).",
-    "customer_note": "AWB 615-12345675 sera réacheminé via Zurich ; nouvel ETA prévu le 15 octobre à 13:10 LT à Delhi."
+    "reply": "Before: truck ETA 19:45 LT (scheduled 18:15 LT + 90 min), 30 min after need‑by 19:15 LT but still before LEJ cut‑off 20:00 LT. After: truck ETA 20:15 LT (+120 min), 60 min short of need‑by 19:15 LT and past cut‑off 20:00 LT, risk critical; recommend rebooking via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT (+4 h, +CHF 180).",
+    "customer_note": "AWB 615-12345675 : nouvelle livraison prévue le 15 oct. à 13:10 LT (retard de +4 h)."
   },
   "verdict": {
     "accepted": true,
@@ -412,6 +392,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

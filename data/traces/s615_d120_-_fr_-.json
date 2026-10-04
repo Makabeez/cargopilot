@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:50.198Z",
-  "latencyMs": 12356,
-  "promptTokens": 20309,
-  "completionTokens": 1544,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:59.463Z",
+  "latencyMs": 12598,
+  "promptTokens": 21522,
+  "completionTokens": 2304,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 961,
+      "ms": 598,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-98ff48420c82ce87",
+      "callId": "chatcmpl-tool-9c9218a9d9e8e919",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -54,7 +54,7 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 847,
+      "ms": 607,
       "promptTokens": 2487,
       "completionTokens": 55,
       "reasoningChars": 62,
@@ -64,7 +64,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a05695892b08b894",
+      "callId": "chatcmpl-tool-ada3d3d4e5b0e950",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -114,17 +114,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1060,
+      "ms": 676,
       "promptTokens": 2752,
-      "completionTokens": 57,
-      "reasoningChars": 84,
+      "completionTokens": 62,
+      "reasoningChars": 99,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-86ca955812db19f3",
+      "callId": "chatcmpl-tool-a7e73cc91c95e0dc",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -140,43 +140,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1369,
+      "ms": 1283,
       "promptTokens": 2842,
-      "completionTokens": 157,
-      "reasoningChars": 355,
-      "toolCalls": [
-        "check_connection"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-a4c3eccff113d6ba",
-      "name": "check_connection",
-      "args": {
-        "awb": "615-12345675"
-      },
-      "output": {
-        "applicable": true,
-        "facts": [
-          "ETA 20:15 is after the cut-off"
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 5,
-      "ms": 824,
-      "promptTokens": 2919,
-      "completionTokens": 50,
-      "reasoningChars": 45,
+      "completionTokens": 163,
+      "reasoningChars": 340,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b37923779e21f345",
+      "callId": "chatcmpl-tool-a16989862e0b5841",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -214,9 +188,9 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 844,
-      "promptTokens": 3076,
+      "turn": 5,
+      "ms": 787,
+      "promptTokens": 2999,
       "completionTokens": 47,
       "reasoningChars": 26,
       "toolCalls": [
@@ -225,7 +199,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a11b7cf9f7e2e3b2",
+      "callId": "chatcmpl-tool-95519bbd3ef04470",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -301,11 +275,11 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 6451,
-      "promptTokens": 3904,
-      "completionTokens": 1124,
-      "reasoningChars": 2275,
+      "turn": 6,
+      "ms": 4704,
+      "promptTokens": 3827,
+      "completionTokens": 1046,
+      "reasoningChars": 2097,
       "toolCalls": [
         "submit_decision"
       ]
@@ -313,6 +287,87 @@
     {
       "kind": "verify",
       "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": false,
+          "detail": "why reads as en; the desk works in fr"
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "critical",
+        "recommended_option_id": "zrh",
+        "ranking": [
+          "zrh",
+          "fra",
+          "later"
+        ],
+        "summary": "Le camion RFS 1840 arrive à 20:15, après la coupure de LEJ à 20:00, provoquant une connexion manquante classée critique. Il faut réacheminer l'AWB 615-12345675 via ZRH avec le camion RFS 2204 et le vol AYC 9864.",
+        "why": [
+          "Truck ETA 20:15 LT (get_disruption) vs Need by 19:15 LT (get_cutoffs) => 60 min short (calculate_risk).",
+          "LEJ cut-off 20:00 LT (get_cutoffs) not met -> status blocked for Keep option (find_alternatives).",
+          "Option Rebook via ZRH: allowed, risk Low, delay +4 h, cost +CHF 180, revised ETA 15 Oct 13:10 LT DEL (find_alternatives).",
+          "Alternative via FRA: risk Medium, delay +9 h, cost +CHF 90; via AYC 7843: risk High, delay +18 h, cost 0."
+        ],
+        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre 2026 à 13:10 heure locale à Delhi."
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 3939,
+      "promptTokens": 4286,
+      "completionTokens": 877,
+      "reasoningChars": 1487,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -351,6 +406,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -364,13 +424,14 @@
           "fra",
           "later"
         ],
-        "summary": "Le camion RFS 1840 arrive à LEJ à 20:15, après le cut‑off de 20:00 et l’heure limite de prise en charge de 19:15, provoquant un écart de 60 min. Nous proposons de réacheminer via ZRH (option « Rebook via ZRH ») avec une arrivée prévue à DEL le 15 oct. à 13:10, soit +4 h de retard et un supplément de CHF 180.",
+        "summary": "Le camion RFS 1840 arrive à 20:15, après la coupure de LEJ à 20:00, provoquant une connexion manquante classée critique. Il faut réacheminer l'AWB 615-12345675 via ZRH avec le camion RFS 2204 et le vol AYC 9864.",
         "why": [
-          "Truck ETA 20:15 LT is after the LEJ cut‑off 20:00 LT and after the required‑by time 19:15 LT, leaving a gap of 60 min short (per get_disruption and calculate_risk).",
-          "L’option « Keep AYC 7841 via LEJ » est bloquée car le camion arrive après le cut‑off (find_alternatives, option keep, status blocked).",
-          "L’option « Rebook via ZRH » est autorisée, présente un risque Low, un délai de +4 h et un coût additionnel de CHF 180 (find_alternatives, option zrh)."
+          "Truck ETA 20:15 LT (get_disruption), Need by 19:15 LT (get_cutoffs), gap 60 min short (calculate_risk).",
+          "LEJ cut-off 20:00 LT (get_cutoffs) non respecté → statut blocked pour l'option Keep (find_alternatives).",
+          "Option Rebook via ZRH : autorisée, risque Low, délai +4 h, coût +CHF 180, nouvel ETA 15 Oct 13:10 LT DEL (find_alternatives).",
+          "Alternatives : via FRA risque Medium délai +9 h coût +CHF 90 ; via AYC 7843 risque High délai +18 h coût 0 (find_alternatives)."
         ],
-        "customer_note": "AWB 615-12345675 : nouvel ETA prévu à DEL le 15 octobre 2026 à 13:10 heure locale."
+        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre 2026 à 13:10 heure locale à Delhi."
       }
     }
   ],
@@ -382,17 +443,18 @@
       "fra",
       "later"
     ],
-    "summary": "Le camion RFS 1840 arrive à LEJ à 20:15, après le cut‑off de 20:00 et l’heure limite de prise en charge de 19:15, provoquant un écart de 60 min. Nous proposons de réacheminer via ZRH (option « Rebook via ZRH ») avec une arrivée prévue à DEL le 15 oct. à 13:10, soit +4 h de retard et un supplément de CHF 180.",
+    "summary": "Le camion RFS 1840 arrive à 20:15, après la coupure de LEJ à 20:00, provoquant une connexion manquante classée critique. Il faut réacheminer l'AWB 615-12345675 via ZRH avec le camion RFS 2204 et le vol AYC 9864.",
     "why": [
-      "Truck ETA 20:15 LT is after the LEJ cut‑off 20:00 LT and after the required‑by time 19:15 LT, leaving a gap of 60 min short (per get_disruption and calculate_risk).",
-      "L’option « Keep AYC 7841 via LEJ » est bloquée car le camion arrive après le cut‑off (find_alternatives, option keep, status blocked).",
-      "L’option « Rebook via ZRH » est autorisée, présente un risque Low, un délai de +4 h et un coût additionnel de CHF 180 (find_alternatives, option zrh)."
+      "Truck ETA 20:15 LT (get_disruption), Need by 19:15 LT (get_cutoffs), gap 60 min short (calculate_risk).",
+      "LEJ cut-off 20:00 LT (get_cutoffs) non respecté → statut blocked pour l'option Keep (find_alternatives).",
+      "Option Rebook via ZRH : autorisée, risque Low, délai +4 h, coût +CHF 180, nouvel ETA 15 Oct 13:10 LT DEL (find_alternatives).",
+      "Alternatives : via FRA risque Medium délai +9 h coût +CHF 90 ; via AYC 7843 risque High délai +18 h coût 0 (find_alternatives)."
     ],
-    "customer_note": "AWB 615-12345675 : nouvel ETA prévu à DEL le 15 octobre 2026 à 13:10 heure locale."
+    "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre 2026 à 13:10 heure locale à Delhi."
   },
   "verdict": {
     "accepted": true,
-    "attempts": 1,
+    "attempts": 2,
     "fellBack": false,
     "checks": [
       {
@@ -428,6 +490,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

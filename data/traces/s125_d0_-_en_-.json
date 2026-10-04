@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:16.200Z",
-  "latencyMs": 9182,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:26.985Z",
+  "latencyMs": 7608,
   "promptTokens": 16392,
-  "completionTokens": 899,
+  "completionTokens": 767,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 620,
+      "ms": 1016,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bf3f3de3ea030ca6",
+      "callId": "chatcmpl-tool-96bb2a12b49e96b8",
       "name": "get_shipment",
       "args": {
         "awb": "125-88342111"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 683,
+      "ms": 1020,
       "promptTokens": 2487,
-      "completionTokens": 55,
-      "reasoningChars": 63,
+      "completionTokens": 57,
+      "reasoningChars": 72,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b8af86aee2201538",
+      "callId": "chatcmpl-tool-80a2e4a2ff2d2e0a",
       "name": "get_disruption",
       "args": {
         "awb": "125-88342111"
@@ -102,17 +102,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 870,
+      "ms": 1075,
       "promptTokens": 2680,
-      "completionTokens": 52,
-      "reasoningChars": 51,
+      "completionTokens": 61,
+      "reasoningChars": 91,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9a9fe3043be71be2",
+      "callId": "chatcmpl-tool-beb27f1dfdcce9c0",
       "name": "get_cutoffs",
       "args": {
         "awb": "125-88342111"
@@ -127,17 +127,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1121,
+      "ms": 862,
       "promptTokens": 2758,
-      "completionTokens": 69,
-      "reasoningChars": 125,
+      "completionTokens": 70,
+      "reasoningChars": 131,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bbfaa77a997800ba",
+      "callId": "chatcmpl-tool-8db403ff8153133d",
       "name": "calculate_risk",
       "args": {
         "awb": "125-88342111"
@@ -174,7 +174,7 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 1041,
+      "ms": 632,
       "promptTokens": 2910,
       "completionTokens": 46,
       "reasoningChars": 28,
@@ -184,7 +184,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-85ed0cbbf56777d3",
+      "callId": "chatcmpl-tool-93491f23d759156b",
       "name": "find_alternatives",
       "args": {
         "awb": "125-88342111"
@@ -223,10 +223,10 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 4845,
+      "ms": 3002,
       "promptTokens": 3228,
-      "completionTokens": 623,
-      "reasoningChars": 1418,
+      "completionTokens": 479,
+      "reasoningChars": 1129,
       "toolCalls": [
         "submit_decision"
       ]
@@ -270,6 +270,11 @@
           "id": "refs",
           "label": "Every flight, truck and AWB reference is real",
           "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
         }
       ],
       "submitted": {
@@ -279,12 +284,11 @@
           "keep",
           "fra"
         ],
-        "summary": "The CDG connection is tight but still within limits (arrival 20:40, need‑by 20:52, cut‑off 21:05). Keep the current flight AYC 045; reroute only if the truck misses the CDG window.",
+        "summary": "The CDG connection remains viable with 12 minutes slack; the booked plan is allowed and carries Medium risk. Keep the shipment on AYC 045 via CDG to JFK.",
         "why": [
-          "CDG ETA 20:40, need‑by 20:52 gives 12 min slack (cut‑off 21:05).",
-          "Keeping AYC 045 incurs no extra cost and maintains on‑time arrival at JFK 15 Oct 01:20 LT.",
-          "Alternative via FRA adds +6 h delay and +CHF 150 cost with Low risk.",
-          "No hard restrictions block the current plan."
+          "CDG ETA 20:40, Need by 20:52 gives 12 min slack.",
+          "Booked option Keep CDG connection has risk Medium and cost CHF 0.",
+          "Alternative Rebook via FRA adds +6 h delay and +CHF 150 cost with Low risk."
         ]
       }
     }
@@ -296,12 +300,11 @@
       "keep",
       "fra"
     ],
-    "summary": "The CDG connection is tight but still within limits (arrival 20:40, need‑by 20:52, cut‑off 21:05). Keep the current flight AYC 045; reroute only if the truck misses the CDG window.",
+    "summary": "The CDG connection remains viable with 12 minutes slack; the booked plan is allowed and carries Medium risk. Keep the shipment on AYC 045 via CDG to JFK.",
     "why": [
-      "CDG ETA 20:40, need‑by 20:52 gives 12 min slack (cut‑off 21:05).",
-      "Keeping AYC 045 incurs no extra cost and maintains on‑time arrival at JFK 15 Oct 01:20 LT.",
-      "Alternative via FRA adds +6 h delay and +CHF 150 cost with Low risk.",
-      "No hard restrictions block the current plan."
+      "CDG ETA 20:40, Need by 20:52 gives 12 min slack.",
+      "Booked option Keep CDG connection has risk Medium and cost CHF 0.",
+      "Alternative Rebook via FRA adds +6 h delay and +CHF 150 cost with Low risk."
     ]
   },
   "verdict": {
@@ -342,6 +345,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       }
     ]

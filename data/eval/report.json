@@ -1,32 +1,76 @@
 {
-  "generatedAt": "2026-10-04T14:47:33.860Z",
+  "generatedAt": "2026-10-04T15:40:43.528Z",
   "models": [
     "nvidia/nemotron-3-super-120b-a12b"
   ],
   "promptVersions": [
-    "v3"
+    "v4"
   ],
   "scenarios": 30,
-  "acceptedFirstTry": 30,
+  "acceptedFirstTry": 26,
   "acceptedAfterRetries": 30,
   "fellBackToRules": 0,
   "agreesWithRules": 29,
   "latencyMs": {
-    "p50": 10353,
-    "p95": 12510
+    "p50": 9433,
+    "p95": 15169
   },
   "toolCallsPerRun": {
     "min": 4,
     "max": 8,
-    "mean": 5.766666666666667
+    "mean": 5.9
   },
   "tokens": {
-    "prompt": 572096,
-    "completion": 31070,
-    "usdAtListPrice": 0.19959179999999999
+    "prompt": 606726,
+    "completion": 37507,
+    "usdAtListPrice": 0.21577409999999997
   },
-  "rejectionsByCheck": {},
-  "rejections": [],
+  "rejectionsByCheck": {
+    "figures": 1,
+    "language": 4
+  },
+  "rejections": [
+    {
+      "key": "s020|d0|dropTall|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "figures: Not found in tool outputs: 3 168 cm"
+      ]
+    },
+    {
+      "key": "s172|d0|-|fr|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "language: summary reads as en, why reads as en; the desk works in fr"
+      ]
+    },
+    {
+      "key": "s615|d120|-|fr|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "language: why reads as en; the desk works in fr"
+      ]
+    },
+    {
+      "key": "s615|d45|-|fr|962111ae",
+      "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
+      "attempt": 1,
+      "failures": [
+        "language: why reads as en; the desk works in fr"
+      ]
+    },
+    {
+      "key": "s615|d45|-|fr|962111ae",
+      "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
+      "attempt": 2,
+      "failures": [
+        "language: why reads as en; the desk works in fr"
+      ]
+    }
+  ],
   "rows": [
     {
       "key": "s020|d0|-|en|-",
@@ -38,21 +82,21 @@
       "pick": "main",
       "rulesPick": "main",
       "agrees": true,
-      "latencyMs": 8906,
+      "latencyMs": 7830,
       "toolCalls": 5
     },
     {
       "key": "s020|d0|dropTall|en|-",
       "awb": "020-77120562",
       "operatorMessage": null,
-      "attempts": 1,
+      "attempts": 2,
       "accepted": true,
       "fellBack": false,
       "pick": "main",
       "rulesPick": "split",
       "agrees": false,
-      "latencyMs": 10866,
-      "toolCalls": 6
+      "latencyMs": 14362,
+      "toolCalls": 8
     },
     {
       "key": "s074|d0|-|en|-",
@@ -64,7 +108,7 @@
       "pick": "later",
       "rulesPick": "later",
       "agrees": true,
-      "latencyMs": 12510,
+      "latencyMs": 9433,
       "toolCalls": 7
     },
     {
@@ -77,8 +121,8 @@
       "pick": "later",
       "rulesPick": "later",
       "agrees": true,
-      "latencyMs": 11717,
-      "toolCalls": 7
+      "latencyMs": 10332,
+      "toolCalls": 8
     },
     {
       "key": "s080|d0|-|en|-",
@@ -90,8 +134,8 @@
       "pick": "repack",
       "rulesPick": "repack",
       "agrees": true,
-      "latencyMs": 10400,
-      "toolCalls": 7
+      "latencyMs": 7228,
+      "toolCalls": 5
     },
     {
       "key": "s125|d0|-|en|-",
@@ -103,7 +147,7 @@
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 9182,
+      "latencyMs": 7608,
       "toolCalls": 5
     },
     {
@@ -116,7 +160,7 @@
       "pick": "fra",
       "rulesPick": "fra",
       "agrees": true,
-      "latencyMs": 10500,
+      "latencyMs": 11143,
       "toolCalls": 7
     },
     {
@@ -129,7 +173,7 @@
       "pick": "fra",
       "rulesPick": "fra",
       "agrees": true,
-      "latencyMs": 8730,
+      "latencyMs": 6660,
       "toolCalls": 5
     },
     {
@@ -142,8 +186,8 @@
       "pick": "inspect",
       "rulesPick": "inspect",
       "agrees": true,
-      "latencyMs": 11603,
-      "toolCalls": 7
+      "latencyMs": 10443,
+      "toolCalls": 8
     },
     {
       "key": "s131|d0|confirmExcursion|en|-",
@@ -155,8 +199,8 @@
       "pick": "hold",
       "rulesPick": "hold",
       "agrees": true,
-      "latencyMs": 12307,
-      "toolCalls": 8
+      "latencyMs": 6241,
+      "toolCalls": 5
     },
     {
       "key": "s157|d0|-|en|-",
@@ -168,8 +212,8 @@
       "pick": "rush",
       "rulesPick": "rush",
       "agrees": true,
-      "latencyMs": 9898,
-      "toolCalls": 8
+      "latencyMs": 6763,
+      "toolCalls": 5
     },
     {
       "key": "s157|d25|-|en|-",
@@ -181,7 +225,7 @@
       "pick": "rush",
       "rulesPick": "rush",
       "agrees": true,
-      "latencyMs": 9871,
+      "latencyMs": 8658,
       "toolCalls": 7
     },
     {
@@ -194,8 +238,8 @@
       "pick": "roll",
       "rulesPick": "roll",
       "agrees": true,
-      "latencyMs": 10882,
-      "toolCalls": 7
+      "latencyMs": 10099,
+      "toolCalls": 8
     },
     {
       "key": "s172|d0|-|en|-",
@@ -207,8 +251,8 @@
       "pick": "freighter",
       "rulesPick": "freighter",
       "agrees": true,
-      "latencyMs": 11092,
-      "toolCalls": 6
+      "latencyMs": 10784,
+      "toolCalls": 7
     },
     {
       "key": "s172|d0|-|en|17fb5ffc",
@@ -220,21 +264,21 @@
       "pick": "freighter",
       "rulesPick": "freighter",
       "agrees": true,
-      "latencyMs": 9444,
+      "latencyMs": 7150,
       "toolCalls": 4
     },
     {
       "key": "s172|d0|-|fr|-",
       "awb": "172-44091832",
       "operatorMessage": null,
-      "attempts": 1,
+      "attempts": 2,
       "accepted": true,
       "fellBack": false,
       "pick": "freighter",
       "rulesPick": "freighter",
       "agrees": true,
-      "latencyMs": 10247,
-      "toolCalls": 6
+      "latencyMs": 15169,
+      "toolCalls": 7
     },
     {
       "key": "s172|d0|freighterFull|en|-",
@@ -246,8 +290,8 @@
       "pick": "next",
       "rulesPick": "next",
       "agrees": true,
-      "latencyMs": 9613,
-      "toolCalls": 5
+      "latencyMs": 11048,
+      "toolCalls": 8
     },
     {
       "key": "s176|d0|-|en|-",
@@ -259,7 +303,7 @@
       "pick": "chase",
       "rulesPick": "chase",
       "agrees": true,
-      "latencyMs": 9091,
+      "latencyMs": 7578,
       "toolCalls": 5
     },
     {
@@ -272,7 +316,7 @@
       "pick": "next",
       "rulesPick": "next",
       "agrees": true,
-      "latencyMs": 11644,
+      "latencyMs": 10751,
       "toolCalls": 7
     },
     {
@@ -285,8 +329,8 @@
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 8657,
-      "toolCalls": 5
+      "latencyMs": 9275,
+      "toolCalls": 8
     },
     {
       "key": "s615|d120|-|en|-",
@@ -298,8 +342,8 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 9504,
-      "toolCalls": 5
+      "latencyMs": 8626,
+      "toolCalls": 6
     },
     {
       "key": "s615|d120|-|en|172b8ea0",
@@ -311,21 +355,21 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 13102,
-      "toolCalls": 5
+      "latencyMs": 14766,
+      "toolCalls": 4
     },
     {
       "key": "s615|d120|-|fr|-",
       "awb": "615-12345675",
       "operatorMessage": null,
-      "attempts": 1,
+      "attempts": 2,
       "accepted": true,
       "fellBack": false,
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 12356,
-      "toolCalls": 6
+      "latencyMs": 12598,
+      "toolCalls": 5
     },
     {
       "key": "s615|d150|-|en|-",
@@ -337,7 +381,7 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 11268,
+      "latencyMs": 7781,
       "toolCalls": 5
     },
     {
@@ -350,20 +394,20 @@
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 8999,
+      "latencyMs": 8410,
       "toolCalls": 5
     },
     {
       "key": "s615|d45|-|fr|962111ae",
       "awb": "615-12345675",
       "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
-      "attempts": 1,
+      "attempts": 3,
       "accepted": true,
       "fellBack": false,
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 7403,
+      "latencyMs": 16231,
       "toolCalls": 4
     },
     {
@@ -376,7 +420,7 @@
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 8740,
+      "latencyMs": 7117,
       "toolCalls": 5
     },
     {
@@ -389,7 +433,7 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 10353,
+      "latencyMs": 8511,
       "toolCalls": 5
     },
     {
@@ -402,7 +446,7 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 10639,
+      "latencyMs": 9993,
       "toolCalls": 4
     },
     {
@@ -415,7 +459,7 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 9052,
+      "latencyMs": 11670,
       "toolCalls": 5
     }
   ]

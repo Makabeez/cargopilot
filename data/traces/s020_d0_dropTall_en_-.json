@@ -12,16 +12,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:45:56.291Z",
-  "latencyMs": 10866,
-  "promptTokens": 19732,
-  "completionTokens": 1140,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:11.101Z",
+  "latencyMs": 14362,
+  "promptTokens": 29568,
+  "completionTokens": 1845,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 907,
+      "ms": 573,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -31,7 +31,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9e2a55a11d1e6e51",
+      "callId": "chatcmpl-tool-bc2cd50cd64d144e",
       "name": "get_shipment",
       "args": {
         "awb": "020-77120562"
@@ -56,17 +56,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 782,
+      "ms": 825,
       "promptTokens": 2493,
-      "completionTokens": 52,
-      "reasoningChars": 60,
+      "completionTokens": 57,
+      "reasoningChars": 71,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-963fb376601f638a",
+      "callId": "chatcmpl-tool-9550fe66ab07684f",
       "name": "get_disruption",
       "args": {
         "awb": "020-77120562"
@@ -98,22 +98,22 @@
           }
         ]
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1547,
+      "ms": 658,
       "promptTokens": 2662,
-      "completionTokens": 120,
-      "reasoningChars": 272,
+      "completionTokens": 52,
+      "reasoningChars": 51,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a785afa5db670bcd",
+      "callId": "chatcmpl-tool-ba98fb12c9bddfda",
       "name": "get_cutoffs",
       "args": {
         "awb": "020-77120562"
@@ -128,17 +128,42 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1274,
+      "ms": 1127,
       "promptTokens": 2740,
-      "completionTokens": 104,
-      "reasoningChars": 230,
+      "completionTokens": 117,
+      "reasoningChars": 288,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-84e8e45f2291e462",
+      "name": "check_connection",
+      "args": {
+        "awb": "020-77120562"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check connection issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 776,
+      "promptTokens": 2816,
+      "completionTokens": 48,
+      "reasoningChars": 51,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b366732e933696b9",
+      "callId": "chatcmpl-tool-85bcf1752b3541d1",
       "name": "get_capacity",
       "args": {
         "awb": "020-77120562"
@@ -152,18 +177,93 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 1009,
-      "promptTokens": 2816,
-      "completionTokens": 119,
-      "reasoningChars": 323,
+      "turn": 6,
+      "ms": 820,
+      "promptTokens": 2892,
+      "completionTokens": 47,
+      "reasoningChars": 38,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9fe2b6435184421c",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "020-77120562"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "A330 bulk max height 160 cm · 777F door 300 cm"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 618,
+      "promptTokens": 2982,
+      "completionTokens": 50,
+      "reasoningChars": 45,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-af14c8269d7ad149",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "020-77120562"
+      },
+      "output": {
+        "risk": "watch",
+        "classification": "Split still open",
+        "rule": [
+          "WATCH · split incomplete"
+        ],
+        "drivers": [
+          {
+            "measure": "Tallest",
+            "value": "168 cm",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Belly max",
+            "value": "160 cm",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Door MD",
+            "value": "300 cm",
+            "assessment": "good"
+          },
+          {
+            "measure": "Weight",
+            "value": "960 kg",
+            "assessment": "good"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 8,
+      "ms": 996,
+      "promptTokens": 3136,
+      "completionTokens": 49,
+      "reasoningChars": 33,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b7eff8b98adaa3e7",
+      "callId": "chatcmpl-tool-99964dd5e68f296c",
       "name": "find_alternatives",
       "args": {
         "awb": "020-77120562"
@@ -213,60 +313,11 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 812,
-      "promptTokens": 3269,
-      "completionTokens": 54,
-      "reasoningChars": 59,
-      "toolCalls": [
-        "calculate_risk"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-a371ddbd2ae61eea",
-      "name": "calculate_risk",
-      "args": {
-        "awb": "020-77120562"
-      },
-      "output": {
-        "risk": "watch",
-        "classification": "Split still open",
-        "rule": [
-          "WATCH · split incomplete"
-        ],
-        "drivers": [
-          {
-            "measure": "Tallest",
-            "value": "168 cm",
-            "assessment": "neutral"
-          },
-          {
-            "measure": "Belly max",
-            "value": "160 cm",
-            "assessment": "bad"
-          },
-          {
-            "measure": "Door MD",
-            "value": "300 cm",
-            "assessment": "good"
-          },
-          {
-            "measure": "Weight",
-            "value": "960 kg",
-            "assessment": "good"
-          }
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 7,
-      "ms": 4534,
-      "promptTokens": 3423,
-      "completionTokens": 637,
-      "reasoningChars": 1409,
+      "turn": 9,
+      "ms": 4068,
+      "promptTokens": 3589,
+      "completionTokens": 594,
+      "reasoningChars": 1304,
       "toolCalls": [
         "submit_decision"
       ]
@@ -274,6 +325,80 @@
     {
       "kind": "verify",
       "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": false,
+          "detail": "Not found in tool outputs: 3 168 cm"
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "main",
+        "ranking": [
+          "main",
+          "split"
+        ],
+        "summary": "The booked belly load is blocked because piece 3 (168 cm) exceeds the A330 bulk hold limit of 160 cm. Rebooking all pieces on the main deck (AYC 777F) resolves the height constraint with Low risk and a +5 h delay.",
+        "why": [
+          "Risk class: watch (calculate_risk.risk = watch).",
+          "Booked belly option blocked: A330 bulk max height 160 cm vs piece 3 168 cm (check_restrictions).",
+          "Main‑deck option allowed: door 300 cm accommodates 168 cm piece, risk Low, delay +5 h, cost +CHF 340 (find_alternatives).",
+          "Split option allowed but risk Medium, same delay +5 h, lower cost +CHF 210 (find_alternatives)."
+        ]
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 10,
+      "ms": 3898,
+      "promptTokens": 3929,
+      "completionTokens": 777,
+      "reasoningChars": 1409,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -312,8 +437,8 @@
           "pass": true
         },
         {
-          "id": "customer",
-          "label": "Customer note cites the AWB in the customer's language",
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
           "pass": true
         }
       ],
@@ -324,14 +449,13 @@
           "main",
           "split"
         ],
-        "summary": "The tall piece (168 cm) exceeds the belly height limit (160 cm), blocking the original routing. Recommend moving all pieces to the main deck on AYC 777F.",
+        "summary": "The booked belly load is blocked because piece 3 (160×120×168 cm) exceeds the A330 bulk hold limit of 160 cm. Rebooking all pieces on the main deck (AYC 777F) resolves the height constraint with Low risk and a +5 h delay.",
         "why": [
-          "Piece 3 height 168 cm > belly max 160 cm (get_disruption)",
-          "Main‑deck door 300 cm allows the piece (find_alternatives option main)",
-          "Option main: risk Low, delay +5 h, cost +CHF 340 (find_alternatives)",
-          "Option split: risk Medium, same delay +5 h, cost +CHF 210 (find_alternatives)"
-        ],
-        "customer_note": "AWB 020-77120562 : votre expédition sera acheminée par le pont principal et arrivera à GRU le 16 octobre à 11:20 heure locale."
+          "Risk class: watch (calculate_risk.risk = watch).",
+          "Booked belly option blocked: piece 3 dimensions 160×120×168 cm (get_shipment dims) exceeds A330 bulk max height 160 cm (check_restrictions facts).",
+          "Main‑deck option allowed: door 300 cm (check_restrictions facts) accommodates piece 3 height 168 cm, risk Low, delay +5 h, cost +CHF 340 (find_alternatives main option).",
+          "Split option allowed but risk Medium, same delay +5 h, lower cost +CHF 210 (find_alternatives split option)."
+        ]
       }
     }
   ],
@@ -342,18 +466,17 @@
       "main",
       "split"
     ],
-    "summary": "The tall piece (168 cm) exceeds the belly height limit (160 cm), blocking the original routing. Recommend moving all pieces to the main deck on AYC 777F.",
+    "summary": "The booked belly load is blocked because piece 3 (160×120×168 cm) exceeds the A330 bulk hold limit of 160 cm. Rebooking all pieces on the main deck (AYC 777F) resolves the height constraint with Low risk and a +5 h delay.",
     "why": [
-      "Piece 3 height 168 cm > belly max 160 cm (get_disruption)",
-      "Main‑deck door 300 cm allows the piece (find_alternatives option main)",
-      "Option main: risk Low, delay +5 h, cost +CHF 340 (find_alternatives)",
-      "Option split: risk Medium, same delay +5 h, cost +CHF 210 (find_alternatives)"
-    ],
-    "customer_note": "AWB 020-77120562 : votre expédition sera acheminée par le pont principal et arrivera à GRU le 16 octobre à 11:20 heure locale."
+      "Risk class: watch (calculate_risk.risk = watch).",
+      "Booked belly option blocked: piece 3 dimensions 160×120×168 cm (get_shipment dims) exceeds A330 bulk max height 160 cm (check_restrictions facts).",
+      "Main‑deck option allowed: door 300 cm (check_restrictions facts) accommodates piece 3 height 168 cm, risk Low, delay +5 h, cost +CHF 340 (find_alternatives main option).",
+      "Split option allowed but risk Medium, same delay +5 h, lower cost +CHF 210 (find_alternatives split option)."
+    ]
   },
   "verdict": {
     "accepted": true,
-    "attempts": 1,
+    "attempts": 2,
     "fellBack": false,
     "checks": [
       {
@@ -392,8 +515,8 @@
         "pass": true
       },
       {
-        "id": "customer",
-        "label": "Customer note cites the AWB in the customer's language",
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       }
     ]

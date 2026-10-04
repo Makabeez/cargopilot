@@ -1,0 +1,352 @@
+{
+  "version": 1,
+  "scenarioKey": "s176|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s176",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "promptVersion": "v3",
+  "startedAt": "2026-10-04T14:46:09.570Z",
+  "latencyMs": 9091,
+  "promptTokens": 16135,
+  "completionTokens": 1026,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 939,
+      "promptTokens": 2329,
+      "completionTokens": 54,
+      "reasoningChars": 52,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9ca3cba9ada4973b",
+      "name": "get_shipment",
+      "args": {
+        "awb": "176-55287190"
+      },
+      "output": {
+        "awb": "176-55287190",
+        "origin": "GVA",
+        "destination": "BOM",
+        "booked_route": "GVA → BOM",
+        "pieces": 12,
+        "weight_kg": 640,
+        "volume_m3": 3.3,
+        "dims": "loose",
+        "commodity": "Dry goods",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Desk India",
+        "customer_language": "English"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 852,
+      "promptTokens": 2477,
+      "completionTokens": 51,
+      "reasoningChars": 46,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9d6185d10312a337",
+      "name": "get_disruption",
+      "args": {
+        "awb": "176-55287190"
+      },
+      "output": {
+        "signal": "SLI chase · close 18:55",
+        "observed": [],
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "Cargo",
+            "value": "GVA",
+            "note": "On hand",
+            "state": "ok"
+          },
+          {
+            "point": "SLI",
+            "value": "Missing",
+            "note": "Forwarder",
+            "state": "risk"
+          },
+          {
+            "point": "Close",
+            "value": "18:55",
+            "note": "GVA",
+            "state": "future"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 1050,
+      "promptTokens": 2623,
+      "completionTokens": 58,
+      "reasoningChars": 84,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-922ad717c75bffc4",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "176-55287190"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "GVA acceptance 18:55 · screening ~40 min"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 1194,
+      "promptTokens": 2704,
+      "completionTokens": 91,
+      "reasoningChars": 141,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8876a5418f055689",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "176-55287190"
+      },
+      "output": {
+        "risk": "high",
+        "classification": "SLI not on file",
+        "rule": [
+          "HIGH · docs, flight still reachable"
+        ],
+        "drivers": [
+          {
+            "measure": "SLI",
+            "value": "Missing",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Screening",
+            "value": "Open",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Close",
+            "value": "18:55",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Need",
+            "value": "~40 min",
+            "assessment": "neutral"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 826,
+      "promptTokens": 2856,
+      "completionTokens": 47,
+      "reasoningChars": 26,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9c0282b33359cfc0",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "176-55287190"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "chase",
+            "title": "Chase the SLI now",
+            "via": "Same flight",
+            "revised_eta": "15 Oct 09:50 LT BOM",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Acceptance closes 18:55. Screening needs about 40 min. There is still a window if the SLI lands now.",
+            "action": "Call Desk India for the SLI and security data. Do not offload yet."
+          },
+          {
+            "option_id": "offload",
+            "title": "Offload ahead of the close",
+            "via": "AYC 308 next",
+            "revised_eta": "16 Oct 11:20 LT BOM",
+            "delay": "+22 h",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Clean, and early. It spends a recovery the flight may still make.",
+            "action": "Roll to AYC 308 only if the SLI is still missing at 18:15."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 4229,
+      "promptTokens": 3146,
+      "completionTokens": 725,
+      "reasoningChars": 1748,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "high",
+        "recommended_option_id": "chase",
+        "ranking": [
+          "chase",
+          "offload"
+        ],
+        "summary": "The SLI document is missing, creating a high risk, but there is still a window before the 18:55 acceptance close if the SLI is obtained now. Recommend chasing the SLI now to keep the booked GVA→BOM flight.",
+        "why": [
+          "SLI missing (risk driver) – acceptance closes at 18:55, screening requires ~40 min.",
+          "Chase option keeps same flight, revised ETA 15 Oct 09:50 LT BOM, delay On time, cost CHF 0, risk Medium.",
+          "Offload option would move to AYC 308, revised ETA 16 Oct 11:20 LT BOM, delay +22 h, cost CHF 0, risk High."
+        ]
+      }
+    }
+  ],
+  "decision": {
+    "risk": "high",
+    "recommended_option_id": "chase",
+    "ranking": [
+      "chase",
+      "offload"
+    ],
+    "summary": "The SLI document is missing, creating a high risk, but there is still a window before the 18:55 acceptance close if the SLI is obtained now. Recommend chasing the SLI now to keep the booked GVA→BOM flight.",
+    "why": [
+      "SLI missing (risk driver) – acceptance closes at 18:55, screening requires ~40 min.",
+      "Chase option keeps same flight, revised ETA 15 Oct 09:50 LT BOM, delay On time, cost CHF 0, risk Medium.",
+      "Offload option would move to AYC 308, revised ETA 16 Oct 11:20 LT BOM, delay +22 h, cost CHF 0, risk High."
+    ]
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "chase",
+    "risk": "high",
+    "agrees": true
+  }
+}

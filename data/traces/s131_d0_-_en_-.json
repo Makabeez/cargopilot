@@ -10,26 +10,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:18.668Z",
-  "latencyMs": 11603,
-  "promptTokens": 22272,
-  "completionTokens": 1049,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:31.558Z",
+  "latencyMs": 10443,
+  "promptTokens": 25397,
+  "completionTokens": 1329,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 792,
+      "ms": 581,
       "promptTokens": 2329,
-      "completionTokens": 54,
-      "reasoningChars": 52,
+      "completionTokens": 52,
+      "reasoningChars": 46,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8cbcfe4f03a63ff4",
+      "callId": "chatcmpl-tool-b7815e13b6e2f3fa",
       "name": "get_shipment",
       "args": {
         "awb": "131-77881204"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1115,
+      "ms": 786,
       "promptTokens": 2486,
-      "completionTokens": 55,
-      "reasoningChars": 63,
+      "completionTokens": 51,
+      "reasoningChars": 57,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bc7264010584fdf2",
+      "callId": "chatcmpl-tool-9fe3ba9203eb3e25",
       "name": "get_disruption",
       "args": {
         "awb": "131-77881204"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1164,
+      "ms": 818,
       "promptTokens": 2643,
-      "completionTokens": 58,
-      "reasoningChars": 84,
+      "completionTokens": 74,
+      "reasoningChars": 135,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8d0242b531c0a72b",
+      "callId": "chatcmpl-tool-add93acb9f4e0a8c",
       "name": "get_cutoffs",
       "args": {
         "awb": "131-77881204"
@@ -119,22 +119,22 @@
         "facts": [],
         "note": "No get cutoffs issue recorded for this file."
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
       "turn": 4,
-      "ms": 835,
+      "ms": 1014,
       "promptTokens": 2721,
-      "completionTokens": 68,
-      "reasoningChars": 122,
+      "completionTokens": 124,
+      "reasoningChars": 289,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8a51e4d26807a24a",
+      "callId": "chatcmpl-tool-b7da21e072932263",
       "name": "check_connection",
       "args": {
         "awb": "131-77881204"
@@ -149,17 +149,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 1169,
+      "ms": 831,
       "promptTokens": 2797,
-      "completionTokens": 48,
-      "reasoningChars": 51,
+      "completionTokens": 53,
+      "reasoningChars": 66,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a957fd3120964bb1",
+      "callId": "chatcmpl-tool-80258b2a4666323e",
       "name": "get_capacity",
       "args": {
         "awb": "131-77881204"
@@ -174,17 +174,43 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 974,
+      "ms": 819,
       "promptTokens": 2873,
-      "completionTokens": 58,
-      "reasoningChars": 76,
+      "completionTokens": 56,
+      "reasoningChars": 69,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8dff729f7b7ed3a9",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "131-77881204"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "18 min at 9.2 °C · rule trips at 30 min"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 828,
+      "promptTokens": 2957,
+      "completionTokens": 50,
+      "reasoningChars": 45,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a7a06e826c08752c",
+      "callId": "chatcmpl-tool-99164b593bae3560",
       "name": "calculate_risk",
       "args": {
         "awb": "131-77881204"
@@ -220,9 +246,9 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 741,
-      "promptTokens": 3018,
+      "turn": 8,
+      "ms": 695,
+      "promptTokens": 3102,
       "completionTokens": 47,
       "reasoningChars": 26,
       "toolCalls": [
@@ -231,7 +257,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-88bd88e6c9f242c9",
+      "callId": "chatcmpl-tool-b4321ae131f58cd9",
       "name": "find_alternatives",
       "args": {
         "awb": "131-77881204"
@@ -281,11 +307,11 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 4810,
-      "promptTokens": 3405,
-      "completionTokens": 661,
-      "reasoningChars": 1946,
+      "turn": 9,
+      "ms": 4068,
+      "promptTokens": 3489,
+      "completionTokens": 822,
+      "reasoningChars": 2110,
       "toolCalls": [
         "submit_decision"
       ]
@@ -329,6 +355,11 @@
           "id": "refs",
           "label": "Every flight, truck and AWB reference is real",
           "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
         }
       ],
       "submitted": {
@@ -338,11 +369,12 @@
           "inspect",
           "hold"
         ],
-        "summary": "The probe reads 9.2 °C for 18 min, outside the +2/+8 range but not yet an excursion; the booked flight is blocked because ignoring the probe risks a claim. Recommend opening the box on the dock to verify condition before loading.",
+        "summary": "The probe shows 9.2 °C for 18 min, exceeding the +2/+8 °C range but not yet triggering the 30‑min rule; the booked flight is blocked because ignoring the probe risks a claim. Recommend opening the box on the dock to verify contents before loading on AYC 880.",
         "why": [
-          "Probe 9.2 °C for 18 min (rule trips at 30 min or 10 °C)",
-          "Inspect option: Medium risk, on time, cost CHF 0",
-          "Hold option: Low risk, delay +12 h, cost CHF 0"
+          "Probe measured 9.2 °C for 18 min (get_disruption) while the allowed range is +2/+8 °C and the rule trips at 30 min or 10 °C (check_restrictions).",
+          "The booked option “Fly as booked” is blocked (find_alternatives) due to risk of ignoring the probe.",
+          "Opening the box (“Open the box on the dock”) keeps the shipment on AYC 880, incurs no delay or cost, and has Medium risk (find_alternatives).",
+          "Holding the shipment would add +12 h delay (find_alternatives) and though Low risk, it violates the must‑ride priority."
         ]
       }
     }
@@ -354,11 +386,12 @@
       "inspect",
       "hold"
     ],
-    "summary": "The probe reads 9.2 °C for 18 min, outside the +2/+8 range but not yet an excursion; the booked flight is blocked because ignoring the probe risks a claim. Recommend opening the box on the dock to verify condition before loading.",
+    "summary": "The probe shows 9.2 °C for 18 min, exceeding the +2/+8 °C range but not yet triggering the 30‑min rule; the booked flight is blocked because ignoring the probe risks a claim. Recommend opening the box on the dock to verify contents before loading on AYC 880.",
     "why": [
-      "Probe 9.2 °C for 18 min (rule trips at 30 min or 10 °C)",
-      "Inspect option: Medium risk, on time, cost CHF 0",
-      "Hold option: Low risk, delay +12 h, cost CHF 0"
+      "Probe measured 9.2 °C for 18 min (get_disruption) while the allowed range is +2/+8 °C and the rule trips at 30 min or 10 °C (check_restrictions).",
+      "The booked option “Fly as booked” is blocked (find_alternatives) due to risk of ignoring the probe.",
+      "Opening the box (“Open the box on the dock”) keeps the shipment on AYC 880, incurs no delay or cost, and has Medium risk (find_alternatives).",
+      "Holding the shipment would add +12 h delay (find_alternatives) and though Low risk, it violates the must‑ride priority."
     ]
   },
   "verdict": {
@@ -399,6 +432,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       }
     ]

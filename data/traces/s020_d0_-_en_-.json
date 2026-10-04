@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:45:55.569Z",
-  "latencyMs": 8906,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:39:08.814Z",
+  "latencyMs": 7830,
   "promptTokens": 16433,
-  "completionTokens": 791,
+  "completionTokens": 1066,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 630,
+      "ms": 587,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9d8e53be710eca6b",
+      "callId": "chatcmpl-tool-9872b0d91105ff7e",
       "name": "get_shipment",
       "args": {
         "awb": "020-77120562"
@@ -49,22 +49,22 @@
         "customer": "Atelier Fonte SA",
         "customer_language": "French"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1030,
+      "ms": 598,
       "promptTokens": 2493,
-      "completionTokens": 56,
-      "reasoningChars": 73,
+      "completionTokens": 57,
+      "reasoningChars": 71,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-82c5d59204630fae",
+      "callId": "chatcmpl-tool-b6a698a2998259f9",
       "name": "get_disruption",
       "args": {
         "awb": "020-77120562"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 934,
+      "ms": 1170,
       "promptTokens": 2653,
-      "completionTokens": 52,
-      "reasoningChars": 51,
+      "completionTokens": 105,
+      "reasoningChars": 226,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8399b06dc8aa0d34",
+      "callId": "chatcmpl-tool-bed0370d8efd5424",
       "name": "get_cutoffs",
       "args": {
         "awb": "020-77120562"
@@ -124,17 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1057,
+      "ms": 847,
       "promptTokens": 2731,
-      "completionTokens": 70,
-      "reasoningChars": 131,
+      "completionTokens": 53,
+      "reasoningChars": 55,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9a7871b449ee0428",
+      "callId": "chatcmpl-tool-b23e130b81463840",
       "name": "calculate_risk",
       "args": {
         "awb": "020-77120562"
@@ -173,7 +173,7 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 1076,
+      "ms": 583,
       "promptTokens": 2888,
       "completionTokens": 46,
       "reasoningChars": 28,
@@ -183,7 +183,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b6f77b5c2e873a26",
+      "callId": "chatcmpl-tool-9fc963cbc55df0e5",
       "name": "find_alternatives",
       "args": {
         "awb": "020-77120562"
@@ -234,10 +234,10 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 4177,
+      "ms": 4041,
       "promptTokens": 3339,
-      "completionTokens": 513,
-      "reasoningChars": 1046,
+      "completionTokens": 751,
+      "reasoningChars": 1710,
       "toolCalls": [
         "submit_decision"
       ]
@@ -283,6 +283,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -295,13 +300,14 @@
           "main",
           "split"
         ],
-        "summary": "The booked belly load is blocked because piece 3 exceeds the 160 cm bulk limit. Rebook all six pieces on the main deck of AYC 777F via FRA–GRU.",
+        "summary": "The booked belly option is blocked because piece 3 exceeds the A330 bulk height limit by 8 cm. Rebooking all pieces on the main deck (AYC 777F) resolves the height issue with Low risk, +5 h delay and +CHF 340 cost.",
         "why": [
-          "Piece 3 height 168 cm > belly max 160 cm → blocked option.",
-          "Main‑deck option fits 168 cm < 300 cm door limit, risk Low, delay +5 h, cost +CHF 340.",
-          "Split option keeps five pieces belly but still requires freighter for piece 3, risk Medium, same delay, lower cost +CHF 210."
+          "Piece 3 height 168 cm > A330 bulk max 160 cm (8 cm over) → blocked.",
+          "Main-deck door limit 300 cm allows 168 cm piece → allowed.",
+          "Rebook main deck yields Low risk, +5 h delay, +CHF 340; split option Medium risk, same delay, +CHF 210.",
+          "Per policy, lower risk prioritized over cost, so main deck is selected."
         ],
-        "customer_note": "AWB 020-77120562 : votre expédition sera livrée le 16 octobre à 11:20 heure locale à GRU avec un retard de 5 heures."
+        "customer_note": "AWB 020-77120562 : nouvel ETA prévu le 16 octobre à 11:20 heure locale à GRU."
       }
     }
   ],
@@ -312,13 +318,14 @@
       "main",
       "split"
     ],
-    "summary": "The booked belly load is blocked because piece 3 exceeds the 160 cm bulk limit. Rebook all six pieces on the main deck of AYC 777F via FRA–GRU.",
+    "summary": "The booked belly option is blocked because piece 3 exceeds the A330 bulk height limit by 8 cm. Rebooking all pieces on the main deck (AYC 777F) resolves the height issue with Low risk, +5 h delay and +CHF 340 cost.",
     "why": [
-      "Piece 3 height 168 cm > belly max 160 cm → blocked option.",
-      "Main‑deck option fits 168 cm < 300 cm door limit, risk Low, delay +5 h, cost +CHF 340.",
-      "Split option keeps five pieces belly but still requires freighter for piece 3, risk Medium, same delay, lower cost +CHF 210."
+      "Piece 3 height 168 cm > A330 bulk max 160 cm (8 cm over) → blocked.",
+      "Main-deck door limit 300 cm allows 168 cm piece → allowed.",
+      "Rebook main deck yields Low risk, +5 h delay, +CHF 340; split option Medium risk, same delay, +CHF 210.",
+      "Per policy, lower risk prioritized over cost, so main deck is selected."
     ],
-    "customer_note": "AWB 020-77120562 : votre expédition sera livrée le 16 octobre à 11:20 heure locale à GRU avec un retard de 5 heures."
+    "customer_note": "AWB 020-77120562 : nouvel ETA prévu le 16 octobre à 11:20 heure locale à GRU."
   },
   "verdict": {
     "accepted": true,
@@ -358,6 +365,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {

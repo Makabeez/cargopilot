@@ -20,7 +20,7 @@ export const DEFAULT_BASE_URL = "https://api.tokenfactory.nebius.com/v1";
 export const DEFAULT_MODEL = "nvidia/nemotron-3-super-120b-a12b";
 export const PROVIDER = "Nebius Token Factory";
 /** Bump when the system/user prompt changes; recorded in every live run. */
-export const PROMPT_VERSION = "v3";
+export const PROMPT_VERSION = "v4";
 const MAX_TURNS = 12;
 const MAX_SUBMISSIONS = 3;
 const DESK_CLOCK = "Wed 14 Oct 2026, 17:42 local time (GVA)";
@@ -62,12 +62,20 @@ function rulesDecision(ctx: ToolContext): Decision {
   };
 }
 
-function groundingTexts(ctx: ToolContext, toolSteps: ToolStep[]): string[] {
+/** Everything a decision may quote from: this run's tool outputs plus what the desk told the model. */
+export function groundingFor(scenario: Scenario, toolOutputs: string[]): string[] {
   return [
-    ...toolSteps.map((t) => JSON.stringify(t.output)),
-    ctx.scenario.operatorMessage ?? "",
+    ...toolOutputs,
+    scenario.operatorMessage ?? "",
+    scenario.priorDelayMin !== undefined
+      ? `previous truck delay ${scenario.priorDelayMin} min, current truck delay ${scenario.delayMin} min`
+      : "",
     DESK_CLOCK,
   ];
+}
+
+function groundingTexts(ctx: ToolContext, toolSteps: ToolStep[]): string[] {
+  return groundingFor(ctx.scenario, toolSteps.map((t) => JSON.stringify(t.output)));
 }
 
 function baselineOf(ctx: ToolContext, decision: Decision) {
@@ -181,6 +189,11 @@ function userPrompt(s: Scenario, awb: string): string {
   const lines = [`Open file: AWB ${awb}. Desk clock: ${DESK_CLOCK}.`];
   if (s.operatorMessage?.trim()) {
     lines.push(`The duty officer says: "${s.operatorMessage.trim()}"`);
+    if (s.priorDelayMin !== undefined && s.priorDelayMin !== s.delayMin) {
+      lines.push(
+        `The desk has ALREADY applied this change: the truck delay is now ${s.delayMin} min (it was ${s.priorDelayMin} min). Every tool output reflects the new delay — do not add it again. In reply, give the before → after effect with the exact figures (ETA, gap or slack, risk class, recommendation).`,
+      );
+    }
     lines.push(
       "Work the file exactly as usual first — calculate_risk and find_alternatives are still required before any decision. Then call submit_decision with a full decision AND their answer in `reply`.",
     );

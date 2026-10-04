@@ -8,6 +8,12 @@ export type Scenario = {
   locale: Locale;
   /** Free text the operator typed, if any. The agent answers it in its language. */
   operatorMessage?: string;
+  /**
+   * Operator turns only: the truck delay before the desk applied the operator's
+   * command (e.g. 90 when "another 30 minutes" moved it to 120). Not part of the
+   * scenario key — it tells the model the change is already in the tool outputs.
+   */
+  priorDelayMin?: number;
 };
 
 export type AgentMode = "live" | "replay" | "rules";

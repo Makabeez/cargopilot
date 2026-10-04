@@ -21,6 +21,7 @@ const RequestSchema = z.object({
       .default({}),
     locale: z.enum(["en", "fr"]),
     operatorMessage: z.string().max(400).optional(),
+    priorDelayMin: z.number().int().min(0).max(180).optional(),
   }),
   mode: z.enum(["auto", "rules"]).default("auto"),
   /** Replay an archived recording set, e.g. "v1" → data/eval/history/*-prompt-v1. */

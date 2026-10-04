@@ -10,16 +10,16 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v3",
-  "startedAt": "2026-10-04T14:46:57.585Z",
-  "latencyMs": 8730,
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:40:05.322Z",
+  "latencyMs": 6660,
   "promptTokens": 16406,
-  "completionTokens": 851,
+  "completionTokens": 921,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 870,
+      "ms": 583,
       "promptTokens": 2329,
       "completionTokens": 54,
       "reasoningChars": 52,
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8c37de66f4e058fd",
+      "callId": "chatcmpl-tool-93054979492ff72b",
       "name": "get_shipment",
       "args": {
         "awb": "125-88342111"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 998,
+      "ms": 661,
       "promptTokens": 2487,
-      "completionTokens": 54,
-      "reasoningChars": 58,
+      "completionTokens": 55,
+      "reasoningChars": 63,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8c205e33a4c9fabc",
+      "callId": "chatcmpl-tool-ab4fa78234b078f7",
       "name": "get_disruption",
       "args": {
         "awb": "125-88342111"
@@ -102,7 +102,7 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1126,
+      "ms": 887,
       "promptTokens": 2683,
       "completionTokens": 55,
       "reasoningChars": 72,
@@ -112,7 +112,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a4d1253935e65544",
+      "callId": "chatcmpl-tool-aa26984e6d9309a2",
       "name": "get_cutoffs",
       "args": {
         "awb": "125-88342111"
@@ -127,7 +127,7 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 999,
+      "ms": 891,
       "promptTokens": 2761,
       "completionTokens": 69,
       "reasoningChars": 126,
@@ -137,7 +137,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ae9fe9c2a31cfd77",
+      "callId": "chatcmpl-tool-a1a79a0ad3540796",
       "name": "calculate_risk",
       "args": {
         "awb": "125-88342111"
@@ -174,17 +174,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 973,
+      "ms": 587,
       "promptTokens": 2913,
-      "completionTokens": 46,
-      "reasoningChars": 28,
+      "completionTokens": 47,
+      "reasoningChars": 26,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bfd97726ce94a647",
+      "callId": "chatcmpl-tool-a1b700dc458b1421",
       "name": "find_alternatives",
       "args": {
         "awb": "125-88342111"
@@ -223,10 +223,10 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 3764,
+      "ms": 3050,
       "promptTokens": 3233,
-      "completionTokens": 573,
-      "reasoningChars": 881,
+      "completionTokens": 641,
+      "reasoningChars": 1179,
       "toolCalls": [
         "submit_decision"
       ]
@@ -272,6 +272,11 @@
           "pass": true
         },
         {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
           "id": "customer",
           "label": "Customer note cites the AWB in the customer's language",
           "pass": true
@@ -283,13 +288,13 @@
         "ranking": [
           "fra"
         ],
-        "summary": "The CDG connection is missed (ETA 21:20 vs need‑by 20:52, cut‑off 21:05) – risk critical. Recommend rebooking via FRA (AYC 512) arriving 15 Oct 07:30 LT JFK, +6 h delay, +CHF 150, low risk.",
+        "summary": "The CDG connection is missed (ETA 21:20 vs need‑by 20:52, 28 min short), so the booked plan is blocked. Rebook via FRA adds 6 h delay and CHF 150 but is allowed and low risk.",
         "why": [
-          "CDG ETA 21:20, need‑by 20:52, cut‑off 21:05 → 28 min short.",
-          "FRA truck still open from GVA and AYC 512 has space.",
-          "Rebook via FRA gives revised ETA 15 Oct 07:30 LT JFK, delay +6 h, cost +CHF 150, risk Low."
+          "CDG ETA 21:20, need‑by 20:52, cut‑off 21:05 → 28 min short (get_disruption, calculate_risk)",
+          "Booked option Keep CDG connection is blocked due to missing connection (find_alternatives)",
+          "Rebook via FRA yields revised ETA 15 Oct 07:30 LT JFK, delay +6 h, cost +CHF 150, risk Low (find_alternatives)"
         ],
-        "customer_note": "AWB 125-88342111 : nouvel horaire d'arrivée prévu le 15 octobre à 07:30 (heure locale JFK)."
+        "customer_note": "Votre expédition AWB 125-88342111 arrivera désormais à JFK le 15 octobre à 07:30 heure locale."
       }
     }
   ],
@@ -299,13 +304,13 @@
     "ranking": [
       "fra"
     ],
-    "summary": "The CDG connection is missed (ETA 21:20 vs need‑by 20:52, cut‑off 21:05) – risk critical. Recommend rebooking via FRA (AYC 512) arriving 15 Oct 07:30 LT JFK, +6 h delay, +CHF 150, low risk.",
+    "summary": "The CDG connection is missed (ETA 21:20 vs need‑by 20:52, 28 min short), so the booked plan is blocked. Rebook via FRA adds 6 h delay and CHF 150 but is allowed and low risk.",
     "why": [
-      "CDG ETA 21:20, need‑by 20:52, cut‑off 21:05 → 28 min short.",
-      "FRA truck still open from GVA and AYC 512 has space.",
-      "Rebook via FRA gives revised ETA 15 Oct 07:30 LT JFK, delay +6 h, cost +CHF 150, risk Low."
+      "CDG ETA 21:20, need‑by 20:52, cut‑off 21:05 → 28 min short (get_disruption, calculate_risk)",
+      "Booked option Keep CDG connection is blocked due to missing connection (find_alternatives)",
+      "Rebook via FRA yields revised ETA 15 Oct 07:30 LT JFK, delay +6 h, cost +CHF 150, risk Low (find_alternatives)"
     ],
-    "customer_note": "AWB 125-88342111 : nouvel horaire d'arrivée prévu le 15 octobre à 07:30 (heure locale JFK)."
+    "customer_note": "Votre expédition AWB 125-88342111 arrivera désormais à JFK le 15 octobre à 07:30 heure locale."
   },
   "verdict": {
     "accepted": true,
@@ -345,6 +350,11 @@
       {
         "id": "refs",
         "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
         "pass": true
       },
       {
