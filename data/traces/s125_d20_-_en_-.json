@@ -1,0 +1,413 @@
+{
+  "version": 1,
+  "scenarioKey": "s125|d20|-|en|-",
+  "scenario": {
+    "shipmentId": "s125",
+    "delayMin": 20,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "promptVersion": "v3",
+  "startedAt": "2026-10-04T14:46:55.537Z",
+  "latencyMs": 10500,
+  "promptTokens": 22502,
+  "completionTokens": 863,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 1062,
+      "promptTokens": 2329,
+      "completionTokens": 54,
+      "reasoningChars": 52,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b8408cf32ac9aa3d",
+      "name": "get_shipment",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "awb": "125-88342111",
+        "origin": "GVA",
+        "destination": "JFK",
+        "booked_route": "GVA → CDG → JFK",
+        "pieces": 3,
+        "weight_kg": 410,
+        "volume_m3": 2.1,
+        "dims": "100×80×70 cm",
+        "commodity": "General cargo",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Laurent & Fils",
+        "customer_language": "French"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 655,
+      "promptTokens": 2487,
+      "completionTokens": 55,
+      "reasoningChars": 63,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a73710b723516d17",
+      "name": "get_disruption",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "signal": "CDG · ETA 21:00",
+        "observed": [
+          "GVA–CDG +20 min · ETA 21:00"
+        ],
+        "truck_delay_min": 20,
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "GVA–CDG",
+            "value": "21:00",
+            "note": "+20 min",
+            "state": "risk"
+          },
+          {
+            "point": "Need by",
+            "value": "20:52",
+            "note": "50 min MCT",
+            "state": "risk"
+          },
+          {
+            "point": "AYC 045",
+            "value": "21:42",
+            "note": "CDG–JFK",
+            "state": "future"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 1161,
+      "promptTokens": 2683,
+      "completionTokens": 55,
+      "reasoningChars": 72,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9227546858bb5daa",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get cutoffs issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 994,
+      "promptTokens": 2761,
+      "completionTokens": 52,
+      "reasoningChars": 60,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b14437c5120d0fae",
+      "name": "check_connection",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "need 20:52 · cut-off 21:05 · CDG connection at risk"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 1075,
+      "promptTokens": 2848,
+      "completionTokens": 48,
+      "reasoningChars": 51,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-bc4d95aa5f50931c",
+      "name": "get_capacity",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get capacity issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 997,
+      "promptTokens": 2924,
+      "completionTokens": 59,
+      "reasoningChars": 89,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-88a68b3c51598bc5",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "risk": "high",
+        "classification": "CDG connection at risk",
+        "rule": [],
+        "drivers": [
+          {
+            "measure": "CDG ETA",
+            "value": "21:00",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Need by",
+            "value": "20:52",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Cut-off",
+            "value": "21:05",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Gap",
+            "value": "8 min short",
+            "assessment": "bad"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 1046,
+      "promptTokens": 3076,
+      "completionTokens": 47,
+      "reasoningChars": 26,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b4895b6c1c482929",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "keep",
+            "title": "Keep CDG connection",
+            "via": "AYC 045 CDG–JFK",
+            "revised_eta": "15 Oct 01:20 LT JFK",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Arrival CDG 21:00. Minimum connection wants the freight by 20:52. Cut-off 21:05.",
+            "action": "Keep AYC 045 only while the truck is inside the CDG window."
+          },
+          {
+            "option_id": "fra",
+            "title": "Rebook via FRA",
+            "via": "AYC 512 FRA–JFK",
+            "revised_eta": "15 Oct 07:30 LT JFK",
+            "delay": "+6 h",
+            "cost": "+CHF 150",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "FRA truck is still open from GVA and AYC 512 has space. Use it once CDG is no longer legal.",
+            "action": "Pull 125-88342111 off the CDG truck and move it to the FRA departure."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 8,
+      "ms": 3509,
+      "promptTokens": 3394,
+      "completionTokens": 493,
+      "reasoningChars": 1038,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "high",
+        "recommended_option_id": "fra",
+        "ranking": [
+          "fra",
+          "keep"
+        ],
+        "summary": "The CDG connection is at high risk due to an 8‑minute gap (ETA 21:00 vs needed by 20:52). Rebooking via FRA avoids the risk with a low‑risk alternative.",
+        "why": [
+          "CDG ETA 21:00, need‑by 20:52, cut‑off 21:05 → 8 min short (high risk).",
+          "Rebook via FRA adds +6 h delay, cost +CHF 150, risk Low, and respects all constraints."
+        ],
+        "customer_note": "AWB 125-88342111 : nouvel ETA prévu le 15 octobre à 07:30 heure locale à JFK suite au réacheminement via Francfort."
+      }
+    }
+  ],
+  "decision": {
+    "risk": "high",
+    "recommended_option_id": "fra",
+    "ranking": [
+      "fra",
+      "keep"
+    ],
+    "summary": "The CDG connection is at high risk due to an 8‑minute gap (ETA 21:00 vs needed by 20:52). Rebooking via FRA avoids the risk with a low‑risk alternative.",
+    "why": [
+      "CDG ETA 21:00, need‑by 20:52, cut‑off 21:05 → 8 min short (high risk).",
+      "Rebook via FRA adds +6 h delay, cost +CHF 150, risk Low, and respects all constraints."
+    ],
+    "customer_note": "AWB 125-88342111 : nouvel ETA prévu le 15 octobre à 07:30 heure locale à JFK suite au réacheminement via Francfort."
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "customer",
+        "label": "Customer note cites the AWB in the customer's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "fra",
+    "risk": "high",
+    "agrees": true
+  }
+}

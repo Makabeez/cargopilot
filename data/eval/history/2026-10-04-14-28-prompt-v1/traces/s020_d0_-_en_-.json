@@ -1,0 +1,337 @@
+{
+  "version": 1,
+  "scenarioKey": "s020|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s020",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:28:24.728Z",
+  "latencyMs": 7118,
+  "promptTokens": 12950,
+  "completionTokens": 860,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 812,
+      "promptTokens": 2151,
+      "completionTokens": 54,
+      "reasoningChars": 52,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b55e85cfd204a8fd",
+      "name": "get_shipment",
+      "args": {
+        "awb": "020-77120562"
+      },
+      "output": {
+        "awb": "020-77120562",
+        "origin": "GVA",
+        "destination": "GRU",
+        "booked_route": "GVA → FRA → GRU",
+        "pieces": 6,
+        "weight_kg": 960,
+        "volume_m3": 5.1,
+        "dims": "piece 3 · 160×120×168 cm",
+        "commodity": "Machine parts",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Atelier Fonte SA",
+        "customer_language": "French"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 844,
+      "promptTokens": 2315,
+      "completionTokens": 55,
+      "reasoningChars": 63,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-aa7c0b612270cb0a",
+      "name": "get_disruption",
+      "args": {
+        "awb": "020-77120562"
+      },
+      "output": {
+        "signal": "AYC 441 · height reject",
+        "observed": [],
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "Piece 3",
+            "value": "168 cm",
+            "note": "160×120",
+            "state": "risk"
+          },
+          {
+            "point": "A330",
+            "value": "160 cm",
+            "note": "Bulk hold",
+            "state": "risk"
+          },
+          {
+            "point": "777F",
+            "value": "300 cm",
+            "note": "Main deck",
+            "state": "ok"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 1372,
+      "promptTokens": 2475,
+      "completionTokens": 85,
+      "reasoningChars": 197,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-999f792aa857dfdf",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "020-77120562"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "main",
+            "title": "Rebook main deck",
+            "via": "AYC 777F FRA–GRU",
+            "revised_eta": "16 Oct 11:20 LT GRU",
+            "delay": "+5 h",
+            "cost": "+CHF 340",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "Main-deck door is 300 cm. Piece 3 at 168 cm is legal. Belly max on the booked A330 is 160 cm.",
+            "action": "Move all 6 pieces to AYC 777F. Do not attempt the A330 bulk hold."
+          },
+          {
+            "option_id": "split",
+            "title": "Split off piece 3",
+            "via": "Belly + main deck",
+            "revised_eta": "16 Oct 11:20 LT GRU",
+            "delay": "+5 h",
+            "cost": "+CHF 210",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Five pieces fit the belly. Piece 3 still needs the freighter, so the customer receives a split — two arrivals.",
+            "action": "Keep pieces 1, 2, 4, 5 and 6 on the booked belly. Rebook piece 3 only on AYC 777F."
+          },
+          {
+            "option_id": "belly",
+            "title": "Force the booked belly",
+            "via": "AYC 441 A330",
+            "revised_eta": "16 Oct 06:15 LT GRU",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "Piece 3 is 8 cm over the 160 cm bulk limit. The loadmaster will reject the lot.",
+            "action": "Do not build piece 3 into the A330."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 860,
+      "promptTokens": 2926,
+      "completionTokens": 54,
+      "reasoningChars": 58,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-bbb4503d935f0459",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "020-77120562"
+      },
+      "output": {
+        "risk": "critical",
+        "classification": "Piece over height",
+        "rule": [
+          "CRITICAL · height, not weight"
+        ],
+        "drivers": [
+          {
+            "measure": "Tallest",
+            "value": "168 cm",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Belly max",
+            "value": "160 cm",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Door MD",
+            "value": "300 cm",
+            "assessment": "good"
+          },
+          {
+            "measure": "Weight",
+            "value": "960 kg",
+            "assessment": "good"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 3228,
+      "promptTokens": 3083,
+      "completionTokens": 612,
+      "reasoningChars": 1085,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "critical",
+    "recommended_option_id": "main",
+    "ranking": [
+      "main",
+      "split"
+    ],
+    "summary": "Piece 3 at 168 cm exceeds the A330 belly limit of 160 cm, creating a critical height risk. Rebook all six pieces on the main‑deck flight AYC 777F via FRA–GRU.",
+    "why": [
+      "Piece 3 height: 168 cm (tool: get_disruption)",
+      "Belly max height: 160 cm (tool: get_disruption)",
+      "Main‑deck door limit: 300 cm (tool: get_disruption)",
+      "Revised ETA: 16 Oct 11:20 LT GRU, delay +5 h (tool: find_alternatives)",
+      "Cost increase: +CHF 340 (tool: find_alternatives)",
+      "Risk level: Low (tool: calculate_risk)"
+    ],
+    "customer_note": "AWB 020-77120562 : votre expédition sera acheminée par le vol principal AYC 777F via FRA–GRU, arrivée prévue le 16 octobre à 11:20 heure locale à GRU."
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "customer",
+        "label": "Customer note cites the AWB in the customer's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "main",
+    "risk": "critical",
+    "agrees": true
+  }
+}

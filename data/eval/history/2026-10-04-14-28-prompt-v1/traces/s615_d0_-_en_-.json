@@ -1,0 +1,392 @@
+{
+  "version": 1,
+  "scenarioKey": "s615|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s615",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:28:53.290Z",
+  "latencyMs": 6950,
+  "promptTokens": 16125,
+  "completionTokens": 651,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 756,
+      "promptTokens": 2151,
+      "completionTokens": 56,
+      "reasoningChars": 62,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b73231ba85eebe1c",
+      "name": "get_shipment",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "awb": "615-12345675",
+        "origin": "GVA",
+        "destination": "DEL",
+        "booked_route": "GVA → LEJ → DEL",
+        "pieces": 4,
+        "weight_kg": 780,
+        "volume_m3": 4.2,
+        "dims": "120×80×100 cm",
+        "commodity": "General cargo",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Nyon Precision SA",
+        "customer_language": "French"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 1105,
+      "promptTokens": 2309,
+      "completionTokens": 54,
+      "reasoningChars": 58,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-93aae61bad93b221",
+      "name": "get_disruption",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "signal": "RFS 1840 · +0 min · LEJ",
+        "observed": [
+          "RFS 1840 GVA–LEJ +0 min · ETA 18:15 LT"
+        ],
+        "truck_delay_min": 0,
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "RFS 1840",
+            "value": "18:15",
+            "note": "Scheduled LEJ",
+            "state": "done"
+          },
+          {
+            "point": "Live ETA",
+            "value": "18:15",
+            "note": "+0 min",
+            "state": "ok"
+          },
+          {
+            "point": "Need by",
+            "value": "19:15",
+            "note": "45 min handling",
+            "state": "ok"
+          },
+          {
+            "point": "Cut-off",
+            "value": "20:00",
+            "note": "LEJ GCR",
+            "state": "future"
+          },
+          {
+            "point": "AYC 7841",
+            "value": "21:00",
+            "note": "LEJ–DEL",
+            "state": "future"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 846,
+      "promptTokens": 2566,
+      "completionTokens": 75,
+      "reasoningChars": 143,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b7054933898e50bd",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "LEJ GCR 20:00 · transfer 45 min · required 19:15"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 878,
+      "promptTokens": 2656,
+      "completionTokens": 69,
+      "reasoningChars": 125,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-be3379415e4664d1",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "risk": "ok",
+        "classification": "Connection holding",
+        "rule": [
+          "OK · Connection holding"
+        ],
+        "drivers": [
+          {
+            "measure": "Truck ETA",
+            "value": "18:15",
+            "assessment": "good"
+          },
+          {
+            "measure": "Need by",
+            "value": "19:15",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Cut-off",
+            "value": "20:00",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Slack",
+            "value": "60 min",
+            "assessment": "good"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 599,
+      "promptTokens": 2811,
+      "completionTokens": 44,
+      "reasoningChars": 21,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-94c5b2dc716426f8",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "summary": [
+          "ZRH feasible · FRA tight on volume · AYC 7842 rejected · AYC 7843 +18 h"
+        ],
+        "options": [
+          {
+            "option_id": "keep",
+            "title": "Keep AYC 7841 via LEJ",
+            "via": "AYC 7841 LEJ–DEL",
+            "revised_eta": "15 Oct 09:05 LT DEL",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "Truck meets the handling window. No change required.",
+            "action": "Present AWB 615-12345675 to AYC 7841 only if LEJ accepts a late tender."
+          },
+          {
+            "option_id": "next",
+            "title": "Roll to AYC 7842",
+            "via": "AYC 7842 LEJ–DEL",
+            "revised_eta": "15 Oct 14:40 LT DEL",
+            "delay": "+6 h",
+            "cost": "CHF 0",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "AYC 7842 has 410 kg free. This shipment is 780 kg. Capacity is not theoretical — it is short.",
+            "action": "Do not plan AYC 7842."
+          },
+          {
+            "option_id": "zrh",
+            "title": "Rebook via ZRH",
+            "via": "RFS 2204 · AYC 9864 ZRH–DEL",
+            "revised_eta": "15 Oct 13:10 LT DEL",
+            "delay": "+4 h",
+            "cost": "+CHF 180",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "RFS 2204 leaves GVA at 18:10, on hand ZRH 19:05, cut-off 21:30. Free capacity 2,200 kg and a loose position. Dispatch in the next 15 minutes.",
+            "action": "Pull AWB 615-12345675 off RFS 1840 and move it to RFS 2204 for AYC 9864 ZRH–DEL."
+          },
+          {
+            "option_id": "fra",
+            "title": "Rebook via FRA",
+            "via": "RFS 3310 · AYC 552 FRA–DEL",
+            "revised_eta": "15 Oct 18:05 LT DEL",
+            "delay": "+9 h",
+            "cost": "+CHF 90",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Weight fits (900 kg free) but the remaining LD3 is 4.3 m³ against 4.2 m³ built. No contour tolerance.",
+            "action": "Move the shipment to RFS 3310 GVA–FRA for AYC 552, and flag the volume as tight."
+          },
+          {
+            "option_id": "later",
+            "title": "Wait for AYC 7843",
+            "via": "AYC 7843 LEJ–DEL",
+            "revised_eta": "16 Oct 03:10 LT DEL",
+            "delay": "+18 h",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Space is clean (3,100 kg) but the customer window on 15 Oct is missed by a full day.",
+            "action": "Hold at LEJ for AYC 7843 and warn the customer of +18 h."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 2764,
+      "promptTokens": 3632,
+      "completionTokens": 353,
+      "reasoningChars": 529,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "ok",
+    "recommended_option_id": "keep",
+    "ranking": [
+      "keep",
+      "zrh",
+      "fra",
+      "later"
+    ],
+    "summary": "The truck arrives at LEJ at 18:15 with 60 min slack before the 20:00 cut‑off, so the connection holds. Keep the shipment on AYC 7841 via LEJ.",
+    "why": [
+      "Truck ETA 18:15 LT, Need‑by 19:15 LT, Cut‑off 20:00 LT → 60 min slack (get_disruption, get_cutoffs)",
+      "Risk calculated as ok with good truck ETA and 60 min slack (calculate_risk)",
+      "Option keep: delay On time, cost CHF 0, risk Low, status allowed (find_alternatives)"
+    ]
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "keep",
+    "risk": "ok",
+    "agrees": true
+  }
+}

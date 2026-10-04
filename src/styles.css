@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --color-ink: #0c161d;
+  --color-panel: #132028;
+  --color-panel-2: #1b2c36;
+  --color-line: #2c4250;
+  --color-frost: #e4eef3;
+  --color-mute: #8ea3b0;
+  --color-amber: #e3a008;
+  --color-amber-ink: #1a1406;
+  --color-paper: #f4efe6;
+  --color-paper-2: #e7e0d2;
+  --color-paper-line: #d9d0c2;
+  --color-paper-ink: #1c1915;
+  --color-paper-mute: #5f584e;
+  --color-critical: #a61f1f;
+  --color-alert: #f3b7b2;
+  --color-safe: #0f6b45;
+  --color-good: #8fd0b0;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-frost);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-amber);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  input[type="range"] {
+    accent-color: var(--color-amber);
+    width: 100%;
+  }
+}
+
+@keyframes trace-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.trace-in {
+  animation: trace-in 220ms ease both;
+}
+
+@keyframes pulse-dot {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.live-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-in,
+  .live-dot {
+    animation: none;
+  }
+}

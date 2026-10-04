@@ -1,0 +1,59 @@
+{
+  "name": "cargopilot",
+  "private": true,
+  "sideEffects": false,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "npm run test:agent",
+    "test:agent": "node --import tsx --test tests/agent.test.ts",
+    "judge-demo": "npm run test:agent && tsx scripts/agent-cli.ts judge",
+    "agent:models": "tsx scripts/agent-cli.ts models",
+    "agent:record": "tsx scripts/agent-cli.ts record",
+    "agent:eval": "tsx scripts/agent-cli.ts eval"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
+    "@tanstack/react-router": "^1.170.0",
+    "@tanstack/react-start": "^1.168.60",
+    "@tanstack/router-plugin": "^1.168.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "clsx": "^2.1.1",
+    "lightningcss": "^1.28.0",
+    "lucide-react": "^0.510.0",
+    "nitro": "3.0.260610-beta",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwind-merge": "^3.5.0",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.7.0",
+    "vite": "^8.2.0",
+    "zod": "^4.4.0",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "@types/node": "^22.16.5",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.20.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^15.15.0",
+    "playwright": "^1.62.0",
+    "prettier": "^3.4.0",
+    "tsx": "^4.23.15",
+    "typescript-eslint": "^8.56.1"
+  },
+  "license": "MIT",
+  "description": "Air-cargo recovery agent: NVIDIA Nemotron on Nebius Token Factory, with a verifier that checks every figure.",
+  "engines": {
+    "node": ">=22"
+  }
+}

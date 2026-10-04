@@ -1,0 +1,389 @@
+{
+  "version": 1,
+  "scenarioKey": "s172|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s172",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:28:15.646Z",
+  "latencyMs": 10534,
+  "promptTokens": 18662,
+  "completionTokens": 1145,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 1257,
+      "promptTokens": 2151,
+      "completionTokens": 70,
+      "reasoningChars": 73,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8f2f68071c07b4c9",
+      "name": "get_shipment",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "awb": "172-44091832",
+        "origin": "GVA",
+        "destination": "NRT",
+        "booked_route": "GVA → ZRH → NRT",
+        "pieces": 2,
+        "weight_kg": 186,
+        "volume_m3": 0.8,
+        "dims": "60×40×40 cm",
+        "commodity": "UN3480 lithium ion batteries",
+        "handling_code": "DGR",
+        "priority": "priority",
+        "customer": "Helvetia Cell AG",
+        "customer_language": "English"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 874,
+      "promptTokens": 2315,
+      "completionTokens": 51,
+      "reasoningChars": 57,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-96a20fca807d5ea2",
+      "name": "get_disruption",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "signal": "AYC 176 · DGR reject",
+        "observed": [],
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "Booked",
+            "value": "AYC 176",
+            "note": "Passenger",
+            "state": "risk"
+          },
+          {
+            "point": "PI965",
+            "value": "Alone",
+            "note": "Pax forbidden",
+            "state": "risk"
+          },
+          {
+            "point": "AYC 9006",
+            "value": "Open",
+            "note": "Freighter",
+            "state": "ok"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 1361,
+      "promptTokens": 2470,
+      "completionTokens": 136,
+      "reasoningChars": 358,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a5f8b6875fe0fd55",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get cutoffs issue recorded for this file."
+      },
+      "ms": 1
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 1442,
+      "promptTokens": 2548,
+      "completionTokens": 114,
+      "reasoningChars": 273,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9ae2ebd2b338b325",
+      "name": "get_capacity",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "AYC 9006 DGR position open · AYC 9012 open"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 1461,
+      "promptTokens": 2634,
+      "completionTokens": 118,
+      "reasoningChars": 257,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a6955fdce5b44951",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "summary": [
+          "AYC 9006 legal · pax variation rejected"
+        ],
+        "options": [
+          {
+            "option_id": "freighter",
+            "title": "Move to freighter AYC 9006",
+            "via": "AYC 9006 GVA–FRA–NRT",
+            "revised_eta": "16 Oct 06:40 LT NRT",
+            "delay": "+7 h",
+            "cost": "+CHF 260",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "Main-deck freighter accepts UN3480 PI965. Capacity confirmed. Passenger AYC 176 cannot carry it.",
+            "action": "Offload AWB 172-44091832 from passenger AYC 176 and rebook AYC 9006."
+          },
+          {
+            "option_id": "next",
+            "title": "Next freighter AYC 9012",
+            "via": "AYC 9012 GVA–NRT",
+            "revised_eta": "17 Oct 01:10 LT NRT",
+            "delay": "+26 h",
+            "cost": "+CHF 260",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Also legal for PI965. Use it only if AYC 9006 is full.",
+            "action": "Book AYC 9012 and keep the freight in the DGR cage."
+          },
+          {
+            "option_id": "pax",
+            "title": "Ask for a pax variation",
+            "via": "AYC 176 pax",
+            "revised_eta": "15 Oct 23:30 LT NRT",
+            "delay": "On time",
+            "cost": "—",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "UN3480 packed alone (PI965) is forbidden on passenger aircraft. There is no station variation.",
+            "action": "Do not tender to AYC 176."
+          },
+          {
+            "option_id": "return",
+            "title": "Return to shipper",
+            "via": "Return GVA",
+            "revised_eta": "Not flying",
+            "delay": "+48 h",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Last resort. The customer has a legal freighter path tonight.",
+            "action": "Hold in the DGR cage and call Helvetia Cell only if both freighters refuse."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 823,
+      "promptTokens": 3191,
+      "completionTokens": 54,
+      "reasoningChars": 58,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b5dfaca26b5002fa",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "risk": "critical",
+        "classification": "DG refused on passenger",
+        "rule": [
+          "CRITICAL · booked aircraft illegal for commodity"
+        ],
+        "drivers": [
+          {
+            "measure": "UN",
+            "value": "3480",
+            "assessment": "bad"
+          },
+          {
+            "measure": "PI",
+            "value": "965",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Booked",
+            "value": "AYC 176 pax",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Legal path",
+            "value": "AYC 9006",
+            "assessment": "good"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 3313,
+      "promptTokens": 3353,
+      "completionTokens": 602,
+      "reasoningChars": 1195,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "critical",
+    "recommended_option_id": "freighter",
+    "ranking": [
+      "freighter",
+      "next",
+      "return"
+    ],
+    "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries (PI965) – risk critical. Move the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h, +CHF 260).",
+    "why": [
+      "AWB 172-44091832: weight 186 kg, booked route GVA → ZRH → NRT.",
+      "Disruption signal: AYC 176 · DGR reject (passenger forbidden for UN3480 PI965).",
+      "Freighter option AYC 9006: revised ETA 16 Oct 06:40 LT NRT, delay +7 h, cost +CHF 260, risk Low."
+    ]
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "freighter",
+    "risk": "critical",
+    "agrees": true
+  }
+}

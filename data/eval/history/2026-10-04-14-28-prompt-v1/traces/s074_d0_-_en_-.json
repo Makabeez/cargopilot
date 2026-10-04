@@ -1,0 +1,413 @@
+{
+  "version": 1,
+  "scenarioKey": "s074|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s074",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:28:27.666Z",
+  "latencyMs": 11472,
+  "promptTokens": 21012,
+  "completionTokens": 1372,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 946,
+      "promptTokens": 2151,
+      "completionTokens": 56,
+      "reasoningChars": 62,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b0af2aae705b9238",
+      "name": "get_shipment",
+      "args": {
+        "awb": "074-33019873"
+      },
+      "output": {
+        "awb": "074-33019873",
+        "origin": "GVA",
+        "destination": "DXB",
+        "booked_route": "GVA → DXB",
+        "pieces": 8,
+        "weight_kg": 1850,
+        "volume_m3": 8.4,
+        "dims": "built as 1 PMC",
+        "commodity": "Industrial components",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Rhône Freight",
+        "customer_language": "English"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 701,
+      "promptTokens": 2304,
+      "completionTokens": 51,
+      "reasoningChars": 57,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9bfbf3e538c1fd01",
+      "name": "get_disruption",
+      "args": {
+        "awb": "074-33019873"
+      },
+      "output": {
+        "signal": "AYC 610 · no PMC",
+        "observed": [],
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "AYC 610",
+            "value": "2,400 kg",
+            "note": "PMC 0",
+            "state": "risk"
+          },
+          {
+            "point": "Build",
+            "value": "1 PMC",
+            "note": "1,850 kg",
+            "state": "risk"
+          },
+          {
+            "point": "AYC 614",
+            "value": "+11 h",
+            "note": "2 PMC",
+            "state": "ok"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 1117,
+      "promptTokens": 2469,
+      "completionTokens": 116,
+      "reasoningChars": 283,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-bee620dba0077035",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "074-33019873"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get cutoffs issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 1327,
+      "promptTokens": 2547,
+      "completionTokens": 188,
+      "reasoningChars": 460,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b16d5d6bad7846b5",
+      "name": "check_connection",
+      "args": {
+        "awb": "074-33019873"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check connection issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 927,
+      "promptTokens": 2623,
+      "completionTokens": 53,
+      "reasoningChars": 69,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9a49c6fa98fb87b7",
+      "name": "get_capacity",
+      "args": {
+        "awb": "074-33019873"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "AYC 610 · 2,400 kg free · PMC 0 · half 1 (max 1,100 kg)"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 1606,
+      "promptTokens": 2722,
+      "completionTokens": 225,
+      "reasoningChars": 581,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b0706de04bfe141a",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "074-33019873"
+      },
+      "output": {
+        "risk": "critical",
+        "classification": "Kilos without a position",
+        "rule": [
+          "CRITICAL · position, not weight"
+        ],
+        "drivers": [
+          {
+            "measure": "Free kg",
+            "value": "2,400",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "PMC",
+            "value": "0",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Need",
+            "value": "1 PMC",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Half pallet",
+            "value": "1",
+            "assessment": "neutral"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 792,
+      "promptTokens": 2874,
+      "completionTokens": 44,
+      "reasoningChars": 21,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8c080baf589f9ae5",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "074-33019873"
+      },
+      "output": {
+        "summary": [
+          "AYC 614 has 2 PMC · split build is a commercial break"
+        ],
+        "options": [
+          {
+            "option_id": "later",
+            "title": "Take the flight with a PMC",
+            "via": "AYC 614 GVA–DXB",
+            "revised_eta": "16 Oct 02:15 LT DXB",
+            "delay": "+11 h",
+            "cost": "+CHF 40",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "AYC 614 has two PMC positions. The build stays intact. Kilos were never the problem.",
+            "action": "Rebook AWB 074-33019873 onto AYC 614 as one PMC. Do not break the build for AYC 610."
+          },
+          {
+            "option_id": "split",
+            "title": "Force a split build",
+            "via": "AYC 610 half + loose",
+            "revised_eta": "15 Oct 15:40 LT DXB",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Possible only by breaking one PMC into a half plus loose. The shipper booked a single unit.",
+            "action": "Only if the customer accepts two handing units on AYC 610."
+          },
+          {
+            "option_id": "keep",
+            "title": "Keep AYC 610 as booked",
+            "via": "AYC 610",
+            "revised_eta": "15 Oct 15:40 LT DXB",
+            "delay": "On time",
+            "cost": "—",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "2,400 kg are free and zero PMC positions remain. The shipment cannot occupy a half pallet.",
+            "action": "Do not plan the PMC on AYC 610."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 8,
+      "ms": 4055,
+      "promptTokens": 3322,
+      "completionTokens": 639,
+      "reasoningChars": 1251,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "critical",
+    "recommended_option_id": "later",
+    "ranking": [
+      "later",
+      "split"
+    ],
+    "summary": "The shipment lacks a PMC position on AYC 610, making the booked plan blocked. Rebook onto AYC 614 with a PMC, accepting an 11‑hour delay and +CHF 40 cost.",
+    "why": [
+      "Weight 1850 kg requires 1 PMC.",
+      "Free capacity on AYC 610: 2400 kg free, 0 PMC positions.",
+      "AYC 614 offers 2 PMC positions, keeping the build intact.",
+      "Rebooking onto AYC 614 yields revised ETA 16 Oct 02:15 LT DXB, delay +11 h, cost +CHF 40."
+    ],
+    "customer_note": "AWB 074-33019873: Your shipment will now travel on flight AYC 614, arriving DXB on 16 Oct 02:15 local time (11 hours later than originally planned)."
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "customer",
+        "label": "Customer note cites the AWB in the customer's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "later",
+    "risk": "critical",
+    "agrees": true
+  }
+}

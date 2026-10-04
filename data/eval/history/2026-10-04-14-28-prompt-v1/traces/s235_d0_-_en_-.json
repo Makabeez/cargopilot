@@ -1,0 +1,411 @@
+{
+  "version": 1,
+  "scenarioKey": "s235|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s235",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:28:34.638Z",
+  "latencyMs": 11128,
+  "promptTokens": 21435,
+  "completionTokens": 1289,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 1181,
+      "promptTokens": 2151,
+      "completionTokens": 56,
+      "reasoningChars": 62,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a1cc4e6e5b0ce120",
+      "name": "get_shipment",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "awb": "235-10092832",
+        "origin": "GVA",
+        "destination": "EWR",
+        "booked_route": "GVA → ZRH → EWR",
+        "pieces": 5,
+        "weight_kg": 780,
+        "volume_m3": 4.6,
+        "dims": "loose",
+        "commodity": "Textiles",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Alpine Textiles SA",
+        "customer_language": "English"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 1010,
+      "promptTokens": 2302,
+      "completionTokens": 57,
+      "reasoningChars": 71,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-aab380f5de74a745",
+      "name": "get_disruption",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "signal": "AYC 418 · 1 pallet left",
+        "observed": [],
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "AYC 418",
+            "value": "900 kg",
+            "note": "1 PMC",
+            "state": "risk"
+          },
+          {
+            "point": "057-66219005",
+            "value": "620 kg",
+            "note": "Must-ride",
+            "state": "ok"
+          },
+          {
+            "point": "235-10092832",
+            "value": "780 kg",
+            "note": "No room",
+            "state": "risk"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 874,
+      "promptTokens": 2480,
+      "completionTokens": 75,
+      "reasoningChars": 144,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b0069d5736152c74",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get cutoffs issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 1117,
+      "promptTokens": 2558,
+      "completionTokens": 75,
+      "reasoningChars": 145,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9e564d399abe57ea",
+      "name": "get_capacity",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "AYC 418 · 900 kg · 1 PMC · pharma 620 kg must-ride"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 1627,
+      "promptTokens": 2651,
+      "completionTokens": 171,
+      "reasoningChars": 388,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9dce688cfc8f414b",
+      "name": "check_connection",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check connection issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 1109,
+      "promptTokens": 2727,
+      "completionTokens": 148,
+      "reasoningChars": 330,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-99aa8ffcba735150",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "next",
+            "title": "Rebook textiles next day",
+            "via": "AYC 220 ZRH–EWR",
+            "revised_eta": "16 Oct 18:00 LT EWR",
+            "delay": "+14 h",
+            "cost": "CHF 0",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "AYC 220 has 3,200 kg free. Protect must-ride pharma 057-66219005 (620 kg) on today's last pallet.",
+            "action": "Leave 057-66219005 on AYC 418. Move Alpine Textiles 235-10092832 to AYC 220."
+          },
+          {
+            "option_id": "bump",
+            "title": "Bump the pharma",
+            "via": "AYC 418",
+            "revised_eta": "15 Oct 22:10 LT EWR",
+            "delay": "On time",
+            "cost": "—",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "Desk rule: never displace a must-ride pharma booking to recover general cargo.",
+            "action": "Do not offload 057-66219005."
+          },
+          {
+            "option_id": "split",
+            "title": "Fly 280 kg today, rest tomorrow",
+            "via": "AYC 418 + AYC 220",
+            "revised_eta": "16 Oct 18:00 LT EWR",
+            "delay": "+14 h",
+            "cost": "+CHF 70",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "After the pharma, 280 kg remain. That is a partial, a second AWB, and a split delivery.",
+            "action": "Split only if Alpine Textiles accepts two arrivals. Otherwise take AYC 220 intact."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 804,
+      "promptTokens": 3201,
+      "completionTokens": 54,
+      "reasoningChars": 58,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8201baadd8966500",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "risk": "high",
+        "classification": "Loses the last pallet",
+        "rule": [
+          "HIGH · 280 kg left after the protected booking"
+        ],
+        "drivers": [
+          {
+            "measure": "Left",
+            "value": "900 kg",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Pharma",
+            "value": "620 kg",
+            "assessment": "good"
+          },
+          {
+            "measure": "This file",
+            "value": "780 kg",
+            "assessment": "bad"
+          },
+          {
+            "measure": "After pharma",
+            "value": "280 kg",
+            "assessment": "bad"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 8,
+      "ms": 3404,
+      "promptTokens": 3365,
+      "completionTokens": 653,
+      "reasoningChars": 1228,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "high",
+    "recommended_option_id": "next",
+    "ranking": [
+      "next",
+      "split"
+    ],
+    "summary": "The shipment exceeds the free capacity on AYC 418 after protecting the must‑ride pharma pallet, leaving only 280 kg available for 780 kg of textiles. Rebooking on AYC 220 next day avoids displacing the pharma and delivers at Low risk.",
+    "why": [
+      "Available capacity after pharma: 280 kg (AYC 418 · 900 kg total – 620 kg pharma must‑ride).",
+      "Shipment weight: 780 kg, requiring 500 kg more than available.",
+      "Option next: delay +14 h, cost CHF 0, risk Low.",
+      "Option split: delay +14 h, cost +CHF 70, risk Medium."
+    ],
+    "customer_note": "AWB 235-10092832: Your textiles are now scheduled to arrive at EWR on 16 Oct 2026 at 18:00 local time."
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "customer",
+        "label": "Customer note cites the AWB in the customer's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "next",
+    "risk": "high",
+    "agrees": true
+  }
+}

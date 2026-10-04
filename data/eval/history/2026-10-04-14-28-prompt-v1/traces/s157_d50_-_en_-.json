@@ -1,0 +1,350 @@
+{
+  "version": 1,
+  "scenarioKey": "s157|d50|-|en|-",
+  "scenario": {
+    "shipmentId": "s157",
+    "delayMin": 50,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:29:25.016Z",
+  "latencyMs": 8291,
+  "promptTokens": 15325,
+  "completionTokens": 990,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 785,
+      "promptTokens": 2151,
+      "completionTokens": 56,
+      "reasoningChars": 62,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-91c09b038cda1aaf",
+      "name": "get_shipment",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "awb": "157-88001233",
+        "origin": "GVA",
+        "destination": "MAD",
+        "booked_route": "GVA → MAD",
+        "pieces": 10,
+        "weight_kg": 520,
+        "volume_m3": 2.8,
+        "dims": "loose",
+        "commodity": "Cheese, perishable",
+        "handling_code": "PER",
+        "priority": "priority",
+        "customer": "Fromage de Gruyère Export",
+        "customer_language": "French"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 857,
+      "promptTokens": 2305,
+      "completionTokens": 57,
+      "reasoningChars": 72,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-88282855b57ebfb0",
+      "name": "get_disruption",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "signal": "RFS 441 · dock 18:37",
+        "observed": [
+          "RFS 441 +50 min · dock 18:37"
+        ],
+        "truck_delay_min": 50,
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "RFS 441",
+            "value": "18:37",
+            "note": "+50 min",
+            "state": "risk"
+          },
+          {
+            "point": "Close",
+            "value": "18:30",
+            "note": "GVA PER",
+            "state": "risk"
+          },
+          {
+            "point": "AYC 090",
+            "value": "21:10",
+            "note": "GVA–MAD",
+            "state": "future"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 901,
+      "promptTokens": 2502,
+      "completionTokens": 73,
+      "reasoningChars": 131,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-844111f5312f00f7",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "GVA PER close 18:30"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 844,
+      "promptTokens": 2578,
+      "completionTokens": 69,
+      "reasoningChars": 125,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-809adb495746d12a",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "risk": "critical",
+        "classification": "Acceptance missed",
+        "rule": [
+          "CRITICAL · Acceptance missed"
+        ],
+        "drivers": [
+          {
+            "measure": "Dock ETA",
+            "value": "18:37",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Close",
+            "value": "18:30",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Gap",
+            "value": "7 min short",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Flight",
+            "value": "AYC 090",
+            "assessment": "neutral"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 880,
+      "promptTokens": 2735,
+      "completionTokens": 44,
+      "reasoningChars": 21,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-ba129273b8e9e81e",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "rush",
+            "title": "Priority door",
+            "via": "AYC 090 GVA–MAD",
+            "revised_eta": "15 Oct 00:40 LT MAD",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "Low",
+            "status": "blocked",
+            "constraint_check": "Dock ETA 18:37, acceptance closes 18:30. A priority door keeps the cheese on AYC 090 if the truck is still legal.",
+            "action": "Meet RFS 441 at door 2 and accept ahead of the loose queue."
+          },
+          {
+            "option_id": "roll",
+            "title": "Roll to the next MAD",
+            "via": "AYC 092",
+            "revised_eta": "16 Oct 01:10 LT MAD",
+            "delay": "+14 h",
+            "cost": "CHF 0",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Legal fallback once the 18:30 close is missed. The product is perishable — say so in the customer note.",
+            "action": "Book AYC 092 and keep the cheese in the cooler. Do not leave it on the export floor."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 4024,
+      "promptTokens": 3054,
+      "completionTokens": 691,
+      "reasoningChars": 1462,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "critical",
+    "recommended_option_id": "roll",
+    "ranking": [
+      "roll"
+    ],
+    "summary": "The truck arrived 7 minutes after the PER acceptance cutoff, causing a critical risk of missing flight AYC 090. We recommend rolling the shipment to the next available flight AYC 092.",
+    "why": [
+      "Dock ETA 18:37 vs acceptance close 18:30 → 7 min short (per get_disruption and get_cutoffs)",
+      "Risk calculated as critical due to acceptance missed (calculate_risk)",
+      "Option roll gives revised ETA 16 Oct 01:10 LT MAD, delay +14 h, cost CHF 0, risk Medium, status allowed (find_alternatives)"
+    ],
+    "customer_note": "AWB 157-88001233 : votre expédition sera désormais livrée le 16 octobre à 01:10 heure locale à Madrid au lieu du 15 octobre à 00:40."
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "customer",
+        "label": "Customer note cites the AWB in the customer's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "roll",
+    "risk": "critical",
+    "agrees": true
+  }
+}

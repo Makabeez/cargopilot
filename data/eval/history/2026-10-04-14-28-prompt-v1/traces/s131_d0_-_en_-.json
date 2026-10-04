@@ -1,0 +1,344 @@
+{
+  "version": 1,
+  "scenarioKey": "s131|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s131",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:28:45.730Z",
+  "latencyMs": 7558,
+  "promptTokens": 15230,
+  "completionTokens": 905,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 761,
+      "promptTokens": 2151,
+      "completionTokens": 56,
+      "reasoningChars": 62,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a7a516a746aa4bc3",
+      "name": "get_shipment",
+      "args": {
+        "awb": "131-77881204"
+      },
+      "output": {
+        "awb": "131-77881204",
+        "origin": "GVA",
+        "destination": "SIN",
+        "booked_route": "GVA → SIN",
+        "pieces": 1,
+        "weight_kg": 240,
+        "volume_m3": 1.2,
+        "dims": "active box",
+        "commodity": "Pharma +2/+8 °C",
+        "handling_code": "PIL",
+        "priority": "must-ride",
+        "customer": "Klinik Nord Pharma",
+        "customer_language": "English"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 595,
+      "promptTokens": 2308,
+      "completionTokens": 55,
+      "reasoningChars": 63,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8d6894de499b411a",
+      "name": "get_disruption",
+      "args": {
+        "awb": "131-77881204"
+      },
+      "output": {
+        "signal": "Probe 9.2 °C · 18 min",
+        "observed": [],
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "Probe",
+            "value": "9.2 °C",
+            "note": "18 min",
+            "state": "risk"
+          },
+          {
+            "point": "Rule",
+            "value": "30 min",
+            "note": "+8 °C",
+            "state": "future"
+          },
+          {
+            "point": "AYC 880",
+            "value": "SIN",
+            "note": "PIL",
+            "state": "future"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 1042,
+      "promptTokens": 2465,
+      "completionTokens": 133,
+      "reasoningChars": 330,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-99d7a2e8b7829274",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "131-77881204"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get cutoffs issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 1370,
+      "promptTokens": 2543,
+      "completionTokens": 111,
+      "reasoningChars": 245,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8699f203466df498",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "131-77881204"
+      },
+      "output": {
+        "risk": "watch",
+        "classification": "Probe outside range",
+        "rule": [],
+        "drivers": [
+          {
+            "measure": "Probe",
+            "value": "9.2 °C",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Range",
+            "value": "+2 / +8",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Duration",
+            "value": "18 min",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Rule",
+            "value": "30 min",
+            "assessment": "neutral"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 867,
+      "promptTokens": 2688,
+      "completionTokens": 44,
+      "reasoningChars": 21,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9039a971d33c4eb3",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "131-77881204"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "inspect",
+            "title": "Open the box on the dock",
+            "via": "Same flight",
+            "revised_eta": "16 Oct 16:40 LT SIN",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "9.2 °C for 18 min is not yet an excursion. The product rule trips at 30 min or at 10 °C. Look before you hold.",
+            "action": "Open the active box, check gel and probe, and release only if the core is back inside +2/+8."
+          },
+          {
+            "option_id": "hold",
+            "title": "QA hold",
+            "via": "Do not fly",
+            "revised_eta": "Pending QA",
+            "delay": "+12 h",
+            "cost": "CHF 0",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "Correct once an excursion is confirmed. Early, it only adds a day.",
+            "action": "Place AWB 131-77881204 on QA hold and call the product owner."
+          },
+          {
+            "option_id": "fly",
+            "title": "Fly as booked",
+            "via": "AYC 880 GVA–SIN",
+            "revised_eta": "16 Oct 16:40 LT SIN",
+            "delay": "On time",
+            "cost": "—",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "Ignoring a 9.2 °C probe without opening the box is how the claim starts.",
+            "action": "Do not tender until the probe is explained."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 2920,
+      "promptTokens": 3075,
+      "completionTokens": 506,
+      "reasoningChars": 1017,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "watch",
+    "recommended_option_id": "inspect",
+    "ranking": [
+      "inspect",
+      "hold"
+    ],
+    "summary": "The probe shows 9.2 °C for 18 min, below the 30‑min/10 °C excursion threshold. Inspect the active box on dock to confirm core temperature before loading on AYC 880.",
+    "why": [
+      "[\"Probe reading: 9.2 °C for 18 min (tool: get_disruption)\"]\n[\"Excursion rule triggers at 30 min or 10 °C (tool: get_disruption note)\"]\n[\"Inspect option keeps flight AYC 880, on‑time ETA 16 Oct 16:40 LT SIN, cost CHF 0, risk Medium (tool: find_alternatives)\"]\n[\"Hold option adds +12 h delay, risk Low but violates must‑ride priority (tool: find_alternatives)\"]"
+    ]
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "inspect",
+    "risk": "watch",
+    "agrees": true
+  }
+}

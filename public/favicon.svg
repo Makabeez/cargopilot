@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="CargoPilot">
+  <rect width="32" height="32" rx="7" fill="#0c161d"/>
+  <rect x="5" y="9" width="22" height="15" rx="1.5" fill="#e4eef3"/>
+  <rect x="5" y="9" width="22" height="4.5" fill="#e3a008"/>
+  <rect x="14.25" y="14.5" width="3.5" height="9.5" fill="#0c161d"/>
+</svg>

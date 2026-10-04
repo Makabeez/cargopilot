@@ -1,0 +1,401 @@
+{
+  "version": 1,
+  "scenarioKey": "s615|d90|-|fr|-",
+  "scenario": {
+    "shipmentId": "s615",
+    "delayMin": 90,
+    "flags": {},
+    "locale": "fr"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:29:08.192Z",
+  "latencyMs": 9490,
+  "promptTokens": 16160,
+  "completionTokens": 1305,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 587,
+      "promptTokens": 2151,
+      "completionTokens": 56,
+      "reasoningChars": 62,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b6cde5a1114674ed",
+      "name": "get_shipment",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "awb": "615-12345675",
+        "origin": "GVA",
+        "destination": "DEL",
+        "booked_route": "GVA → LEJ → DEL",
+        "pieces": 4,
+        "weight_kg": 780,
+        "volume_m3": 4.2,
+        "dims": "120×80×100 cm",
+        "commodity": "General cargo",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Nyon Precision SA",
+        "customer_language": "French"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 955,
+      "promptTokens": 2309,
+      "completionTokens": 56,
+      "reasoningChars": 68,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a1164ebd8667a918",
+      "name": "get_disruption",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "signal": "RFS 1840 · +90 min · LEJ",
+        "observed": [
+          "RFS 1840 GVA–LEJ +90 min · ETA 19:45 LT"
+        ],
+        "truck_delay_min": 90,
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "RFS 1840",
+            "value": "18:15",
+            "note": "Scheduled LEJ",
+            "state": "done"
+          },
+          {
+            "point": "Live ETA",
+            "value": "19:45",
+            "note": "+90 min",
+            "state": "risk"
+          },
+          {
+            "point": "Need by",
+            "value": "19:15",
+            "note": "45 min handling",
+            "state": "risk"
+          },
+          {
+            "point": "Cut-off",
+            "value": "20:00",
+            "note": "LEJ GCR",
+            "state": "future"
+          },
+          {
+            "point": "AYC 7841",
+            "value": "21:00",
+            "note": "LEJ–DEL",
+            "state": "future"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 1520,
+      "promptTokens": 2570,
+      "completionTokens": 171,
+      "reasoningChars": 449,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-adbdfc82eeaa8697",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "LEJ GCR 20:00 · transfer 45 min · required 19:15"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 1002,
+      "promptTokens": 2660,
+      "completionTokens": 53,
+      "reasoningChars": 55,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-ae19cda28c48a18e",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "risk": "high",
+        "classification": "Connection at risk",
+        "rule": [
+          "HIGH · Connection at risk"
+        ],
+        "drivers": [
+          {
+            "measure": "Truck ETA",
+            "value": "19:45",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Need by",
+            "value": "19:15",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Cut-off",
+            "value": "20:00",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Gap",
+            "value": "30 min short",
+            "assessment": "bad"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 638,
+      "promptTokens": 2818,
+      "completionTokens": 44,
+      "reasoningChars": 21,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8bdb94400209c532",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "summary": [
+          "ZRH feasible · FRA tight on volume · AYC 7842 rejected · AYC 7843 +18 h"
+        ],
+        "options": [
+          {
+            "option_id": "keep",
+            "title": "Keep AYC 7841 via LEJ",
+            "via": "AYC 7841 LEJ–DEL",
+            "revised_eta": "15 Oct 09:05 LT DEL",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Would need a station exception: the truck is inside the cut-off but short of the 45 min handling window.",
+            "action": "Present AWB 615-12345675 to AYC 7841 only if LEJ accepts a late tender."
+          },
+          {
+            "option_id": "next",
+            "title": "Roll to AYC 7842",
+            "via": "AYC 7842 LEJ–DEL",
+            "revised_eta": "15 Oct 14:40 LT DEL",
+            "delay": "+6 h",
+            "cost": "CHF 0",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "AYC 7842 has 410 kg free. This shipment is 780 kg. Capacity is not theoretical — it is short.",
+            "action": "Do not plan AYC 7842."
+          },
+          {
+            "option_id": "zrh",
+            "title": "Rebook via ZRH",
+            "via": "RFS 2204 · AYC 9864 ZRH–DEL",
+            "revised_eta": "15 Oct 13:10 LT DEL",
+            "delay": "+4 h",
+            "cost": "+CHF 180",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "RFS 2204 leaves GVA at 18:10, on hand ZRH 19:05, cut-off 21:30. Free capacity 2,200 kg and a loose position. Dispatch in the next 15 minutes.",
+            "action": "Pull AWB 615-12345675 off RFS 1840 and move it to RFS 2204 for AYC 9864 ZRH–DEL."
+          },
+          {
+            "option_id": "fra",
+            "title": "Rebook via FRA",
+            "via": "RFS 3310 · AYC 552 FRA–DEL",
+            "revised_eta": "15 Oct 18:05 LT DEL",
+            "delay": "+9 h",
+            "cost": "+CHF 90",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Weight fits (900 kg free) but the remaining LD3 is 4.3 m³ against 4.2 m³ built. No contour tolerance.",
+            "action": "Move the shipment to RFS 3310 GVA–FRA for AYC 552, and flag the volume as tight."
+          },
+          {
+            "option_id": "later",
+            "title": "Wait for AYC 7843",
+            "via": "AYC 7843 LEJ–DEL",
+            "revised_eta": "16 Oct 03:10 LT DEL",
+            "delay": "+18 h",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Space is clean (3,100 kg) but the customer window on 15 Oct is missed by a full day.",
+            "action": "Hold at LEJ for AYC 7843 and warn the customer of +18 h."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 4787,
+      "promptTokens": 3652,
+      "completionTokens": 925,
+      "reasoningChars": 1877,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "high",
+    "recommended_option_id": "zrh",
+    "ranking": [
+      "zrh",
+      "fra",
+      "keep",
+      "later"
+    ],
+    "summary": "Le camion RFS 1840 arrive avec 90 min de retard, laissant seulement 30 min avant la coupure de traitement à LEJ. Il faut rerouter l'AWB 615-12345675 via ZRH pour éviter un risque élevé de manquer le vol.",
+    "why": [
+      "[\"Truck ETA 19:45 LT, Need by 19:15 LT, Cut-off 20:00 LT → Gap 30 min short (calculate_risk)\"], [\"Option zrh: revised_eta 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low (find_alternatives)\"], [\"Option fra: revised_eta 15 Oct 18:05 LT DEL, delay +9 h, cost +CHF 90, risk Medium (find_alternatives)\"], [\"Option keep: revised_eta 15 Oct 09:05 LT DEL, delay On time, cost CHF 0, risk High, would need station exception (find_alternatives)\"]"
+    ],
+    "customer_note": "AWB 615-12345675 : nouvel acheminement via ZRH, arrivée prévue le 15 oct. 2026 à 13:10 LT à DEL."
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "customer",
+        "label": "Customer note cites the AWB in the customer's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "zrh",
+    "risk": "high",
+    "agrees": true
+  }
+}

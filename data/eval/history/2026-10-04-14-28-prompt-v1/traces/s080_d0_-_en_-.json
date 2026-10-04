@@ -1,0 +1,397 @@
+{
+  "version": 1,
+  "scenarioKey": "s080|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s080",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "startedAt": "2026-10-04T14:28:52.484Z",
+  "latencyMs": 9717,
+  "promptTokens": 20787,
+  "completionTokens": 902,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 623,
+      "promptTokens": 2151,
+      "completionTokens": 56,
+      "reasoningChars": 62,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-84faa5c7f8be0f64",
+      "name": "get_shipment",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "awb": "080-22991006",
+        "origin": "GVA",
+        "destination": "YYZ",
+        "booked_route": "GVA → YYZ",
+        "pieces": 2,
+        "weight_kg": 90,
+        "volume_m3": 0.5,
+        "dims": "gel-pack shipper",
+        "commodity": "Clinical samples",
+        "handling_code": "PER",
+        "priority": "priority",
+        "customer": "Maple Clinical",
+        "customer_language": "English"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 843,
+      "promptTokens": 2299,
+      "completionTokens": 54,
+      "reasoningChars": 57,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a75c776e9669c908",
+      "name": "get_disruption",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "signal": "Gel life · short 2 h",
+        "observed": [],
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "Pack-out",
+            "value": "14 h",
+            "note": "Gel life",
+            "state": "risk"
+          },
+          {
+            "point": "Lane",
+            "value": "16 h",
+            "note": "GVA–YYZ",
+            "state": "risk"
+          },
+          {
+            "point": "AYC 330",
+            "value": "Open",
+            "note": "If repacked",
+            "state": "ok"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 1242,
+      "promptTokens": 2450,
+      "completionTokens": 73,
+      "reasoningChars": 131,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-ac3c142e363498fd",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get cutoffs issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 1530,
+      "promptTokens": 2528,
+      "completionTokens": 112,
+      "reasoningChars": 277,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a8e94a13023180c8",
+      "name": "check_connection",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check connection issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 744,
+      "promptTokens": 2604,
+      "completionTokens": 48,
+      "reasoningChars": 51,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-88dffafe54fcee7e",
+      "name": "get_capacity",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get capacity issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 1214,
+      "promptTokens": 2680,
+      "completionTokens": 87,
+      "reasoningChars": 206,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9a83d3aefd17ffd0",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "risk": "watch",
+        "classification": "Gel life short by 2 h",
+        "rule": [],
+        "drivers": [
+          {
+            "measure": "Qualified",
+            "value": "14 h",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Lane",
+            "value": "16 h",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Flight",
+            "value": "AYC 330",
+            "assessment": "good"
+          },
+          {
+            "measure": "Repack",
+            "value": "Still legal",
+            "assessment": "good"
+          }
+        ]
+      },
+      "ms": 1
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 796,
+      "promptTokens": 2828,
+      "completionTokens": 44,
+      "reasoningChars": 21,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a409a6152464e8f6",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "repack",
+            "title": "Repack with fresh gels",
+            "via": "AYC 330",
+            "revised_eta": "15 Oct 21:00 LT YYZ",
+            "delay": "On time",
+            "cost": "+CHF 60",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "Qualified gel life is 14 h and the lane is 16 h. A repack at GVA restores the qualification and still makes AYC 330.",
+            "action": "Repack AWB 080-22991006 with fresh gels before close-out. Note the new pack-out time on the checklist."
+          },
+          {
+            "option_id": "active",
+            "title": "Upgrade to an active box",
+            "via": "AYC 330",
+            "revised_eta": "15 Oct 21:00 LT YYZ",
+            "delay": "On time",
+            "cost": "+CHF 220",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "Removes the gel-life limit. Costs more than a repack and does not arrive earlier.",
+            "action": "Move the samples into an active +2/+8 box and keep the same flight."
+          },
+          {
+            "option_id": "fly",
+            "title": "Fly on the current gels",
+            "via": "AYC 330",
+            "revised_eta": "15 Oct 21:00 LT YYZ",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "blocked",
+            "constraint_check": "The box runs out of qualification two hours before delivery. That is a claim, not a plan.",
+            "action": "Do not release without a repack or an active box."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 8,
+      "ms": 2723,
+      "promptTokens": 3247,
+      "completionTokens": 428,
+      "reasoningChars": 834,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        }
+      ]
+    }
+  ],
+  "decision": {
+    "risk": "watch",
+    "recommended_option_id": "repack",
+    "ranking": [
+      "repack",
+      "active"
+    ],
+    "summary": "Gel life is short by 2 hours, creating a watch risk. Repacking with fresh gels restores qualification and maintains the on‑time arrival on AYC 330.",
+    "why": [
+      "Gel life qualified 14 h, lane 16 h → short 2 h (watch risk).",
+      "Repack adds fresh gels, cost +CHF 60, risk Low, ETA 15 Oct 21:00 LT YYZ (on time).",
+      "Active box option costs +CHF 220, same ETA, also Low risk.",
+      "Fly on current gels is blocked due to gel‑life expiry two hours before delivery."
+    ]
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 1,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "repack",
+    "risk": "watch",
+    "agrees": true
+  }
+}
