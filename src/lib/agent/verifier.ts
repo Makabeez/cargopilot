@@ -13,7 +13,18 @@ import { optionStatus, type ToolContext } from "./tools";
 import type { Check, Decision } from "./types";
 
 type Unit = "kg" | "min" | "h" | "cm" | "C" | "m3" | "%" | "pcs" | "CHF";
-type Quantity = { raw: string; value: number; unit: Unit };
+/**
+ * `alt` is set when a space or apostrophe could be a thousands separator OR a
+ * word gap: "2 400 kg" (French 2,400) vs "piece 3 168 cm" (piece 3, 168 cm).
+ * The figure is grounded if either reading is.
+ */
+type Quantity = { raw: string; value: number; unit: Unit; alt?: number };
+
+function altReading(raw: string): number | undefined {
+  const s = raw.trim();
+  if (!/^\d{1,3}(?:[ ']\d{3})+$/.test(s)) return undefined;
+  return Number(s.split(/[ ']/).pop());
+}
 
 function clean(text: string): string {
   return text.replace(/[\u202f\u00a0\u2009]/g, " ").replace(/\u2212/g, "-");
@@ -49,9 +60,9 @@ export function extractQuantities(text: string): Quantity[] {
   // Clock times ("19:45", "19h45", "18 h 12") are not durations: blank them first.
   const t = clean(text).replace(TIME_RE, (m) => " ".repeat(m.length));
   const out: Quantity[] = [];
-  for (const m of t.matchAll(QTY_RE)) out.push({ raw: m[0], value: parseNumber(m[1]), unit: unitOf(m[2]) });
-  for (const m of t.matchAll(CHF_BEFORE)) out.push({ raw: m[0], value: parseNumber(m[1]), unit: "CHF" });
-  for (const m of t.matchAll(CHF_AFTER)) out.push({ raw: m[0], value: parseNumber(m[1]), unit: "CHF" });
+  for (const m of t.matchAll(QTY_RE)) out.push({ raw: m[0], value: parseNumber(m[1]), unit: unitOf(m[2]), alt: altReading(m[1]) });
+  for (const m of t.matchAll(CHF_BEFORE)) out.push({ raw: m[0], value: parseNumber(m[1]), unit: "CHF", alt: altReading(m[1]) });
+  for (const m of t.matchAll(CHF_AFTER)) out.push({ raw: m[0], value: parseNumber(m[1]), unit: "CHF", alt: altReading(m[1]) });
   return out.filter((q) => Number.isFinite(q.value));
 }
 
@@ -132,6 +143,7 @@ function timeDiffs(times: number[]): number[] {
 }
 
 export function isGroundedQuantity(q: Quantity, src: GroundingSource): boolean {
+  if (q.alt !== undefined && isGroundedQuantity({ ...q, value: q.alt, alt: undefined }, src)) return true;
   const pool = src.byUnit.get(q.unit) ?? [];
   if (pool.some((p) => eq(p, q.value))) return true;
   if (q.unit === "%") return false; // no invented probabilities

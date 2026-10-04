@@ -207,6 +207,9 @@ test("verifier: piece counts, French clock times, quoted-only delays and costs",
   };
   const dims: Scenario = { shipmentId: "s020", delayMin: 0, flags: {}, locale: "en" };
   assert.deepEqual(ids(dims, "5 pieces fit the belly; piece 3 goes main deck.", "main", "critical"), []);
+  // Found in a real v4 run: "piece 3 168 cm" is piece 3 at 168 cm, not 3,168 cm.
+  assert.deepEqual(ids(dims, "Piece 3 168 cm exceeds the 160 cm belly limit.", "main", "critical"), []);
+  assert.equal(ids(dims, "Piece 3 175 cm exceeds the belly limit.", "main", "critical").length, 1);
   assert.equal(ids(dims, "9 pieces fit the belly.", "main", "critical").length, 1);
   const hero: Scenario = { shipmentId: "s615", delayMin: 90, flags: {}, locale: "en" };
   const heroFr: Scenario = { ...hero, locale: "fr" };

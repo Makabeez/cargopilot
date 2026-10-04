@@ -98,29 +98,40 @@ Deploy: `npm run build` produces Vercel output (Node 22 function, response strea
 
 `npm run agent:record` runs Nemotron live on 30 scenarios: every file, each "what if" toggle, the delay sweep on the hero file, both languages, and the exact operator turns used in the demo. It writes [`data/eval/report.md`](data/eval/report.md) from the recorded runs; nothing in it is typed by hand. Each new recording archives the previous one in [`data/eval/history/`](data/eval/history/), and `npm run judge-demo` re-verifies all of them.
 
-**Three prompt versions, same model (`nvidia/nemotron-3-super-120b-a12b`), same 30 scenarios, 4 Oct 2026:**
+**Four prompt versions, same model (`nvidia/nemotron-3-super-120b-a12b`), same 30 scenarios, 4 Oct 2026:**
 
-| | prompt v1 | prompt v2 | prompt v3 (current) |
+| | prompt v1 | prompt v2 | prompt v3 | prompt v4 (current) |
+| --- | --- | --- | --- | --- |
+| Accepted by the verifier on first submission | 27/30 | 28/30 | 30/30 | 26/30 ¹ |
+| Accepted after verifier feedback | 30/30 | 30/30 | 30/30 | 30/30 |
+| Fell back to the rules engine | 0 | 0 | 0 | 0 |
+| Verified pick = rules-engine pick | 27/30 | 26/30 | 29/30 | 29/30 |
+| Latency p50 / p95 | 8.3 / 12.7 s | 9.1 / 14.3 s | 10.4 / 12.5 s | 9.4 / 15.2 s |
+| Cost for 30 runs at list price | $0.18 | $0.18 | $0.20 | $0.22 |
+
+¹ v4 was judged by a stricter verifier, which added a language check on the summary and evidence bullets. Under that verifier, v3 scores 29/30. One of the four v4 rejections was a bug in the verifier, not a model error (see below). Without it, v4 scores 27/30. With 30 runs, a difference of one to three is within run-to-run noise, so **we do not claim v4 beats v3 on first-try acceptance.** What v4 fixed is the quality of answers to operator questions.
+
+**What the verifier caught.** Every row is real Nemotron output from the recorded runs in [`data/`](data/):
+
+| Run | What Nemotron submitted | Checks that sent it back | What happened next |
 | --- | --- | --- | --- |
-| Accepted by the verifier on first submission | 27/30 | 28/30 | **30/30** |
-| Accepted after verifier feedback | 30/30 | 30/30 | 30/30 |
-| Fell back to the rules engine | 0 | 0 | 0 |
-| Verified pick = rules-engine pick | 27/30 | 26/30 | **29/30** |
-| Latency p50 / p95 | 8.3 / 12.7 s | 9.1 / 14.3 s | 10.4 / 12.5 s |
-| Cost for 30 runs at list price | $0.18 | $0.18 | $0.20 |
+| v1 · truck +120 min | An option's risk label ("Low") as the file's risk class | `schema` | Fixed in v2: the risk class is the file's own |
+| v1 · "What if the truck is delayed another 30 minutes?" | A decision without calling `find_alternatives`: recommended "None", no answer to the operator | `tools`, `option`, `reply` | Fixed in v2: the workflow is required on operator turns |
+| v1 · "Why this call?" | The same shortcut, with a malformed ranking and no reply | `tools`, `ranking`, `reply` | Fixed in v2 |
+| v2 · both English operator turns on the French customer's file | A reply in French: it followed the customer's language, not the operator's | `reply` | Fixed in v3: the reply is always in the operator's language |
+| v4 · 3 of the 7 runs on the French desk | Evidence bullets in English under a French summary ("Truck ETA 19:00 (delay +45 min)") | `language` | Not fixed by the prompt: the verifier sends them back and Nemotron rewrites them in French, once on its third submission |
 
-**What the verifier caught, and what each prompt change fixed.** Every row is real Nemotron output from the archived runs:
+Every rejected decision was corrected within three submissions, and no run fell back to the rules engine. To watch the archived catches in the app, open it with `?replay=v1` or `?replay=v2`. The current v4 recordings contain the French-desk catches.
 
-| Run | What Nemotron submitted | Checks that sent it back | Fixed in |
-| --- | --- | --- | --- |
-| v1 · truck +120 min | An option's risk label ("Low") as the file's risk class | `schema` | v2: the risk class is the file's own |
-| v1 · "What if the truck is delayed another 30 minutes?" | A decision without calling `find_alternatives`: recommended "None", no answer to the operator | `tools`, `option`, `reply` | v2: the workflow is required on operator turns |
-| v1 · "Why this call?" | The same shortcut, with a malformed ranking and no reply | `tools`, `ranking`, `reply` | v2 |
-| v2 · both English operator turns on the French customer's file | A reply in French: it followed the customer's language, not the operator's | `reply` | v3: the reply is always in the operator's language |
+**A bug the eval found in the verifier, not the model.** In one v4 run Nemotron wrote "piece 3 168 cm" (piece 3, which is 168 cm tall). The verifier read it as 3,168 cm, because French writes thousands with a space ("2 400 kg"), and rejected the decision. The verifier now accepts either reading if one of them is in the tool data. The case is a regression test in `tests/agent.test.ts`.
 
-Every rejected decision was corrected on Nemotron's second submission. v1 → v2 removed the workflow shortcut; v2 → v3 removed the language slip. To watch those catches in the app, open it with `?replay=v1` or `?replay=v2`: the archived run is replayed and labelled with its prompt version.
+**What v4 changed: operator questions get before → after answers.** The desk applies an operator's "another 30 minutes" to the scenario before the model runs. Up to v3, Nemotron wasn't told that. The v1 run added the 30 minutes a second time ("ETA would become 20:45, 90 min short"). Every figure in that answer was derivable from the tool data, so the verifier could not catch it. The v3 run answered vaguely ("the miss becomes larger"). v4 tells the model the change is already applied. The recorded v4 answer reads:
 
-**The policy change in v3.** In v1 and v2, Nemotron rerouted shipments whose booked connection was tight but still achievable (Medium risk, 0–15 min of slack), costing +4–6 h and CHF 150–180. The rules engine kept the booking. v3 encodes the desk's policy: keep the booking and state the exact trigger that would force a reroute (for example "reroute if the truck ETA passes 19:15"). Agreement with the rules engine went from 26/30 to 29/30.
+> *Before: truck ETA 19:45 LT (scheduled 18:15 LT + 90 min), 30 min after need-by 19:15 LT but still before LEJ cut-off 20:00 LT. After: truck ETA 20:15 LT (+120 min), 60 min short of need-by 19:15 LT and past cut-off 20:00 LT, risk critical; recommend rebooking via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT (+4 h, +CHF 180).*
+
+This is the clearest limit of a grounding verifier. It proves that every number comes from the data. It cannot prove the reasoning that connects them.
+
+**The policy change in v3.** In v1 and v2, Nemotron rerouted shipments whose booked connection was tight but still achievable (Medium risk, 0–15 min of slack), costing +4–6 h and CHF 150–180. The rules engine kept the booking. v3 encodes the desk's policy: keep the booking and state the exact trigger that would force a reroute (for example "reroute if the truck ETA passes 19:15"). Agreement with the rules engine went from 26/30 to 29/30, and stayed there in v4.
 
 **The remaining disagreement** (both picks pass every hard constraint): with the tall piece dropped, Nemotron takes the main deck (Low risk, CHF 340) over the engine's split shipment (Medium risk, CHF 210). That follows its risk-before-cost ranking for alternatives.
 
@@ -145,7 +156,8 @@ Every rejected decision was corrected on Nemotron's second submission. v1 → v2
 
 - **The verifier checks grounding, not judgement.** A decision can quote every figure correctly and still choose a worse option. One example: keeping a connection that depends on a station accepting a late tender, when a low-risk reroute exists. The prompt tells Nemotron to rank by risk before delay, and the UI shows the rules engine's pick next to Nemotron's so a disagreement is visible, not hidden.
 - **The "derived figure" rule is deliberately narrow, but not airtight.** For kg, minutes, cm, m³ and °C, a difference of two quoted figures passes ("370 kg short" = 780 − 410). A wrong number can occasionally slip through if it happens to equal such a difference. Hours of delay and CHF costs get no such allowance and must be quoted exactly.
-- **The language check is a word-count heuristic.** It catches a reply in the wrong language, not bad grammar.
+- **Grounding is not reasoning.** A figure can be derivable from the data and still be wrong in context. The v1 double-counted delay above is the recorded example. The prompt now prevents that case, but the verifier cannot prove it.
+- **The language check is a word-count heuristic.** It catches a reply, summary or bullet list in the wrong language when there is enough running text to tell. Very terse bullets can slip through, and it does not judge grammar.
 - **The cargo network is 10 hand-built files.** It is not a solver over a real schedule. The point is the agent pattern: tools return facts, the model decides, a verifier gates. That transfers to a real TMS or airline API behind the same tool interface.
 
 ## Project layout
