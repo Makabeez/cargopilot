@@ -75,8 +75,8 @@ function num(key: string, fallback: number): number {
 
 function allowLive(ip: string): string | null {
   const now = Date.now();
-  const perIp = num("AGENT_RATE_PER_10MIN", 30);
-  const perHour = num("AGENT_MAX_LIVE_PER_HOUR", 300);
+  const perIp = num("AGENT_RATE_PER_10MIN", 20);
+  const perHour = num("AGENT_MAX_LIVE_PER_HOUR", 120);
   if (hits.size > 5000) for (const [k, v] of hits) if (now - v[v.length - 1] > 10 * 60_000) hits.delete(k);
   const mine = (hits.get(ip) ?? []).filter((t) => now - t < 10 * 60_000);
   liveThisHour = liveThisHour.filter((t) => now - t < 3_600_000);
@@ -109,6 +109,10 @@ export function agentStatus() {
 }
 
 export async function handleAgentRequest(request: Request): Promise<Response> {
+  // JSON only: blocks cross-site "simple" form/text POSTs from spending live model calls.
+  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
+    return Response.json({ error: "content-type must be application/json" }, { status: 415 });
+  }
   let parsed: z.infer<typeof RequestSchema>;
   try {
     parsed = RequestSchema.parse(await request.json());
@@ -160,7 +164,10 @@ export async function handleAgentRequest(request: Request): Promise<Response> {
               onStep,
               request.signal,
             );
-            if (run.verdict.accepted) cache.set(key, { run, at: Date.now() });
+            if (run.verdict.accepted) {
+              if (cache.size > 500) for (const [k, v] of cache) if (Date.now() - v.at > CACHE_MS) cache.delete(k);
+              cache.set(key, { run, at: Date.now() });
+            }
             else if (run.verdict.fellBack && recorded) {
               // The live call failed or was rejected; a verified recording is the better answer.
               onStep({ kind: "note", text: "Live run did not produce a verified decision — serving the recorded run." });

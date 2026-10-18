@@ -1,7 +1,7 @@
 /**
  * CargoPilot agent CLI.
  *
- *   npm run judge-demo     no key, no network, < 60 s. Validates AWBs, runs the
+ *   npm run judge-demo     no key, no network, ~5 s. Validates AWBs, runs the
  *                          rules agent on every UI-reachable scenario through
  *                          the verifier, re-verifies every recorded Nemotron
  *                          trace against freshly computed tool outputs, prints

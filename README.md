@@ -6,7 +6,7 @@ Built for the Nebius × NVIDIA Global AI Hackathon, **Best Apps & Agents** track
 
 - **Live demo:** https://cargopilot-eta.vercel.app. The agent panel runs Nemotron live on Nebius Token Factory.
 - **Watch the verifier catch Nemotron:** https://cargopilot-eta.vercel.app/?replay=v1, then type "What if the truck is delayed another 30 minutes?" on file 615-12345675. That replays a real prompt-v1 run.
-- **Video (≤ 3 min):** _add the link here_
+- **Video (2:12):** https://youtu.be/FSuTVEp0f44
 - **Check it in one command, no key needed:** `npm ci && npm run judge-demo`
 
 ![CargoPilot desk](docs/desk.png)
@@ -69,9 +69,9 @@ Open a file and the agent works it: it calls tools for the facts, ranks the reco
 
 | Mode | When | Badge |
 | --- | --- | --- |
-| **Live** | `NEBIUS_API_KEY` is set | `LIVE · NVIDIA Nemotron · Nebius Token Factory` |
-| **Replay** | No key, but this exact scenario was recorded with `npm run agent:record` | `REPLAY · recorded <timestamp> · <model>` |
-| **Rules only** | No key and no recording, or the "Rules engine only" toggle is on | `RULES ONLY · no model call` |
+| **Live** | `NEBIUS_API_KEY` is set and the spend guards allow a call | `LIVE · NVIDIA Nemotron · Nebius Token Factory` |
+| **Replay** | A recorded run of this exact scenario is served instead: no key, `?replay=v1/v2/v3`, the same scenario was run live in the last 30 minutes, a spend guard was hit, or the live run produced no verified decision | `REPLAY · recorded <timestamp> · <model>` |
+| **Rules only** | Nothing live or recorded is available, or the "Rules engine only" toggle is on | `RULES ONLY · no model call` |
 
 A replay is served unchanged from the recorded run. `npm run judge-demo` re-verifies every recorded trace against freshly computed tool outputs, so an edited trace or an engine change after recording fails the check.
 
@@ -79,7 +79,7 @@ A replay is served unchanged from the recorded run. `npm run judge-demo` re-veri
 
 ```bash
 npm ci
-npm run judge-demo      # < 5 s, no key: tests + AWB check + 244 scenarios through the verifier + recorded traces re-verified
+npm run judge-demo      # ~5 s, no key: tests + AWB check + 244 scenarios through the verifier + recorded traces re-verified
 npm run dev             # http://localhost:8080 (rules/replay mode without a key)
 ```
 
@@ -92,7 +92,7 @@ npm run dev             # agent panel now shows LIVE
 npm run agent:record    # runs Nemotron on the 30-scenario eval set → data/traces/ + data/eval/report.md
 ```
 
-Deploy: `npm run build` produces Vercel output (Node 22 function, response streaming, 120 s max). Set `NEBIUS_API_KEY` in the project environment. `AGENT_RATE_PER_10MIN` and `AGENT_MAX_LIVE_PER_HOUR` cap spend per instance, and identical scenarios are cached for 30 minutes.
+Deploy: `npm run build` produces Vercel output (Node 22 function, response streaming, 120 s max). Set `NEBIUS_API_KEY` in the project environment. `AGENT_RATE_PER_10MIN` and `AGENT_MAX_LIVE_PER_HOUR` cap spend per instance, each run has a 100 s budget inside the 120 s function limit, and identical scenarios are cached for 30 minutes. Per-instance caps reset on cold starts, so also set a spend limit on the Nebius key.
 
 ## Evaluation
 
@@ -119,13 +119,13 @@ Deploy: `npm run build` produces Vercel output (Node 22 function, response strea
 | v1 · "What if the truck is delayed another 30 minutes?" | A decision without calling `find_alternatives`: recommended "None", no answer to the operator | `tools`, `option`, `reply` | Fixed in v2: the workflow is required on operator turns |
 | v1 · "Why this call?" | The same shortcut, with a malformed ranking and no reply | `tools`, `ranking`, `reply` | Fixed in v2 |
 | v2 · both English operator turns on the French customer's file | A reply in French: it followed the customer's language, not the operator's | `reply` | Fixed in v3: the reply is always in the operator's language |
-| v4 · 3 of the 7 runs on the French desk | Evidence bullets in English under a French summary ("Truck ETA 19:00 (delay +45 min)") | `language` | Not fixed by the prompt: the verifier sends them back and Nemotron rewrites them in French, once on its third submission |
+| v4 · 3 of the 4 runs on the French desk | Evidence bullets in English under a French summary ("Truck ETA 19:00 (delay +45 min)") | `language` | Not fixed by the prompt: the verifier sends them back and Nemotron rewrites them in French, once on its third submission |
 
 Every rejected decision was corrected within three submissions, and no run fell back to the rules engine. To watch the archived catches in the app, open it with `?replay=v1` or `?replay=v2`. The current v4 recordings contain the French-desk catches.
 
 **A bug the eval found in the verifier, not the model.** In one v4 run Nemotron wrote "piece 3 168 cm" (piece 3, which is 168 cm tall). The verifier read it as 3,168 cm, because French writes thousands with a space ("2 400 kg"), and rejected the decision. The verifier now accepts either reading if one of them is in the tool data. The case is a regression test in `tests/agent.test.ts`.
 
-**What v4 changed: operator questions get before → after answers.** The desk applies an operator's "another 30 minutes" to the scenario before the model runs. Up to v3, Nemotron wasn't told that. The v1 run added the 30 minutes a second time ("ETA would become 20:45, 90 min short"). Every figure in that answer was derivable from the tool data, so the verifier could not catch it. The v3 run answered vaguely ("the miss becomes larger"). v4 tells the model the change is already applied. The recorded v4 answer reads:
+**What v4 changed: operator questions get before → after answers.** The desk applies an operator's "another 30 minutes" to the scenario before the model runs. Up to v3, Nemotron wasn't told that. The v1 run added the 30 minutes a second time ("the ETA would become 20:45, increasing the shortfall to 90 minutes"). Every figure in that answer was derivable from the tool data, so the verifier could not catch it. The v3 run answered vaguely ("the miss becomes larger"). v4 tells the model the change is already applied. The recorded v4 answer reads:
 
 > *Before: truck ETA 19:45 LT (scheduled 18:15 LT + 90 min), 30 min after need-by 19:15 LT but still before LEJ cut-off 20:00 LT. After: truck ETA 20:15 LT (+120 min), 60 min short of need-by 19:15 LT and past cut-off 20:00 LT, risk critical; recommend rebooking via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT (+4 h, +CHF 180).*
 

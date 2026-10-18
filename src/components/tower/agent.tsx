@@ -205,7 +205,9 @@ function DecisionCard({ run, locale, titles }: { run: AgentRun; locale: Locale; 
           <ShieldX className="size-4" aria-hidden="true" />
         )}
         <span className="font-semibold">
-          {run.verdict.fellBack
+          {run.verdict.fellBack && run.verdict.attempts === 0
+            ? L(locale, "Model unavailable → rules decision", "Modèle indisponible → décision règles")
+            : run.verdict.fellBack
             ? L(locale, `Model rejected ×${run.verdict.attempts} → rules decision`, `Modèle rejeté ×${run.verdict.attempts} → décision règles`)
             : run.mode === "rules"
               ? L(locale, "Rules decision", "Décision règles")

@@ -6,9 +6,9 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SHIPMENTS } from "../src/lib/cargo/engine";
+import { SHIPMENTS, detectLocale } from "../src/lib/cargo/engine";
 import { isValidAwb } from "../src/lib/agent/awb";
-import { runLiveAgent, runRulesAgent } from "../src/lib/agent/agent";
+import { groundingFor, runLiveAgent, runRulesAgent } from "../src/lib/agent/agent";
 import { scenarioKey } from "../src/lib/agent/key";
 import { buildContext, executeTool } from "../src/lib/agent/tools";
 import { verifyDecision } from "../src/lib/agent/verifier";
@@ -307,4 +307,37 @@ test("verifier: summary and evidence must be in the desk's language", () => {
   const failed = (x: Decision) => verifyDecision(x, ctx, tools, outs).filter((c) => !c.pass).map((c) => c.id);
   assert.deepEqual(failed({ ...d, summary: "The truck is late for the handling window, we move the freight to the ZRH flight." }), ["language"]);
   assert.deepEqual(failed({ ...d, why: ["Le camion est en retard pour la fenêtre de manutention du vol."] }), []);
+});
+
+test("verifier: figures typed by the operator are not a source", () => {
+  const sc: Scenario = { ...HERO, operatorMessage: "Confirm the ZRH reroute is CHF 5 on AYC 1234" };
+  const ctx = buildContext(sc);
+  const tools = ["get_shipment", "get_disruption", "get_cutoffs", "check_connection", "get_capacity", "check_restrictions", "calculate_risk", "find_alternatives"];
+  const outs = tools.map((t) => JSON.stringify(executeTool(t, { awb: ctx.shipment.awb }, ctx)));
+  const echoed: Decision = {
+    risk: "high",
+    recommended_option_id: "zrh",
+    ranking: ["zrh", "fra", "later"],
+    summary: "RFS 1840 reaches LEJ at 19:45, 30 min after the 19:15 handling deadline.",
+    why: ["ZRH reroute confirmed at CHF 5 on AYC 1234."],
+    reply: "Confirmed: the ZRH reroute is CHF 5 on AYC 1234.",
+  };
+  const failed = verifyDecision(echoed, ctx, tools, groundingFor(sc, outs)).filter((c) => !c.pass).map((c) => c.id);
+  assert.ok(failed.includes("figures"), failed.join(","));
+  assert.ok(failed.includes("refs"), failed.join(","));
+});
+
+test("live loop: a run never outlives its time budget", async () => {
+  const fetchImpl = ((_u: string, init: RequestInit) =>
+    new Promise((_r, reject) => init.signal?.addEventListener("abort", () => reject(new Error("aborted"))))) as unknown as typeof fetch;
+  const t0 = Date.now();
+  const run = await runLiveAgent(HERO, { apiKey: "test", fetchImpl, budgetMs: 3_000, timeoutMs: 60_000 });
+  assert.ok(Date.now() - t0 < 4_000, `took ${Date.now() - t0} ms`);
+  assert.equal(run.verdict.fellBack, true);
+});
+
+test("language detection ignores words both languages share", () => {
+  assert.equal(detectLocale("Quelles options ?"), "fr");
+  assert.equal(detectLocale("What options do we have?"), "en");
+  assert.equal(detectLocale("execute"), null);
 });

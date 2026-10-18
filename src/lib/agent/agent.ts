@@ -62,11 +62,13 @@ function rulesDecision(ctx: ToolContext): Decision {
   };
 }
 
-/** Everything a decision may quote from: this run's tool outputs plus what the desk told the model. */
+/**
+ * Everything a decision may quote from: this run's tool outputs, the applied delay change and the desk clock.
+ * The operator's free text is deliberately NOT a source: a figure typed by the desk must still match a tool.
+ */
 export function groundingFor(scenario: Scenario, toolOutputs: string[]): string[] {
   return [
     ...toolOutputs,
-    scenario.operatorMessage ?? "",
     scenario.priorDelayMin !== undefined
       ? `previous truck delay ${scenario.priorDelayMin} min, current truck delay ${scenario.delayMin} min`
       : "",
@@ -142,7 +144,10 @@ export type LiveConfig = {
   maxTokens?: number;
   /** Merged into every request body (e.g. reasoning toggles). */
   extraBody?: Record<string, unknown>;
+  /** Per-request timeout (default 45 s). */
   timeoutMs?: number;
+  /** Wall-clock budget for a whole run (default 100 s, inside Vercel's 120 s maxDuration). */
+  budgetMs?: number;
   fetchImpl?: typeof fetch;
 };
 
@@ -206,6 +211,8 @@ function userPrompt(s: Scenario, awb: string): string {
 async function chat(
   cfg: LiveConfig,
   messages: ChatMessage[],
+  deadline = Infinity,
+  signal?: AbortSignal,
 ): Promise<{
   message: { content?: string | null; tool_calls?: RawToolCall[]; reasoning_content?: string; reasoning?: string };
   finishReason?: string;
@@ -224,8 +231,15 @@ async function chat(
   };
   let lastErr = "";
   for (let attempt = 0; attempt < 3; attempt++) {
+    const left = deadline - Date.now();
+    if (left < 3_000 || signal?.aborted) {
+      lastErr ||= signal?.aborted ? "client closed the request" : "run time budget exhausted";
+      break;
+    }
     const ac = new AbortController();
-    const timer = setTimeout(() => ac.abort(), cfg.timeoutMs ?? 90_000);
+    const onAbort = () => ac.abort();
+    signal?.addEventListener("abort", onAbort, { once: true });
+    const timer = setTimeout(() => ac.abort(), Math.min(cfg.timeoutMs ?? 45_000, left));
     try {
       const res = await f(url, {
         method: "POST",
@@ -245,8 +259,9 @@ async function chat(
       lastErr = e instanceof Error ? e.message : String(e);
     } finally {
       clearTimeout(timer);
+      signal?.removeEventListener("abort", onAbort);
     }
-    await new Promise((r) => setTimeout(r, 800 * (attempt + 1)));
+    if (attempt < 2) await new Promise((r) => setTimeout(r, Math.min(800 * (attempt + 1), Math.max(0, deadline - Date.now()))));
   }
   throw new Error(`Token Factory request failed: ${lastErr}`);
 }
@@ -272,6 +287,9 @@ export async function runLiveAgent(
   signal?: AbortSignal,
 ): Promise<AgentRun> {
   const t0 = Date.now();
+  const budget = cfg.budgetMs ?? 100_000;
+  const deadline = t0 + budget;
+  const reserve = Math.min(8_000, budget / 10); // no new model turn without this much time left
   const ctx = buildContext(scenario);
   const model = cfg.model ?? DEFAULT_MODEL;
   const steps: Step[] = [];
@@ -323,8 +341,12 @@ export async function runLiveAgent(
         emit({ kind: "note", text: "Request closed by the client — stopped before the next model call." });
         break;
       }
+      if (deadline - Date.now() < reserve) {
+        emit({ kind: "note", text: "Run time budget reached — stopped before the next model call." });
+        break;
+      }
       const s0 = Date.now();
-      const { message, usage, finishReason } = await chat({ ...cfg, model }, messages);
+      const { message, usage, finishReason } = await chat({ ...cfg, model }, messages, deadline, signal);
       promptTokens += usage?.prompt_tokens ?? 0;
       completionTokens += usage?.completion_tokens ?? 0;
       const calls = message.tool_calls ?? [];
@@ -336,7 +358,8 @@ export async function runLiveAgent(
         promptTokens: usage?.prompt_tokens,
         completionTokens: usage?.completion_tokens,
         reasoningChars: reasoning.length || undefined,
-        text: message.content?.trim() || undefined,
+        // The desk only needs a preview; never relay long free-form completions.
+        text: message.content?.trim().slice(0, 600) || undefined,
         toolCalls: calls.map((c) => c.function.name),
       });
 

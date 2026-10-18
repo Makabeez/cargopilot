@@ -100,7 +100,7 @@ export const useAgent = create<AgentState>((set, get) => ({
               steps: msg.run.steps,
               done: scenario.operatorMessage ? s.done : { ...s.done, [key]: msg.run },
             }));
-          else if (msg.type === "error") set({ status: "error", error: msg.message });
+          else if (msg.type === "error") set({ status: "error", error: msg.message, base: null });
         }
       }
       if (inflight === ac && get().status === "running") {

@@ -11,9 +11,3 @@ export function isValidAwb(awb: string): boolean {
   if (!m) return false;
   return awbCheckDigit(m[2]) === Number(m[3]);
 }
-
-export function fixAwb(awb: string): string {
-  const m = /^(\d{3})-?(\d{7})\d$/.exec(awb.trim());
-  if (!m) throw new Error(`Not an AWB: ${awb}`);
-  return `${m[1]}-${m[2]}${awbCheckDigit(m[2])}`;
-}

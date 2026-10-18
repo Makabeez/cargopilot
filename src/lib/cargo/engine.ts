@@ -1724,10 +1724,11 @@ export type Command =
 export function detectLocale(text: string): Locale | null {
   const fr =
     /[àâçéèêëîïôùûœ]/i.test(text) ||
-    /\b(le|la|les|des|est|camion|retard|pourquoi|execute|exécut|applique|options|que|fait|fret|connexion|minutes)\b/i.test(
+    /\b(le|la|les|des|est|camion|retard|pourquoi|exécut\w*|applique|que|quel(?:le)?s?|fait|fret|connexion|vol|avec|pour)\b/i.test(
       text,
     );
-  const en = /\b(the|truck|delay|delayed|what|why|execute|options|minutes|another|shipment|plan)\b/i.test(text);
+  // Words shared by both languages (options, minutes, execute, plan) decide nothing.
+  const en = /\b(the|truck|delay|delayed|what|why|another|shipment|which|can|should)\b/i.test(text);
   if (fr && !en) return "fr";
   if (en && !fr) return "en";
   if (fr && en) return /[àâçéèêëîïôùûœ]/i.test(text) || /\b(camion|retard|pourquoi)\b/i.test(text) ? "fr" : "en";
@@ -1762,14 +1763,6 @@ export function parseCommand(text: string): { command: Command; localeHint: Loca
   if (/\b(pourquoi|why)\b/i.test(raw)) return { command: { type: "why" }, localeHint };
   if (/(options|alternative)/i.test(raw)) return { command: { type: "options" }, localeHint };
   return { command: { type: "unknown" }, localeHint };
-}
-
-export function unknownNote(locale: Locale): string {
-  return L(
-    locale,
-    "Try “delayed another 30 minutes”, “why”, or “execute the plan”.",
-    "Essayez « retard de 45 minutes », « pourquoi », ou « exécuter le plan ».",
-  );
 }
 
 export function notDelayNote(locale: Locale): string {

@@ -19,7 +19,7 @@ export const Route = createRootRoute({
         property: "og:description",
         content: "Nemotron on Nebius Token Factory works the file, a verifier checks every figure, the desk executes.",
       },
-      { property: "og:image", content: "/og.jpg" },
+      { property: "og:image", content: "https://cargopilot-eta.vercel.app/og.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "theme-color", content: "#0c161d" },
     ],
