@@ -30,7 +30,7 @@ export function zetarisConfigFromEnv(env: Record<string, string | undefined> = p
 
 const COLS = ["station", "process", "flight", "window_min", "wx_category", "n", "hits", "p50_min", "p90_min", "max_min", "metar_now", "metar_raw"] as const;
 
-export async function runZetarisSql(cfg: ZetarisConfig, sql: string, limit = 500): Promise<unknown[]> {
+export async function runZetarisSql(cfg: ZetarisConfig, sql: string, limit = 500, requireData = true): Promise<unknown[]> {
   const f = cfg.fetchImpl ?? fetch;
   const res = await f(`${cfg.restUrl}/sql-editor/sqls/run`, {
     method: "POST",
@@ -45,8 +45,14 @@ export async function runZetarisSql(cfg: ZetarisConfig, sql: string, limit = 500
   });
   const text = await res.text();
   if (!res.ok) throw new Error(`Zetaris HTTP ${res.status}: ${text.slice(0, 200)}`);
-  const out = JSON.parse(text) as { data?: unknown[] } | null;
-  if (!out || !Array.isArray(out.data)) throw new Error("Zetaris response had no data array");
+  const out = (text ? JSON.parse(text) : null) as { data?: unknown[]; error?: unknown; message?: unknown } | null;
+  if (out && (out.error || (typeof out.message === "string" && /error|fail|exception/i.test(out.message)))) {
+    throw new Error(`Zetaris: ${String(out.error ?? out.message).slice(0, 300)}`);
+  }
+  if (!out || !Array.isArray(out.data)) {
+    if (requireData) throw new Error("Zetaris response had no data array");
+    return [];
+  }
   return out.data;
 }
 
