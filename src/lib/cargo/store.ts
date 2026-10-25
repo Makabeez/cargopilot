@@ -17,6 +17,7 @@ import { useAgent } from "@/lib/agent/client";
 import type { Scenario } from "@/lib/agent/types";
 import { operatorScenario } from "@/lib/agent/matrix";
 import type { Wx } from "@/lib/ops/weather";
+import { bookedLegVerdict } from "@/lib/ops/evidence";
 
 type Extra = Partial<Record<FlagKey, boolean>>;
 
@@ -81,6 +82,35 @@ export function verifiedModelPick(scenario: Scenario): string | null {
     JSON.stringify(Object.entries(base.flags).filter(([, v]) => v).sort()) ===
       JSON.stringify(Object.entries(scenario.flags).filter(([, v]) => v).sort());
   return same ? run.decision.recommended_option_id : null;
+}
+
+/**
+ * v5: the agent's pick when station evidence took keep-first away from the
+ * booking (rules or verified model run), for this exact scenario incl. weather.
+ */
+export function evidencePick(scenario: Scenario): { optionId: string; reason: string } | null {
+  const agent = useAgent.getState();
+  const run = agent.run;
+  if (!run || agent.status !== "done" || !run.external?.evidence || run.mode === "blocked") return null;
+  if (run.mode !== "rules" && !run.verdict.accepted) return null;
+  const rs = run.scenario;
+  const same =
+    rs.shipmentId === scenario.shipmentId &&
+    rs.delayMin === scenario.delayMin &&
+    JSON.stringify(Object.entries(rs.flags).filter(([, v]) => v).sort()) ===
+      JSON.stringify(Object.entries(scenario.flags).filter(([, v]) => v).sort()) &&
+    JSON.stringify(Object.entries(rs.wx ?? {}).sort()) === JSON.stringify(Object.entries(scenario.wx ?? {}).sort());
+  if (!same) return null;
+  const v = bookedLegVerdict(rs.shipmentId, run.external.evidence, rs.wx ?? {});
+  if (!v?.overridesKeep || run.decision.recommended_option_id === "keep") return null;
+  return {
+    optionId: run.decision.recommended_option_id,
+    reason: L(
+      rs.locale,
+      `Station evidence: ${v.station} in ${v.category} held its window ${v.within} of ${v.n} times, so keep-first does not apply.`,
+      `Historique de station : ${v.station} en ${v.category} a tenu sa fenêtre ${v.within} fois sur ${v.n}, donc on ne garde pas la réservation par défaut.`,
+    ),
+  };
 }
 
 /** Send the operator's message to the agent for the scenario as it stands now. */
@@ -176,9 +206,11 @@ export const useCargo = create<CargoState>((set, get) => ({
       const flags = defaultFlags(shipment, state.delayMin[shipment.id], state.extras[shipment.id]);
       const analysis = analyze(shipment, flags, locale, null);
       const modelPick = verifiedModelPick(scenarioOf(state));
+      const evPick = evidencePick(scenarioOf(state))?.optionId;
       const chosen =
         analysis.options.find((o) => o.id === state.picked[shipment.id] && o.executable) ??
         analysis.options.find((o) => o.id === modelPick && o.executable) ??
+        analysis.options.find((o) => o.id === evPick && o.executable) ??
         analysis.options.find((o) => o.recommended && o.executable);
       if (!chosen) {
         set({ locale, note: cannotExecuteNote(locale) });

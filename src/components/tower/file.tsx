@@ -1,6 +1,6 @@
 import { chrome, metricTone, stampTone } from "@/lib/cargo/copy";
 import { messages } from "@/lib/cargo/engine";
-import { scenarioOf, useCargo, useRows, verifiedModelPick } from "@/lib/cargo/store";
+import { evidencePick, scenarioOf, useCargo, useRows, verifiedModelPick } from "@/lib/cargo/store";
 import { useAgent } from "@/lib/agent/client";
 import { L } from "@/lib/cargo/engine";
 import { cn } from "@/lib/cn";
@@ -15,16 +15,20 @@ export function ShipmentFile() {
   const execute = useCargo((s) => s.execute);
   const delayMin = useCargo((s) => s.delayMin);
   const extras = useCargo((s) => s.extras);
+  const wx = useCargo((s) => s.wx);
   const agentRun = useAgent((s) => s.run);
   useAgent((s) => s.status);
   const rows = useRows();
   const copy = chrome(locale);
   const row = rows.find((item) => item.shipment.id === selectedId) ?? rows[0];
   const { shipment, analysis, flags } = row;
-  const modelPick = verifiedModelPick(scenarioOf({ selectedId, delayMin, extras, locale }));
+  const scenarioNow = scenarioOf({ selectedId, delayMin, extras, locale, wx });
+  const modelPick = verifiedModelPick(scenarioNow);
+  const evidence = evidencePick(scenarioNow);
   const chosen =
     analysis.options.find((option) => option.id === picked[shipment.id] && option.feasible) ??
     analysis.options.find((option) => option.id === modelPick && option.feasible) ??
+    analysis.options.find((option) => option.id === evidence?.optionId && option.feasible) ??
     analysis.options.find((option) => option.recommended) ??
     analysis.options.find((option) => option.feasible);
   const basePack =
@@ -63,6 +67,12 @@ export function ShipmentFile() {
             {analysis.stamp}
           </p>
         </header>
+
+        {evidence ? (
+          <p className="mt-3 border-l-4 border-amber bg-paper-2 px-3 py-2 text-sm font-medium" role="status">
+            {evidence.reason}
+          </p>
+        ) : null}
 
         {analysis.was ? (
           <p className="mt-3 text-sm text-paper-mute">
@@ -211,6 +221,8 @@ export function ShipmentFile() {
           <p className="text-xs uppercase tracking-wide text-paper-mute">
             {chosen && chosen.id === modelPick
               ? L(locale, "Nemotron pick", "Choix Nemotron")
+              : chosen && chosen.id === evidence?.optionId
+                ? L(locale, "Evidence pick", "Choix sur historique")
               : chosen?.recommended
                 ? L(locale, "Rules pick", "Choix règles")
                 : copy.selected}
