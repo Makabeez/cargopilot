@@ -51,7 +51,8 @@ function ScoutLine({ run, locale }: { run: AgentRun; locale: Locale }) {
 }
 
 function Evidence({ run, shipmentId, locale }: { run: AgentRun | null; shipmentId: string; locale: Locale }) {
-  const wxState = useCargo((s) => s.wx[shipmentId] ?? {});
+  const wxAll = useCargo((s) => s.wx);
+  const wxState = wxAll[shipmentId] ?? {};
   const setWx = useCargo((s) => s.setWx);
   const snap = run?.external?.evidence;
   const out = snap ? (stationEvidence(shipmentId, snap, run?.scenario.wx ?? {}) as ReturnType<typeof stationEvidence> & { stations?: EvidenceStation[] }) : null;
