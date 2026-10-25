@@ -17,7 +17,7 @@ import { SHIPMENTS } from "../src/lib/cargo/engine";
 import { isValidAwb } from "../src/lib/agent/awb";
 import { DEFAULT_BASE_URL, DEFAULT_MODEL, blockedRun, groundingFor, runLiveAgent, runRulesAgent } from "../src/lib/agent/agent";
 import { evalMatrix, evalMatrixV5, fullRulesMatrix } from "../src/lib/agent/matrix";
-import { adverseConditions, gatherContext } from "../src/lib/agent/context";
+import { adverseConditions, gatherContext, screenNotes } from "../src/lib/agent/context";
 import { LEGS, aggKey, mirrorAggregate, stationCategories } from "../src/lib/ops/evidence";
 import { zetarisConfigFromEnv } from "../src/lib/ops/zetaris";
 import { recallFor, seedMemory, HANDOVER_NOTES, RECALL_THRESHOLD } from "../src/lib/memory/desk-memory";
@@ -129,7 +129,7 @@ async function reverifyExternal(run: AgentRun): Promise<string[]> {
   }
   if (ext.memory) {
     const conditions = adverseConditions(stationCategories(run.scenario.shipmentId, ext.evidence, run.scenario.wx ?? {}));
-    const fresh = await recallFor(run.scenario.shipmentId, run.scenario.memoryNotes ?? [], conditions);
+    const fresh = await recallFor(run.scenario.shipmentId, screenNotes(run.scenario.memoryNotes).accepted, conditions);
     if (JSON.stringify(fresh.recalled) !== JSON.stringify(ext.memory.recalled)) problems.push("H-MEM recall differs from a fresh recall");
   }
   return problems;

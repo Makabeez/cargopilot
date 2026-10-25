@@ -16,6 +16,7 @@ import type { Filter } from "@/lib/cargo/copy";
 import { useAgent } from "@/lib/agent/client";
 import type { Scenario } from "@/lib/agent/types";
 import { operatorScenario } from "@/lib/agent/matrix";
+import type { Wx } from "@/lib/ops/weather";
 
 type Extra = Partial<Record<FlagKey, boolean>>;
 
@@ -28,6 +29,11 @@ type CargoState = {
   executed: Record<string, string>;
   picked: Record<string, string>;
   note: string | null;
+  /** Weather what-if per file and station (overrides live weather in the station evidence). */
+  wx: Record<string, Partial<Record<string, Wx>>>;
+  /** Handover notes added this shift ("Remember: …"), mined into H-MEM for every file. */
+  memoryNotes: string[];
+  setWx: (id: string, station: string, cat: Wx | null) => void;
   setLocale: (locale: Locale) => void;
   select: (id: string) => void;
   setFilter: (filter: Filter) => void;
@@ -39,17 +45,27 @@ type CargoState = {
 };
 
 export function scenarioOf(
-  state: Pick<CargoState, "selectedId" | "delayMin" | "extras" | "locale">,
+  state: Pick<CargoState, "selectedId" | "delayMin" | "extras" | "locale"> & Partial<Pick<CargoState, "wx" | "memoryNotes">>,
   operatorMessage?: string,
 ): Scenario {
   const shipment = SHIPMENTS.find((item) => item.id === state.selectedId) ?? SHIPMENTS[0];
+  const wx = Object.fromEntries(Object.entries(state.wx?.[shipment.id] ?? {}).filter(([, v]) => v));
+  const notes = state.memoryNotes ?? [];
   return {
     shipmentId: shipment.id,
     delayMin: state.delayMin[shipment.id] ?? shipment.baseDelay,
     flags: { ...(state.extras[shipment.id] ?? {}) },
     locale: state.locale,
     ...(operatorMessage ? { operatorMessage } : {}),
+    ...(Object.keys(wx).length ? { wx } : {}),
+    ...(notes.length ? { memoryNotes: notes } : {}),
   };
+}
+
+/** "Remember: …" / "Retiens : …" / "Note: …" — a handover note for desk memory. */
+export function memoryNoteOf(text: string): string | null {
+  const m = text.trim().match(/^(?:remember|retiens|retenez|note|handover)\s*[:,-]\s*(.{4,})$/i);
+  return m ? m[1].trim() : null;
 }
 
 /** The model's recommendation for this exact scenario, only if it passed the verifier. */
@@ -87,6 +103,15 @@ export const useCargo = create<CargoState>((set, get) => ({
   executed: {},
   picked: {},
   note: null,
+  wx: {},
+  memoryNotes: [],
+  setWx: (id, station, cat) =>
+    set((state) => ({
+      wx: { ...state.wx, [id]: { ...(state.wx[id] ?? {}), [station]: cat ?? undefined } },
+      executed: omit(state.executed, id),
+      picked: omit(state.picked, id),
+      note: null,
+    })),
   setLocale: (locale) => set({ locale }),
   select: (selectedId) => set({ selectedId, note: null }),
   setFilter: (filter) => set({ filter }),
@@ -117,6 +142,17 @@ export const useCargo = create<CargoState>((set, get) => ({
       note: null,
     })),
   ask: (text) => {
+    const memo = memoryNoteOf(text);
+    if (memo) {
+      // Mined into H-MEM server-side; Scout screens it first (memory poisoning is an injection too).
+      const state = get();
+      if (state.memoryNotes.includes(memo)) return;
+      set({
+        memoryNotes: [...state.memoryNotes, memo].slice(-5),
+        note: L(state.locale, `Added to desk memory: “${memo}”`, `Ajouté à la mémoire du desk : « ${memo} »`),
+      });
+      return;
+    }
     const { command, localeHint } = parseCommand(text);
     const state = get();
     const locale = localeHint ?? state.locale;

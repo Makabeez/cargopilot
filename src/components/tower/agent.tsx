@@ -6,6 +6,7 @@ import { scenarioOf, useCargo, useRows } from "@/lib/cargo/store";
 import { baseKeyFor, useAgent } from "@/lib/agent/client";
 import type { AgentRun, Step, ToolStep, VerifyStep } from "@/lib/agent/types";
 import { cn } from "@/lib/cn";
+import { ContextPanel } from "./context";
 
 export function AgentLog() {
   const locale = useCargo((s) => s.locale);
@@ -13,6 +14,8 @@ export function AgentLog() {
   const delayMin = useCargo((s) => s.delayMin);
   const extras = useCargo((s) => s.extras);
   const note = useCargo((s) => s.note);
+  const wx = useCargo((s) => s.wx);
+  const memoryNotes = useCargo((s) => s.memoryNotes);
   const ask = useCargo((s) => s.ask);
   const rows = useRows();
   const copy = chrome(locale);
@@ -20,7 +23,7 @@ export function AgentLog() {
   const [draft, setDraft] = useState("");
 
   const agent = useAgent();
-  const scenario = scenarioOf({ selectedId, delayMin, extras, locale });
+  const scenario = scenarioOf({ selectedId, delayMin, extras, locale, wx, memoryNotes });
   const currentBase = baseKeyFor(scenario, agent.rulesOnly);
 
   // Re-run the agent whenever the file, the scenario or the language changes.
@@ -52,6 +55,8 @@ export function AgentLog() {
           titles={Object.fromEntries(row.analysis.options.map((o) => [o.id, o.title]))}
         />
       ) : <Working locale={locale} stale={stale} />}
+
+      <ContextPanel run={run} shipmentId={row.shipment.id} locale={locale} />
 
       <form
         onSubmit={(event) => {
@@ -149,6 +154,15 @@ function ModeBadge({ locale }: { locale: Locale }) {
       </p>
     );
   }
+  if (mode === "blocked") {
+    return (
+      <p className={cn(base, "border-critical text-alert")}>
+        <ShieldX className="size-3.5" aria-hidden="true" />
+        <span className="font-semibold uppercase tracking-wide">{L(locale, "Blocked by Scout", "Bloqué par Scout")}</span>
+        <span>{L(locale, "no model call", "aucun appel modèle")}</span>
+      </p>
+    );
+  }
   return (
     <p className={cn(base, "border-line text-mute")}>
       <Cpu className="size-3.5" aria-hidden="true" />
@@ -205,7 +219,9 @@ function DecisionCard({ run, locale, titles }: { run: AgentRun; locale: Locale; 
           <ShieldX className="size-4" aria-hidden="true" />
         )}
         <span className="font-semibold">
-          {run.verdict.fellBack && run.verdict.attempts === 0
+          {run.mode === "blocked"
+            ? L(locale, "Message blocked by Scout → rules decision", "Message bloqué par Scout → décision règles")
+            : run.verdict.fellBack && run.verdict.attempts === 0
             ? L(locale, "Model unavailable → rules decision", "Modèle indisponible → décision règles")
             : run.verdict.fellBack
             ? L(locale, `Model rejected ×${run.verdict.attempts} → rules decision`, `Modèle rejeté ×${run.verdict.attempts} → décision règles`)
@@ -381,6 +397,16 @@ function preview(step: ToolStep): string[] {
     return (o.options as { option_id: string; status: string; via: string; delay: string; cost: string }[]).map(
       (x) => `${x.status === "blocked" ? "✕" : "·"} ${x.option_id} — ${x.via} · ${x.delay} · ${x.cost}`,
     );
+  }
+  if (Array.isArray(o.stations)) {
+    return (o.stations as { station: string; weather: { flight_category: string | null }; history_90_days: Record<string, string> }[]).map((st) => {
+      const cat = st.weather.flight_category;
+      return `${st.station} ${cat ?? "?"} · ${cat ? (st.history_90_days[`in_${cat}`] ?? "") : st.history_90_days.all_weather}`;
+    });
+  }
+  if (Array.isArray(o.recalled)) {
+    const r = o.recalled as { memory_id: string; note: string }[];
+    return r.length ? r.map((m) => `${m.memory_id} · ${m.note.slice(0, 110)}`) : [String(o.note ?? "")];
   }
   if (Array.isArray(o.facts)) {
     return (o.facts as string[]).length ? (o.facts as string[]) : [String(o.note ?? "n/a")];

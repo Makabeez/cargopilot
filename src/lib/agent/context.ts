@@ -34,6 +34,18 @@ export function deskScout(): Scout {
   return scout;
 }
 
+/**
+ * Handover notes are screened by Scout before H-MEM mines them: a note is
+ * persisted context the model reads on every later file, so an injected note
+ * is a worse injection than a one-off message.
+ */
+export function screenNotes(notes: string[] = []): { accepted: string[]; rejected: string[] } {
+  const accepted: string[] = [];
+  const rejected: string[] = [];
+  for (const n of notes) (deskScout().guard(n).level === "block" ? rejected : accepted).push(n);
+  return { accepted, rejected };
+}
+
 /** Weather words added to the memory query for stations in IFR or LIFR. */
 export function adverseConditions(cats: { station: string; category: string | null }[]): string {
   return cats
@@ -60,6 +72,8 @@ export async function gatherContext(
     fetchImpl: opts.fetchImpl,
   });
   const conditions = adverseConditions(stationCategories(scenario.shipmentId, external.evidence, scenario.wx ?? {}));
-  external.memory = await recallFor(scenario.shipmentId, scenario.memoryNotes ?? [], conditions);
+  const notes = screenNotes(scenario.memoryNotes);
+  external.memory = await recallFor(scenario.shipmentId, notes.accepted, conditions);
+  if (notes.rejected.length) external.memory.rejected = notes.rejected;
   return { external };
 }

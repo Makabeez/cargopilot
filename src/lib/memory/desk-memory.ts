@@ -78,6 +78,8 @@ export type MemorySnapshot = {
   recalled: RecalledMemory[];
   /** Notes the duty officer added in this session (not in the seed). */
   added: { id: string; content: string }[];
+  /** Notes Scout refused to store (memory poisoning attempts). */
+  rejected?: string[];
   trace: { strategy: string; reason: string };
 };
 
@@ -88,7 +90,8 @@ export async function recallFor(shipmentId: string, addedNotes: string[] = [], c
   const hmem = seedMemory();
   const added: MemorySnapshot["added"] = [];
   for (const text of addedNotes) {
-    const recs = await hmem.mine("user_correction", text);
+    // The duty officer typed "Remember: …"; keep that signal word so H-MEM's model-free miner keeps the note.
+    const recs = await hmem.mine("user_correction", /\bremember\b/i.test(text) ? text : `Remember: ${text}`);
     for (const r of recs) added.push({ id: r.id, content: r.content });
   }
   const query = memoryQueryFor(shipmentId, [conditions, ...addedNotes].join(" "));

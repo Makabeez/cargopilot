@@ -24,7 +24,7 @@ const RequestSchema = z.object({
     locale: z.enum(["en", "fr"]),
     operatorMessage: z.string().max(400).optional(),
     priorDelayMin: z.number().int().min(0).max(180).optional(),
-    wx: z.record(z.enum(["GVA", "LEJ", "ZRH", "FRA", "CDG"]), z.enum(["VFR", "MVFR", "IFR", "LIFR"])).optional(),
+    wx: z.partialRecord(z.enum(["GVA", "LEJ", "ZRH", "FRA", "CDG"]), z.enum(["VFR", "MVFR", "IFR", "LIFR"])).optional(),
     memoryNotes: z.array(z.string().max(300)).max(5).optional(),
   }),
   mode: z.enum(["auto", "rules"]).default("auto"),
