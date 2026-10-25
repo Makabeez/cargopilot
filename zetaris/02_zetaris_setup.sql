@@ -1,7 +1,7 @@
 -- Zetaris setup for CargoPilot's station evidence. Run each statement on its own,
--- DESCRIBE BY values: letters, digits, _ . - , only (no spaces), or Zetaris rejects the statement.
 -- in order, in the Zetaris SQL Editor (one statement per call). Admin rights needed.
 -- Replace the <...> placeholders in the editor only; never commit credentials.
+-- DESCRIBE BY values: letters, digits, _ . - , only (no spaces), or Zetaris rejects the statement.
 
 -- Source 1: Postgres handling history (see 01_postgres_handling_history.sql)
 CREATE DATASOURCE ops_pg DESCRIBE BY "cargopilot_station_handling_history" OPTIONS (
