@@ -10,17 +10,17 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v5",
-  "startedAt": "2026-10-25T23:23:02.567Z",
-  "latencyMs": 12314,
-  "promptTokens": 32326,
-  "completionTokens": 1535,
+  "promptVersion": "v6",
+  "startedAt": "2026-10-25T23:29:36.004Z",
+  "latencyMs": 15998,
+  "promptTokens": 44532,
+  "completionTokens": 1863,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 822,
-      "promptTokens": 2879,
+      "ms": 781,
+      "promptTokens": 2902,
       "completionTokens": 54,
       "reasoningChars": 52,
       "toolCalls": [
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ab38a1c589c2ee1e",
+      "callId": "chatcmpl-tool-8d2c974b1021c673",
       "name": "get_shipment",
       "args": {
         "awb": "235-10092832"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 751,
-      "promptTokens": 3030,
-      "completionTokens": 72,
-      "reasoningChars": 160,
+      "ms": 823,
+      "promptTokens": 3053,
+      "completionTokens": 71,
+      "reasoningChars": 156,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8a072b1c77da211c",
+      "callId": "chatcmpl-tool-810a349a9a2568d0",
       "name": "get_disruption",
       "args": {
         "awb": "235-10092832"
@@ -94,22 +94,22 @@
           }
         ]
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
       "turn": 3,
-      "ms": 828,
-      "promptTokens": 3208,
+      "ms": 1124,
+      "promptTokens": 3231,
       "completionTokens": 86,
-      "reasoningChars": 187,
+      "reasoningChars": 180,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bd6aa32305fe7fc1",
+      "callId": "chatcmpl-tool-bbba2a1c3cdcbe5e",
       "name": "get_cutoffs",
       "args": {
         "awb": "235-10092832"
@@ -119,22 +119,47 @@
         "facts": [],
         "note": "No get cutoffs issue recorded for this file."
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 4,
-      "ms": 732,
-      "promptTokens": 3286,
-      "completionTokens": 65,
-      "reasoningChars": 132,
+      "ms": 1109,
+      "promptTokens": 3309,
+      "completionTokens": 80,
+      "reasoningChars": 166,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-813e778e2795d57c",
+      "name": "check_connection",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check connection issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 704,
+      "promptTokens": 3385,
+      "completionTokens": 57,
+      "reasoningChars": 93,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9d4c82835752657d",
+      "callId": "chatcmpl-tool-acfe7f5709e10ad0",
       "name": "get_capacity",
       "args": {
         "awb": "235-10092832"
@@ -149,18 +174,44 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 566,
-      "promptTokens": 3379,
-      "completionTokens": 58,
-      "reasoningChars": 76,
+      "turn": 6,
+      "ms": 873,
+      "promptTokens": 3478,
+      "completionTokens": 74,
+      "reasoningChars": 133,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a5886a658ef6f558",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "Rule: must-ride pharma is not displaceable"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 1164,
+      "promptTokens": 3556,
+      "completionTokens": 67,
+      "reasoningChars": 101,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8b88f57935e30800",
+      "callId": "chatcmpl-tool-98ea8147d7ce1ca8",
       "name": "calculate_risk",
       "args": {
         "awb": "235-10092832"
@@ -198,18 +249,18 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 1033,
-      "promptTokens": 3543,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "turn": 8,
+      "ms": 972,
+      "promptTokens": 3720,
+      "completionTokens": 72,
+      "reasoningChars": 126,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-952d7027acbd47d1",
+      "callId": "chatcmpl-tool-ae02415194dc33ea",
       "name": "find_alternatives",
       "args": {
         "awb": "235-10092832"
@@ -259,11 +310,35 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 3857,
-      "promptTokens": 4017,
-      "completionTokens": 587,
-      "reasoningChars": 1076,
+      "turn": 9,
+      "ms": 1177,
+      "promptTokens": 4194,
+      "completionTokens": 61,
+      "reasoningChars": 74,
+      "toolCalls": [
+        "get_station_evidence"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a2fcea335cd2cbb6",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "235-10092832"
+      },
+      "output": {
+        "applicable": false,
+        "note": "No station handling evidence applies to this file (no transfer or acceptance process at risk)."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 10,
+      "ms": 4167,
+      "promptTokens": 4276,
+      "completionTokens": 790,
+      "reasoningChars": 1880,
       "toolCalls": [
         "submit_decision"
       ]
@@ -318,6 +393,11 @@
           "id": "language",
           "label": "Summary and evidence are in the duty officer's language",
           "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
         }
       ],
       "submitted": {
@@ -327,28 +407,30 @@
           "next",
           "split"
         ],
-        "summary": "The booked flight AYC 418 has no free weight for the 780 kg textile shipment after accommodating the must‑ride pharma pallet. Rebook the textiles on the next available flight AYC 220 departing tomorrow, which keeps the pharma on schedule and incurs no extra cost.",
+        "summary": "The booked flight AYC 418 lacks space due to a must‑ride pharma pallet, putting the textile shipment at risk. Recommend rebooking the textiles on the next available flight AYC 220 tomorrow.",
         "why": [
-          "AYC 418 shows 900 kg total load with 620 kg must‑ride pharma, leaving only 280 kg free – insufficient for the 780 kg textile shipment (get_capacity: \"AYC 418 · 900 kg · 1 PMC · pharma 620 kg must-ride\").",
-          "Rebooking on AYC 220 provides 3,200 kg free capacity, protects the must‑ride pharma, results in Low risk, +14 h delay and CHF 0 cost (find_alternatives option \"next\").",
-          "Splitting the shipment would fly 280 kg today and the rest tomorrow, incurring Medium risk, +14 h delay and +CHF 70 cost (find_alternatives option \"split\")."
-        ]
+          "File weight 780 kg, must‑ride pharma 620 kg leaves only 280 kg capacity on AYC 418.",
+          "Calculated risk is High (loses the last pallet).",
+          "Option next (Rebook textiles next day) is allowed, Low risk, +14 h delay, CHF 0 cost.",
+          "Option split (Fly 280 kg today, rest tomorrow) is allowed, Medium risk, +14 h delay, +CHF 70 cost."
+        ],
+        "customer_note": "AWB 235-10092832: Your textiles are rescheduled to arrive EWR on 16 Oct 2026 at 18:00 local time."
       }
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 1474,
-      "promptTokens": 4409,
-      "completionTokens": 102,
-      "reasoningChars": 279,
+      "turn": 11,
+      "ms": 932,
+      "promptTokens": 4631,
+      "completionTokens": 58,
+      "reasoningChars": 73,
       "toolCalls": [
         "recall_desk_memory"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-abf408f64d3900bb",
+      "callId": "chatcmpl-tool-a8f315b62d6a6fe5",
       "name": "recall_desk_memory",
       "args": {
         "awb": "235-10092832"
@@ -369,11 +451,11 @@
     },
     {
       "kind": "model",
-      "turn": 9,
-      "ms": 2248,
-      "promptTokens": 4575,
-      "completionTokens": 464,
-      "reasoningChars": 631,
+      "turn": 12,
+      "ms": 2169,
+      "promptTokens": 4797,
+      "completionTokens": 393,
+      "reasoningChars": 444,
       "toolCalls": [
         "submit_decision"
       ]
@@ -427,6 +509,11 @@
           "id": "language",
           "label": "Summary and evidence are in the duty officer's language",
           "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
         }
       ],
       "submitted": {
@@ -436,12 +523,14 @@
           "next",
           "split"
         ],
-        "summary": "The booked flight AYC 418 has no free weight for the 780 kg textile shipment after accommodating the must‑ride pharma pallet. Rebook the textiles on the next available flight AYC 220 departing tomorrow, which keeps the pharma on schedule and incurs no extra cost.",
+        "summary": "The booked flight AYC 418 lacks space due to a must‑ride pharma pallet, putting the textile shipment at risk. Recommend rebooking the textiles on the next available flight AYC 220 tomorrow.",
         "why": [
-          "AYC 418 shows 900 kg total load with 620 kg must‑ride pharma, leaving only 280 kg free – insufficient for the 780 kg textile shipment (get_capacity: \"AYC 418 · 900 kg · 1 PMC · pharma 620 kg must-ride\").",
-          "Rebooking on AYC 220 provides 3,200 kg free capacity, protects the must‑ride pharma, results in Low risk, +14 h delay and CHF 0 cost (find_alternatives option \"next\").",
-          "Splitting the shipment would fly 280 kg today and the rest tomorrow, incurring Medium risk, +14 h delay and +CHF 70 cost (find_alternatives option \"split\")."
-        ]
+          "File weight 780 kg, must‑ride pharma 620 kg leaves only 280 kg capacity on AYC 418.",
+          "Calculated risk is High (loses the last pallet).",
+          "Option next (Rebook textiles next day) is allowed, Low risk, +14 h delay, CHF 0 cost.",
+          "Option split (Fly 280 kg today, rest tomorrow) is allowed, Medium risk, +14 h delay, +CHF 70 cost."
+        ],
+        "customer_note": "AWB 235-10092832: Your textiles are rescheduled to arrive EWR on 16 Oct 2026 at 18:00 local time."
       }
     }
   ],
@@ -452,12 +541,14 @@
       "next",
       "split"
     ],
-    "summary": "The booked flight AYC 418 has no free weight for the 780 kg textile shipment after accommodating the must‑ride pharma pallet. Rebook the textiles on the next available flight AYC 220 departing tomorrow, which keeps the pharma on schedule and incurs no extra cost.",
+    "summary": "The booked flight AYC 418 lacks space due to a must‑ride pharma pallet, putting the textile shipment at risk. Recommend rebooking the textiles on the next available flight AYC 220 tomorrow.",
     "why": [
-      "AYC 418 shows 900 kg total load with 620 kg must‑ride pharma, leaving only 280 kg free – insufficient for the 780 kg textile shipment (get_capacity: \"AYC 418 · 900 kg · 1 PMC · pharma 620 kg must-ride\").",
-      "Rebooking on AYC 220 provides 3,200 kg free capacity, protects the must‑ride pharma, results in Low risk, +14 h delay and CHF 0 cost (find_alternatives option \"next\").",
-      "Splitting the shipment would fly 280 kg today and the rest tomorrow, incurring Medium risk, +14 h delay and +CHF 70 cost (find_alternatives option \"split\")."
-    ]
+      "File weight 780 kg, must‑ride pharma 620 kg leaves only 280 kg capacity on AYC 418.",
+      "Calculated risk is High (loses the last pallet).",
+      "Option next (Rebook textiles next day) is allowed, Low risk, +14 h delay, CHF 0 cost.",
+      "Option split (Fly 280 kg today, rest tomorrow) is allowed, Medium risk, +14 h delay, +CHF 70 cost."
+    ],
+    "customer_note": "AWB 235-10092832: Your textiles are rescheduled to arrive EWR on 16 Oct 2026 at 18:00 local time."
   },
   "verdict": {
     "accepted": true,
@@ -507,6 +598,11 @@
       {
         "id": "language",
         "label": "Summary and evidence are in the duty officer's language",
+        "pass": true
+      },
+      {
+        "id": "customer",
+        "label": "Customer note cites the AWB in the customer's language",
         "pass": true
       }
     ]

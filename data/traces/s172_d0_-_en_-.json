@@ -10,17 +10,17 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v5",
-  "startedAt": "2026-10-25T23:22:47.243Z",
-  "latencyMs": 15315,
-  "promptTokens": 40160,
-  "completionTokens": 1848,
+  "promptVersion": "v6",
+  "startedAt": "2026-10-25T23:29:17.158Z",
+  "latencyMs": 18712,
+  "promptTokens": 40787,
+  "completionTokens": 2343,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 862,
-      "promptTokens": 2879,
+      "ms": 929,
+      "promptTokens": 2902,
       "completionTokens": 54,
       "reasoningChars": 52,
       "toolCalls": [
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-86a6e93afc6669cd",
+      "callId": "chatcmpl-tool-a1f13dcededc78f1",
       "name": "get_shipment",
       "args": {
         "awb": "172-44091832"
@@ -49,22 +49,22 @@
         "customer": "Helvetia Cell AG",
         "customer_language": "English"
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1162,
-      "promptTokens": 3043,
-      "completionTokens": 73,
-      "reasoningChars": 165,
+      "ms": 1152,
+      "promptTokens": 3066,
+      "completionTokens": 93,
+      "reasoningChars": 223,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b23714644e468d8b",
+      "callId": "chatcmpl-tool-9a4cbcb628db2216",
       "name": "get_disruption",
       "args": {
         "awb": "172-44091832"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 764,
-      "promptTokens": 3198,
-      "completionTokens": 63,
-      "reasoningChars": 113,
+      "ms": 975,
+      "promptTokens": 3221,
+      "completionTokens": 86,
+      "reasoningChars": 180,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-be4a6c227a1c9bda",
+      "callId": "chatcmpl-tool-b43dbceee81f5ff2",
       "name": "get_cutoffs",
       "args": {
         "awb": "172-44091832"
@@ -124,17 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 889,
-      "promptTokens": 3276,
-      "completionTokens": 79,
-      "reasoningChars": 163,
+      "ms": 923,
+      "promptTokens": 3299,
+      "completionTokens": 80,
+      "reasoningChars": 166,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-80a2d27b1be933fb",
+      "callId": "chatcmpl-tool-960fc0327a3cdff8",
       "name": "check_connection",
       "args": {
         "awb": "172-44091832"
@@ -149,17 +149,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 822,
-      "promptTokens": 3352,
-      "completionTokens": 56,
-      "reasoningChars": 91,
+      "ms": 557,
+      "promptTokens": 3375,
+      "completionTokens": 73,
+      "reasoningChars": 133,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-973790386f759de9",
+      "callId": "chatcmpl-tool-97507b8b0d9b5d41",
       "name": "get_capacity",
       "args": {
         "awb": "172-44091832"
@@ -170,48 +170,22 @@
           "AYC 9006 DGR position open · AYC 9012 open"
         ]
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 6,
-      "ms": 691,
-      "promptTokens": 3438,
-      "completionTokens": 53,
-      "reasoningChars": 60,
-      "toolCalls": [
-        "check_restrictions"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-b0a8e8cb3a87352e",
-      "name": "check_restrictions",
-      "args": {
-        "awb": "172-44091832"
-      },
-      "output": {
-        "applicable": true,
-        "facts": [
-          "PAX FORBIDDEN · no variation on AYC 176"
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 7,
-      "ms": 704,
-      "promptTokens": 3521,
-      "completionTokens": 58,
-      "reasoningChars": 76,
+      "ms": 470,
+      "promptTokens": 3461,
+      "completionTokens": 70,
+      "reasoningChars": 113,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8e98a18c5f5da008",
+      "callId": "chatcmpl-tool-a544eb7c15b4db41",
       "name": "calculate_risk",
       "args": {
         "awb": "172-44091832"
@@ -245,22 +219,22 @@
           }
         ]
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 549,
-      "promptTokens": 3683,
-      "completionTokens": 46,
-      "reasoningChars": 28,
+      "turn": 7,
+      "ms": 707,
+      "promptTokens": 3623,
+      "completionTokens": 67,
+      "reasoningChars": 97,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b3b95b086eed1966",
+      "callId": "chatcmpl-tool-99bd8e9f9a8a7b99",
       "name": "find_alternatives",
       "args": {
         "awb": "172-44091832"
@@ -324,11 +298,35 @@
     },
     {
       "kind": "model",
+      "turn": 8,
+      "ms": 895,
+      "promptTokens": 4180,
+      "completionTokens": 61,
+      "reasoningChars": 74,
+      "toolCalls": [
+        "get_station_evidence"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-903fde7ac2aa3817",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "applicable": false,
+        "note": "No station handling evidence applies to this file (no transfer or acceptance process at risk)."
+      },
+      "ms": 1
+    },
+    {
+      "kind": "model",
       "turn": 9,
-      "ms": 2789,
-      "promptTokens": 4240,
-      "completionTokens": 540,
-      "reasoningChars": 855,
+      "ms": 6554,
+      "promptTokens": 4262,
+      "completionTokens": 975,
+      "reasoningChars": 2872,
       "toolCalls": [
         "submit_decision"
       ]
@@ -383,11 +381,6 @@
           "id": "language",
           "label": "Summary and evidence are in the duty officer's language",
           "pass": true
-        },
-        {
-          "id": "customer",
-          "label": "Customer note cites the AWB in the customer's language",
-          "pass": true
         }
       ],
       "submitted": {
@@ -398,29 +391,28 @@
           "next",
           "return"
         ],
-        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries (PI965) as it is forbidden on passenger aircraft. Move the shipment to freighter AYC 9006 GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h, +CHF 260).",
+        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries, making the current plan critical. Recommend moving the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h).",
         "why": [
-          "Booked flight AYC 176 is a passenger aircraft; restriction check shows 'PAX FORBIDDEN · no variation on AYC 176'.",
-          "Freighter AYC 9006 has capacity for UN3480 PI965; capacity check shows 'AYC 9006 DGR position open · AYC 9012 open'.",
-          "Risk calculation returns 'critical' due to DG refused on passenger; moving to freighter reduces risk to Low."
-        ],
-        "customer_note": "AWB 172-44091832: Your shipment will now travel on freighter AYC 9006 GVA–FRA–NRT, arriving at NRT on 16 Oct 06:40 local time (delay +7 h)."
+          "Risk class critical: DG refused on passenger aircraft (UN3480 PI965 forbidden on AYC 176).",
+          "Freighter AYC 9006 allowed: delay +7 h, cost +CHF 260, risk Low, capacity confirmed.",
+          "Alternative next freighter AYC 9012: delay +26 h, same cost, risk Medium; return to shipper: delay +48 h, cost CHF 0, risk High."
+        ]
       }
     },
     {
       "kind": "model",
       "turn": 10,
-      "ms": 1653,
-      "promptTokens": 4651,
-      "completionTokens": 92,
-      "reasoningChars": 246,
+      "ms": 1139,
+      "promptTokens": 4585,
+      "completionTokens": 64,
+      "reasoningChars": 107,
       "toolCalls": [
         "recall_desk_memory"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8ae2096ee8bffa93",
+      "callId": "chatcmpl-tool-adce443fcbe3ec4d",
       "name": "recall_desk_memory",
       "args": {
         "awb": "172-44091832"
@@ -448,10 +440,10 @@
     {
       "kind": "model",
       "turn": 11,
-      "ms": 4422,
-      "promptTokens": 4879,
-      "completionTokens": 734,
-      "reasoningChars": 1587,
+      "ms": 4400,
+      "promptTokens": 4813,
+      "completionTokens": 720,
+      "reasoningChars": 1648,
       "toolCalls": [
         "submit_decision"
       ]
@@ -505,11 +497,6 @@
           "id": "language",
           "label": "Summary and evidence are in the duty officer's language",
           "pass": true
-        },
-        {
-          "id": "customer",
-          "label": "Customer note cites the AWB in the customer's language",
-          "pass": true
         }
       ],
       "submitted": {
@@ -520,13 +507,12 @@
           "next",
           "return"
         ],
-        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries (PI965) as it is forbidden on passenger aircraft. Move the shipment to freighter AYC 9006 GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h, +CHF 260).",
+        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries, making the current plan critical. Recommend moving the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h).",
         "why": [
-          "Restriction check: 'PAX FORBIDDEN · no variation on AYC 176'.",
-          "Capacity check: 'AYC 9006 DGR position open · AYC 9012 open'.",
-          "Risk calculation: 'critical' due to DG refused on passenger; freighter option risk Low."
-        ],
-        "customer_note": "AWB 172-44091832: Your shipment will now travel on freighter AYC 9006 GVA–FRA–NRT, arriving at NRT on 16 Oct 06:40 local time (delay +7 h)."
+          "Risk class critical: DG refused on passenger aircraft (UN3480 PI965 forbidden on AYC 176).",
+          "Freighter AYC 9006 allowed: delay +7 h, cost +CHF 260, risk Low, capacity confirmed per get_capacity (\"AYC 9006 DGR position open\").",
+          "Alternative next freighter AYC 9012: delay +26 h, same cost, risk Medium; return to shipper: delay +48 h, cost CHF 0, risk High."
+        ]
       }
     }
   ],
@@ -538,13 +524,12 @@
       "next",
       "return"
     ],
-    "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries (PI965) as it is forbidden on passenger aircraft. Move the shipment to freighter AYC 9006 GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h, +CHF 260).",
+    "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries, making the current plan critical. Recommend moving the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h).",
     "why": [
-      "Restriction check: 'PAX FORBIDDEN · no variation on AYC 176'.",
-      "Capacity check: 'AYC 9006 DGR position open · AYC 9012 open'.",
-      "Risk calculation: 'critical' due to DG refused on passenger; freighter option risk Low."
-    ],
-    "customer_note": "AWB 172-44091832: Your shipment will now travel on freighter AYC 9006 GVA–FRA–NRT, arriving at NRT on 16 Oct 06:40 local time (delay +7 h)."
+      "Risk class critical: DG refused on passenger aircraft (UN3480 PI965 forbidden on AYC 176).",
+      "Freighter AYC 9006 allowed: delay +7 h, cost +CHF 260, risk Low, capacity confirmed per get_capacity (\"AYC 9006 DGR position open\").",
+      "Alternative next freighter AYC 9012: delay +26 h, same cost, risk Medium; return to shipper: delay +48 h, cost CHF 0, risk High."
+    ]
   },
   "verdict": {
     "accepted": true,
@@ -594,11 +579,6 @@
       {
         "id": "language",
         "label": "Summary and evidence are in the duty officer's language",
-        "pass": true
-      },
-      {
-        "id": "customer",
-        "label": "Customer note cites the AWB in the customer's language",
         "pass": true
       }
     ]

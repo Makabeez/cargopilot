@@ -1,54 +1,39 @@
 {
-  "generatedAt": "2026-10-25T23:24:58.322Z",
+  "generatedAt": "2026-10-25T23:32:27.349Z",
   "models": [
     "nvidia/nemotron-3-super-120b-a12b"
   ],
   "promptVersions": [
-    "v5"
+    "v6"
   ],
   "scenarios": 20,
-  "acceptedFirstTry": 0,
-  "acceptedAfterRetries": 20,
-  "fellBackToRules": 0,
-  "agreesWithRules": 18,
+  "acceptedFirstTry": 3,
+  "acceptedAfterRetries": 19,
+  "fellBackToRules": 1,
+  "agreesWithRules": 19,
   "latencyMs": {
-    "p50": 16188,
-    "p95": 23853
+    "p50": 18712,
+    "p95": 43683
   },
   "toolCallsPerRun": {
-    "min": 5,
+    "min": 7,
     "max": 10,
-    "mean": 7.8
+    "mean": 9.55
   },
   "tokens": {
-    "prompt": 764091,
-    "completion": 48928,
-    "usdAtListPrice": 0.2732625
+    "prompt": 890211,
+    "completion": 46690,
+    "usdAtListPrice": 0.3090843
   },
   "rejectionsByCheck": {
-    "tools": 20,
-    "evidence": 4,
-    "language": 2
+    "tools": 15,
+    "evidence": 3,
+    "reply": 1,
+    "figures": 1
   },
   "rejections": [
     {
-      "key": "s020|d0|-|en|-",
-      "operatorMessage": null,
-      "attempt": 1,
-      "failures": [
-        "tools: Not called: recall_desk_memory"
-      ]
-    },
-    {
       "key": "s074|d0|-|en|-",
-      "operatorMessage": null,
-      "attempt": 1,
-      "failures": [
-        "tools: Not called: recall_desk_memory"
-      ]
-    },
-    {
-      "key": "s080|d0|-|en|-",
       "operatorMessage": null,
       "attempt": 1,
       "failures": [
@@ -68,7 +53,6 @@
       "operatorMessage": null,
       "attempt": 1,
       "failures": [
-        "tools: Not called: get_station_evidence, recall_desk_memory",
         "evidence: CDG in IFR held its window 6 of 12; below the desk's two-in-three bar, keep-first does not apply"
       ]
     },
@@ -77,15 +61,7 @@
       "operatorMessage": null,
       "attempt": 1,
       "failures": [
-        "tools: Not called: get_station_evidence, recall_desk_memory"
-      ]
-    },
-    {
-      "key": "s157|d25|-|en|-",
-      "operatorMessage": null,
-      "attempt": 1,
-      "failures": [
-        "tools: Not called: get_station_evidence, recall_desk_memory"
+        "tools: Not called: recall_desk_memory"
       ]
     },
     {
@@ -117,7 +93,7 @@
       "operatorMessage": "What if the truck is delayed another 30 minutes?",
       "attempt": 1,
       "failures": [
-        "tools: Not called: get_station_evidence, recall_desk_memory"
+        "tools: Not called: recall_desk_memory"
       ]
     },
     {
@@ -125,16 +101,7 @@
       "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
       "attempt": 1,
       "failures": [
-        "tools: Not called: recall_desk_memory",
-        "language: why reads as en; the desk works in fr"
-      ]
-    },
-    {
-      "key": "s615|d45|-|fr|962111ae",
-      "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
-      "attempt": 2,
-      "failures": [
-        "language: why reads as en; the desk works in fr"
+        "tools: Not called: recall_desk_memory"
       ]
     },
     {
@@ -158,8 +125,7 @@
       "operatorMessage": null,
       "attempt": 1,
       "failures": [
-        "tools: Not called: recall_desk_memory",
-        "evidence: LEJ in IFR held its window 5 of 8; below the desk's two-in-three bar, keep-first does not apply"
+        "tools: Not called: recall_desk_memory"
       ]
     },
     {
@@ -175,8 +141,8 @@
       "operatorMessage": "Why not keep the booking? The truck is only an hour late.",
       "attempt": 1,
       "failures": [
-        "tools: Not called: get_station_evidence, recall_desk_memory",
-        "evidence: LEJ in IFR held its window 5 of 8; below the desk's two-in-three bar, keep-first does not apply"
+        "evidence: LEJ in IFR held its window 5 of 8; below the desk's two-in-three bar, keep-first does not apply",
+        "reply: reply reads as fr, operator wrote en"
       ]
     },
     {
@@ -186,6 +152,14 @@
       "failures": [
         "tools: Not called: recall_desk_memory",
         "evidence: LEJ in IFR held its window 5 of 8; below the desk's two-in-three bar, keep-first does not apply"
+      ]
+    },
+    {
+      "key": "s615|d60|-|fr|-|wx:LEJ=IFR",
+      "operatorMessage": null,
+      "attempt": 2,
+      "failures": [
+        "figures: Not found in tool outputs: 62%"
       ]
     },
     {
@@ -210,14 +184,14 @@
       "key": "s020|d0|-|en|-",
       "awb": "020-77120562",
       "operatorMessage": null,
-      "attempts": 2,
+      "attempts": 1,
       "accepted": true,
       "fellBack": false,
       "pick": "main",
       "rulesPick": "main",
       "agrees": true,
-      "latencyMs": 14370,
-      "toolCalls": 9
+      "latencyMs": 18839,
+      "toolCalls": 10
     },
     {
       "key": "s074|d0|-|en|-",
@@ -229,21 +203,21 @@
       "pick": "later",
       "rulesPick": "later",
       "agrees": true,
-      "latencyMs": 15858,
-      "toolCalls": 8
+      "latencyMs": 17278,
+      "toolCalls": 10
     },
     {
       "key": "s080|d0|-|en|-",
       "awb": "080-22991006",
       "operatorMessage": null,
-      "attempts": 2,
+      "attempts": 1,
       "accepted": true,
       "fellBack": false,
-      "pick": "active",
+      "pick": "repack",
       "rulesPick": "repack",
-      "agrees": false,
-      "latencyMs": 12259,
-      "toolCalls": 7
+      "agrees": true,
+      "latencyMs": 11668,
+      "toolCalls": 9
     },
     {
       "key": "s125|d0|-|en|-",
@@ -255,8 +229,8 @@
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 15154,
-      "toolCalls": 9
+      "latencyMs": 15594,
+      "toolCalls": 10
     },
     {
       "key": "s125|d0|-|en|-|wx:CDG=IFR",
@@ -268,7 +242,7 @@
       "pick": "fra",
       "rulesPick": "fra",
       "agrees": true,
-      "latencyMs": 18997,
+      "latencyMs": 17124,
       "toolCalls": 10
     },
     {
@@ -278,23 +252,23 @@
       "attempts": 2,
       "accepted": true,
       "fellBack": false,
-      "pick": "hold",
+      "pick": "inspect",
       "rulesPick": "inspect",
-      "agrees": false,
-      "latencyMs": 16188,
+      "agrees": true,
+      "latencyMs": 16312,
       "toolCalls": 10
     },
     {
       "key": "s157|d25|-|en|-",
       "awb": "157-88001233",
       "operatorMessage": null,
-      "attempts": 2,
+      "attempts": 1,
       "accepted": true,
       "fellBack": false,
       "pick": "rush",
       "rulesPick": "rush",
       "agrees": true,
-      "latencyMs": 15605,
+      "latencyMs": 12082,
       "toolCalls": 10
     },
     {
@@ -307,7 +281,7 @@
       "pick": "freighter",
       "rulesPick": "freighter",
       "agrees": true,
-      "latencyMs": 15315,
+      "latencyMs": 18712,
       "toolCalls": 9
     },
     {
@@ -320,8 +294,8 @@
       "pick": "chase",
       "rulesPick": "chase",
       "agrees": true,
-      "latencyMs": 10445,
-      "toolCalls": 6
+      "latencyMs": 13833,
+      "toolCalls": 10
     },
     {
       "key": "s235|d0|-|en|-",
@@ -333,8 +307,8 @@
       "pick": "next",
       "rulesPick": "next",
       "agrees": true,
-      "latencyMs": 12314,
-      "toolCalls": 7
+      "latencyMs": 15998,
+      "toolCalls": 10
     },
     {
       "key": "s615|d120|-|en|172b8ea0",
@@ -346,21 +320,21 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 18341,
-      "toolCalls": 6
+      "latencyMs": 43683,
+      "toolCalls": 9
     },
     {
       "key": "s615|d45|-|fr|962111ae",
       "awb": "615-12345675",
       "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
-      "attempts": 3,
+      "attempts": 2,
       "accepted": true,
       "fellBack": false,
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 20107,
-      "toolCalls": 6
+      "latencyMs": 32490,
+      "toolCalls": 10
     },
     {
       "key": "s615|d60|-|en|-",
@@ -372,8 +346,8 @@
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 16678,
-      "toolCalls": 7
+      "latencyMs": 17838,
+      "toolCalls": 10
     },
     {
       "key": "s615|d60|-|en|-|mem:a40553de",
@@ -385,8 +359,8 @@
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 16079,
-      "toolCalls": 7
+      "latencyMs": 25163,
+      "toolCalls": 10
     },
     {
       "key": "s615|d60|-|en|-|wx:LEJ=IFR",
@@ -398,7 +372,7 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 23853,
+      "latencyMs": 24131,
       "toolCalls": 10
     },
     {
@@ -411,8 +385,8 @@
       "pick": "keep",
       "rulesPick": "keep",
       "agrees": true,
-      "latencyMs": 23083,
-      "toolCalls": 9
+      "latencyMs": 17053,
+      "toolCalls": 10
     },
     {
       "key": "s615|d60|-|en|228cfc09|wx:LEJ=IFR",
@@ -424,7 +398,7 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 22437,
+      "latencyMs": 38956,
       "toolCalls": 7
     },
     {
@@ -432,13 +406,13 @@
       "awb": "615-12345675",
       "operatorMessage": null,
       "attempts": 2,
-      "accepted": true,
-      "fellBack": false,
+      "accepted": false,
+      "fellBack": true,
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 19960,
-      "toolCalls": 7
+      "latencyMs": 34530,
+      "toolCalls": 10
     },
     {
       "key": "s615|d90|-|en|-",
@@ -450,8 +424,8 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 18666,
-      "toolCalls": 7
+      "latencyMs": 19617,
+      "toolCalls": 9
     },
     {
       "key": "s615|d90|-|en|9d0870b6",
@@ -463,8 +437,8 @@
       "pick": "zrh",
       "rulesPick": "zrh",
       "agrees": true,
-      "latencyMs": 14244,
-      "toolCalls": 5
+      "latencyMs": 26421,
+      "toolCalls": 8
     }
   ]
 }

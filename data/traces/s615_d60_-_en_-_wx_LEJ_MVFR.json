@@ -13,26 +13,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v5",
-  "startedAt": "2026-10-25T23:23:35.766Z",
-  "latencyMs": 23083,
-  "promptTokens": 45026,
-  "completionTokens": 3808,
+  "promptVersion": "v6",
+  "startedAt": "2026-10-25T23:30:14.561Z",
+  "latencyMs": 17053,
+  "promptTokens": 49077,
+  "completionTokens": 2460,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 768,
-      "promptTokens": 2879,
-      "completionTokens": 54,
-      "reasoningChars": 52,
+      "ms": 641,
+      "promptTokens": 2902,
+      "completionTokens": 56,
+      "reasoningChars": 64,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ab617bcedb8e9a42",
+      "callId": "chatcmpl-tool-97ab1e4d252f31ee",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -57,17 +57,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 771,
-      "promptTokens": 3037,
-      "completionTokens": 55,
-      "reasoningChars": 63,
+      "ms": 890,
+      "promptTokens": 3060,
+      "completionTokens": 89,
+      "reasoningChars": 195,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b9efb73759b00e4e",
+      "callId": "chatcmpl-tool-a3d1e616929a8bbb",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -117,43 +117,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1184,
-      "promptTokens": 3298,
-      "completionTokens": 156,
-      "reasoningChars": 369,
-      "toolCalls": [
-        "check_connection"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-bd4aaa07df246401",
-      "name": "check_connection",
-      "args": {
-        "awb": "615-12345675"
-      },
-      "output": {
-        "applicable": true,
-        "facts": [
-          "ETA 19:15 vs required 19:15 · 0 min slack"
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 4,
-      "ms": 820,
-      "promptTokens": 3383,
-      "completionTokens": 57,
-      "reasoningChars": 72,
+      "ms": 888,
+      "promptTokens": 3321,
+      "completionTokens": 86,
+      "reasoningChars": 180,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-812db1178cebb9f7",
+      "callId": "chatcmpl-tool-b7a47981f12a1e2a",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -168,18 +142,44 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 727,
-      "promptTokens": 3473,
+      "turn": 4,
+      "ms": 883,
+      "promptTokens": 3411,
       "completionTokens": 80,
-      "reasoningChars": 175,
+      "reasoningChars": 164,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-958ee85067b06ae0",
+      "name": "check_connection",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "ETA 19:15 vs required 19:15 · 0 min slack"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 525,
+      "promptTokens": 3496,
+      "completionTokens": 75,
+      "reasoningChars": 140,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a1c747387f2f0969",
+      "callId": "chatcmpl-tool-9e0a0ee3fe251cd3",
       "name": "get_capacity",
       "args": {
         "awb": "615-12345675"
@@ -195,17 +195,43 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 1282,
-      "promptTokens": 3602,
-      "completionTokens": 182,
-      "reasoningChars": 627,
+      "ms": 625,
+      "promptTokens": 3625,
+      "completionTokens": 72,
+      "reasoningChars": 126,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-bed420acb72b45aa",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "General cargo, height 100 cm, no embargo"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 568,
+      "promptTokens": 3703,
+      "completionTokens": 67,
+      "reasoningChars": 101,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bbd6ada419a7ea7a",
+      "callId": "chatcmpl-tool-802d4e3e51144a49",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -243,18 +269,18 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 959,
-      "promptTokens": 3757,
-      "completionTokens": 67,
-      "reasoningChars": 106,
+      "turn": 8,
+      "ms": 820,
+      "promptTokens": 3858,
+      "completionTokens": 66,
+      "reasoningChars": 97,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9534422caa761f2e",
+      "callId": "chatcmpl-tool-bafd08a0398a5688",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -330,27 +356,27 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 1093,
-      "promptTokens": 4578,
-      "completionTokens": 147,
-      "reasoningChars": 469,
+      "turn": 9,
+      "ms": 729,
+      "promptTokens": 4679,
+      "completionTokens": 63,
+      "reasoningChars": 81,
       "toolCalls": [
         "get_station_evidence"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-91a5a18995bc4e59",
+      "callId": "chatcmpl-tool-a1832b1a6063b049",
       "name": "get_station_evidence",
       "args": {
         "awb": "615-12345675"
       },
       "output": {
         "applicable": true,
-        "source": "Zetaris federated query (Postgres handling history JOIN live METAR REST table)",
+        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
         "weather_source": "aviationweather.gov",
-        "fetched_at": "2026-10-25T23:23:34.674Z",
+        "fetched_at": "2026-10-25T23:30:12.196Z",
         "stations": [
           {
             "station": "LEJ",
@@ -414,11 +440,11 @@
     },
     {
       "kind": "model",
-      "turn": 9,
-      "ms": 6417,
-      "promptTokens": 5259,
-      "completionTokens": 1180,
-      "reasoningChars": 2957,
+      "turn": 10,
+      "ms": 4163,
+      "promptTokens": 5358,
+      "completionTokens": 750,
+      "reasoningChars": 2088,
       "toolCalls": [
         "submit_decision"
       ]
@@ -478,46 +504,40 @@
           "id": "language",
           "label": "Summary and evidence are in the duty officer's language",
           "pass": true
-        },
-        {
-          "id": "customer",
-          "label": "Customer note cites the AWB in the customer's language",
-          "pass": true
         }
       ],
       "submitted": {
         "risk": "watch",
-        "recommended_option_id": "zrh",
+        "recommended_option_id": "keep",
         "ranking": [
-          "zrh",
           "keep",
+          "zrh",
           "fra",
           "later"
         ],
-        "summary": "The truck is delayed 60 min, leaving no slack for the LEJ transfer; the booked plan remains allowed but carries Medium risk. Rebooking via ZRH provides a Low‑risk alternative with +4 h delay and +CHF 180 cost.",
+        "summary": "The truck delay leaves zero minutes slack for the LEJ transfer, making the connection tight. Keep the booked AYC 7841 via LEJ and monitor acceptance.",
         "why": [
-          "Truck ETA 19:15 vs required 19:15 gives 0 min slack (check_connection).",
-          "Booked Keep AYC 7841 via LEJ has Medium risk (calculate_risk) and On‑time delay, CHF 0 cost (find_alternatives).",
-          "Rebook via ZRH has Low risk, +4 h delay, +CHF 180 cost, and RFS 2204 leaves GVA at 18:10, arrives ZRH 19:05, cut‑off 21:30 (find_alternatives).",
-          "Station evidence shows LEJ MVFR window held 29 of 40 times (73%) (get_station_evidence)."
-        ],
-        "customer_note": "AWB 615-12345675 : nouvel acheminement via ZRH, arrivée prévue le 15 oct. à 13:10 LT à DEL."
+          "Truck ETA 19:15 vs required 19:15 · 0 min slack (disruption, check_connection)",
+          "LEJ transfer window 45 min; history in MVFR: within window 29 of 40 (73%) (station_evidence)",
+          "File risk watch due to connection tight (calculate_risk)",
+          "Keep option allowed, cost CHF 0, risk Medium (find_alternatives)"
+        ]
       }
     },
     {
       "kind": "model",
-      "turn": 10,
-      "ms": 951,
-      "promptTokens": 5685,
-      "completionTokens": 64,
-      "reasoningChars": 110,
+      "turn": 11,
+      "ms": 970,
+      "promptTokens": 5637,
+      "completionTokens": 89,
+      "reasoningChars": 228,
       "toolCalls": [
         "recall_desk_memory"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9d3245bdb34f2377",
+      "callId": "chatcmpl-tool-962726aa3a3e8a44",
       "name": "recall_desk_memory",
       "args": {
         "awb": "615-12345675"
@@ -556,11 +576,11 @@
     },
     {
       "kind": "model",
-      "turn": 11,
-      "ms": 8109,
-      "promptTokens": 6075,
-      "completionTokens": 1766,
-      "reasoningChars": 5231,
+      "turn": 12,
+      "ms": 5349,
+      "promptTokens": 6027,
+      "completionTokens": 967,
+      "reasoningChars": 2977,
       "toolCalls": [
         "submit_decision"
       ]
@@ -630,12 +650,12 @@
           "fra",
           "later"
         ],
-        "summary": "The truck is delayed 60 min, leaving zero slack for the LEJ transfer; the booked Keep AYC 7841 via LEJ remains allowed but carries Medium risk. If the truck ETA passes 19:15, reroute to Rebook via ZRH (Low risk, +4 h delay, +CHF 180).",
+        "summary": "The truck delay leaves zero minutes slack for the LEJ transfer, making the connection tight. Keep the booked AYC 7841 via LEJ and monitor acceptance.",
         "why": [
-          "Truck ETA 19:15 vs required 19:15 gives 0 min slack (check_connection); reroute if ETA passes 19:15.",
-          "Booked Keep AYC 7841 via LEJ: Medium risk, On‑time delay, CHF 0 cost (find_alternatives).",
-          "Fallback Rebook via ZRH: Low risk, +4 h delay, +CHF 180 cost, RFS 2204 departs GVA 18:10, arrives ZRH 19:05, cut‑off 21:30 (find_alternatives).",
-          "Station evidence: LEJ MVFR window held 29 of 40 times (73%) (get_station_evidence)."
+          "Truck ETA 19:15 vs required 19:15 · 0 min slack (disruption, check_connection)",
+          "LEJ transfer window 45 min; history in MVFR: within window 29 of 40 (73%) (station_evidence)",
+          "File risk watch due to connection tight (calculate_risk)",
+          "Keep option allowed, cost CHF 0, risk Medium (find_alternatives)"
         ]
       }
     }
@@ -649,12 +669,12 @@
       "fra",
       "later"
     ],
-    "summary": "The truck is delayed 60 min, leaving zero slack for the LEJ transfer; the booked Keep AYC 7841 via LEJ remains allowed but carries Medium risk. If the truck ETA passes 19:15, reroute to Rebook via ZRH (Low risk, +4 h delay, +CHF 180).",
+    "summary": "The truck delay leaves zero minutes slack for the LEJ transfer, making the connection tight. Keep the booked AYC 7841 via LEJ and monitor acceptance.",
     "why": [
-      "Truck ETA 19:15 vs required 19:15 gives 0 min slack (check_connection); reroute if ETA passes 19:15.",
-      "Booked Keep AYC 7841 via LEJ: Medium risk, On‑time delay, CHF 0 cost (find_alternatives).",
-      "Fallback Rebook via ZRH: Low risk, +4 h delay, +CHF 180 cost, RFS 2204 departs GVA 18:10, arrives ZRH 19:05, cut‑off 21:30 (find_alternatives).",
-      "Station evidence: LEJ MVFR window held 29 of 40 times (73%) (get_station_evidence)."
+      "Truck ETA 19:15 vs required 19:15 · 0 min slack (disruption, check_connection)",
+      "LEJ transfer window 45 min; history in MVFR: within window 29 of 40 (73%) (station_evidence)",
+      "File risk watch due to connection tight (calculate_risk)",
+      "Keep option allowed, cost CHF 0, risk Medium (find_alternatives)"
     ]
   },
   "verdict": {
@@ -721,10 +741,10 @@
   },
   "external": {
     "evidence": {
-      "backend": "zetaris",
-      "backend_note": "reconciled with the offline mirror: identical aggregates",
+      "backend": "mirror",
+      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 110.0 failed 1 times, most recent failure:); offline mirror answered",
       "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 552', 'AYC 7841', 'AYC 9864')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
-      "fetched_at": "2026-10-25T23:23:34.674Z",
+      "fetched_at": "2026-10-25T23:30:12.196Z",
       "rows": [
         {
           "station": "FRA",

@@ -12,26 +12,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v5",
-  "startedAt": "2026-10-25T23:24:15.574Z",
-  "latencyMs": 18341,
-  "promptTokens": 34013,
-  "completionTokens": 3145,
+  "promptVersion": "v6",
+  "startedAt": "2026-10-25T23:30:58.410Z",
+  "latencyMs": 43683,
+  "promptTokens": 46883,
+  "completionTokens": 2469,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 754,
-      "promptTokens": 2988,
-      "completionTokens": 55,
-      "reasoningChars": 61,
+      "ms": 981,
+      "promptTokens": 3011,
+      "completionTokens": 53,
+      "reasoningChars": 52,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b6578d945479292d",
+      "callId": "chatcmpl-tool-ac610c8594585743",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -56,17 +56,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 612,
-      "promptTokens": 3146,
-      "completionTokens": 52,
-      "reasoningChars": 61,
+      "ms": 1202,
+      "promptTokens": 3169,
+      "completionTokens": 102,
+      "reasoningChars": 254,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bd0bb39acda14872",
+      "callId": "chatcmpl-tool-b3b776f9866228e7",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -116,17 +116,95 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 2941,
-      "promptTokens": 3411,
-      "completionTokens": 424,
-      "reasoningChars": 1064,
+      "ms": 1586,
+      "promptTokens": 3434,
+      "completionTokens": 86,
+      "reasoningChars": 179,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9963d8b913775280",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "LEJ GCR 20:00 · transfer 45 min · required 19:15"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 1483,
+      "promptTokens": 3524,
+      "completionTokens": 80,
+      "reasoningChars": 165,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b043a83c98823e5b",
+      "name": "check_connection",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "ETA 20:15 is after the cut-off"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 1273,
+      "promptTokens": 3601,
+      "completionTokens": 79,
+      "reasoningChars": 168,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9780e4ab33e66cb2",
+      "name": "get_capacity",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "AYC 7841 free 2,400 kg · AYC 7842 free 410 kg · AYC 7843 free 3,100 kg · AYC 9864 free 2,200 kg"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 1804,
+      "promptTokens": 3730,
+      "completionTokens": 70,
+      "reasoningChars": 113,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a2488da35ac4b154",
+      "callId": "chatcmpl-tool-bd118a62a0f9be38",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -164,18 +242,18 @@
     },
     {
       "kind": "model",
-      "turn": 4,
-      "ms": 2254,
-      "promptTokens": 3568,
-      "completionTokens": 471,
-      "reasoningChars": 1372,
+      "turn": 7,
+      "ms": 1673,
+      "promptTokens": 3887,
+      "completionTokens": 67,
+      "reasoningChars": 97,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-85c8cb3a400a57a3",
+      "callId": "chatcmpl-tool-b1a66a0fab9bdd45",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -251,11 +329,99 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 4800,
-      "promptTokens": 4396,
-      "completionTokens": 1157,
-      "reasoningChars": 2311,
+      "turn": 8,
+      "ms": 1201,
+      "promptTokens": 4715,
+      "completionTokens": 61,
+      "reasoningChars": 74,
+      "toolCalls": [
+        "get_station_evidence"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-ae9580881d9f7f72",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
+        "weather_source": "aviationweather.gov",
+        "fetched_at": "2026-10-25T23:30:56.236Z",
+        "stations": [
+          {
+            "station": "LEJ",
+            "icao": "EDDP",
+            "role": "booked transfer at LEJ",
+            "process": "truck_to_flight",
+            "flight": "AYC 7841",
+            "window_min": 45,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "VFR",
+              "metar": "METAR EDDP 252320Z AUTO 22015KT CAVOK 08/03 Q1009 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "VFR",
+              "taf_worst_period": "BASE 00:00–14:00 UTC"
+            },
+            "history_90_days": {
+              "all_weather": "within window 140 of 180 (78%)",
+              "in_VFR": "within window 104 of 124 (84%), median 36 min, p90 47 min"
+            }
+          },
+          {
+            "station": "ZRH",
+            "icao": "LSZH",
+            "role": "reroute via ZRH",
+            "process": "truck_to_flight",
+            "flight": "AYC 9864",
+            "window_min": 60,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "IFR",
+              "metar": "METAR LSZH 252320Z AUTO 19005KT 9999 NCD 07/04 Q1020 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "IFR",
+              "taf_worst_period": "PROB40 03:00–08:00 UTC MIFG"
+            },
+            "history_90_days": {
+              "all_weather": "within window 171 of 180 (95%)",
+              "in_IFR": "within window 30 of 30 (100%), median 48 min, p90 55 min"
+            }
+          },
+          {
+            "station": "FRA",
+            "icao": "EDDF",
+            "role": "reroute via FRA",
+            "process": "truck_to_flight",
+            "flight": "AYC 552",
+            "window_min": 60,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "VFR",
+              "metar": "METAR EDDF 252320Z AUTO 17007KT CAVOK 06/04 Q1015 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "VFR",
+              "taf_worst_period": "BASE 00:00–15:00 UTC NSW"
+            },
+            "history_90_days": {
+              "all_weather": "within window 149 of 180 (83%)",
+              "in_VFR": "within window 94 of 112 (84%), median 46 min, p90 68 min"
+            }
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 9,
+      "ms": 11856,
+      "promptTokens": 5472,
+      "completionTokens": 1217,
+      "reasoningChars": 2564,
       "toolCalls": [
         "submit_decision"
       ]
@@ -269,7 +435,7 @@
           "id": "tools",
           "label": "Read the risk and the options before deciding",
           "pass": false,
-          "detail": "Not called: get_station_evidence, recall_desk_memory"
+          "detail": "Not called: recall_desk_memory"
         },
         {
           "id": "option",
@@ -335,118 +501,31 @@
           "fra",
           "later"
         ],
-        "summary": "The truck ETA 20:15 misses the LEJ cut‑off 20:00 by 60 min, causing a critical connection miss. Rebook via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT DEL, +4 h delay, +CHF 180.",
+        "summary": "The truck ETA of 20:15 misses the LEJ cut‑off of 20:00, creating a 60‑minute shortfall and critical risk. Rebook via ZRH (RFS 2204 + AYC 9864) for delivery at 15 Oct 13:10 LT DEL, +4 h delay and +CHF 180.",
         "why": [
-          "Truck ETA 20:15 vs need‑by 19:15 and cut‑off 20:00 gives a 60 min short gap.",
-          "Risk class is critical (connection missed).",
-          "Option Rebook via ZRH delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low."
+          "Truck ETA 20:15 LT (disruption) is after LEJ cut‑off 20:00 LT (cutoffs).",
+          "Gap to required‑by 19:15 LT is 60 min short (calculate_risk).",
+          "ZRH option delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low (find_alternatives).",
+          "ZRH station IFR: within window 30 of 30 (100%) (get_station_evidence)."
         ],
-        "reply": "Before: truck ETA 19:45, gap 30 min short, risk High. After: truck ETA 20:15, gap 60 min short, risk Critical. Recommendation: Rebook via ZRH.",
-        "customer_note": "AWB 615-12345675 sera réacheminé via ZRH avec une nouvelle heure de livraison prévue le 15 octobre à 13:10 heure locale à DEL (retard de +4 h)."
+        "reply": "Before: truck ETA 19:45 LT (‑90 min delay) → gap 30 min short, risk High. After: truck ETA 20:15 LT (‑120 min delay) → gap 60 min short, risk Critical. Recommend Rebook via ZRH.",
+        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13h10 heure locale à Delhi."
       }
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 1890,
-      "promptTokens": 4862,
-      "completionTokens": 178,
-      "reasoningChars": 647,
-      "toolCalls": [
-        "get_station_evidence"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-beec55bc4d01bfbe",
-      "name": "get_station_evidence",
-      "args": {
-        "awb": "615-12345675"
-      },
-      "output": {
-        "applicable": true,
-        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
-        "weather_source": "aviationweather.gov",
-        "fetched_at": "2026-10-25T23:24:13.496Z",
-        "stations": [
-          {
-            "station": "LEJ",
-            "icao": "EDDP",
-            "role": "booked transfer at LEJ",
-            "process": "truck_to_flight",
-            "flight": "AYC 7841",
-            "window_min": 45,
-            "weather": {
-              "basis": "worst of METAR now and TAF next 6 h",
-              "flight_category": "VFR",
-              "metar": "METAR EDDP 252320Z AUTO 22015KT CAVOK 08/03 Q1009 NOSIG",
-              "metar_category": "VFR",
-              "taf_worst_category": "VFR",
-              "taf_worst_period": "BASE 18:00–15:00 UTC"
-            },
-            "history_90_days": {
-              "all_weather": "within window 140 of 180 (78%)",
-              "in_VFR": "within window 104 of 124 (84%), median 36 min, p90 47 min"
-            }
-          },
-          {
-            "station": "ZRH",
-            "icao": "LSZH",
-            "role": "reroute via ZRH",
-            "process": "truck_to_flight",
-            "flight": "AYC 9864",
-            "window_min": 60,
-            "weather": {
-              "basis": "worst of METAR now and TAF next 6 h",
-              "flight_category": "IFR",
-              "metar": "METAR LSZH 252320Z AUTO 19005KT 9999 NCD 07/04 Q1020 NOSIG",
-              "metar_category": "VFR",
-              "taf_worst_category": "IFR",
-              "taf_worst_period": "PROB40 03:00–08:00 UTC MIFG"
-            },
-            "history_90_days": {
-              "all_weather": "within window 171 of 180 (95%)",
-              "in_IFR": "within window 30 of 30 (100%), median 48 min, p90 55 min"
-            }
-          },
-          {
-            "station": "FRA",
-            "icao": "EDDF",
-            "role": "reroute via FRA",
-            "process": "truck_to_flight",
-            "flight": "AYC 552",
-            "window_min": 60,
-            "weather": {
-              "basis": "worst of METAR now and TAF next 6 h",
-              "flight_category": "MVFR",
-              "metar": "METAR EDDF 252320Z AUTO 17007KT CAVOK 06/04 Q1015 NOSIG",
-              "metar_category": "VFR",
-              "taf_worst_category": "MVFR",
-              "taf_worst_period": "PROB30 TEMPO 05:00–08:00 UTC"
-            },
-            "history_90_days": {
-              "all_weather": "within window 149 of 180 (83%)",
-              "in_MVFR": "within window 41 of 46 (89%), median 49 min, p90 61 min"
-            }
-          }
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 7,
-      "ms": 1180,
-      "promptTokens": 5626,
-      "completionTokens": 54,
-      "reasoningChars": 47,
+      "turn": 10,
+      "ms": 1430,
+      "promptTokens": 5975,
+      "completionTokens": 56,
+      "reasoningChars": 56,
       "toolCalls": [
         "recall_desk_memory"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b01515347926cb44",
+      "callId": "chatcmpl-tool-85e4274be4bc80e7",
       "name": "recall_desk_memory",
       "args": {
         "awb": "615-12345675"
@@ -485,11 +564,11 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 3908,
-      "promptTokens": 6016,
-      "completionTokens": 754,
-      "reasoningChars": 1206,
+      "turn": 11,
+      "ms": 19193,
+      "promptTokens": 6365,
+      "completionTokens": 598,
+      "reasoningChars": 747,
       "toolCalls": [
         "submit_decision"
       ]
@@ -568,14 +647,15 @@
           "fra",
           "later"
         ],
-        "summary": "The truck ETA 20:15 misses the LEJ cut‑off 20:00 by 60 min, causing a critical connection miss. Rebook via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT DEL, +4 h delay, +CHF 180.",
+        "summary": "The truck ETA of 20:15 misses the LEJ cut‑off of 20:00, creating a 60‑minute shortfall and critical risk. Rebook via ZRH (RFS 2204 + AYC 9864) for delivery at 15 Oct 13:10 LT DEL, +4 h delay and +CHF 180.",
         "why": [
-          "Truck ETA 20:15 vs need‑by 19:15 and cut‑off 20:00 gives a 60 min short gap.",
-          "Risk class is critical (connection missed).",
-          "Option Rebook via ZRH delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low."
+          "Truck ETA 20:15 LT (disruption) is after LEJ cut‑off 20:00 LT (cutoffs).",
+          "Gap to required‑by 19:15 LT is 60 min short (calculate_risk).",
+          "ZRH option delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low (find_alternatives).",
+          "ZRH station IFR: within window 30 of 30 (100%) (get_station_evidence)."
         ],
-        "reply": "Before: truck ETA 19:45, gap 30 min short, risk High. After: truck ETA 20:15, gap 60 min short, risk Critical. Recommendation: Rebook via ZRH.",
-        "customer_note": "AWB 615-12345675 sera réacheminé via ZRH avec une nouvelle heure de livraison prévue le 15 octobre à 13:10 heure locale à DEL (retard de +4 h)."
+        "reply": "Before: truck ETA 19:45 LT (‑90 min delay) → gap 30 min short, risk High. After: truck ETA 20:15 LT (‑120 min delay) → gap 60 min short, risk Critical. Recommend Rebook via ZRH.",
+        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13h10 heure locale à Delhi."
       }
     }
   ],
@@ -587,14 +667,15 @@
       "fra",
       "later"
     ],
-    "summary": "The truck ETA 20:15 misses the LEJ cut‑off 20:00 by 60 min, causing a critical connection miss. Rebook via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT DEL, +4 h delay, +CHF 180.",
+    "summary": "The truck ETA of 20:15 misses the LEJ cut‑off of 20:00, creating a 60‑minute shortfall and critical risk. Rebook via ZRH (RFS 2204 + AYC 9864) for delivery at 15 Oct 13:10 LT DEL, +4 h delay and +CHF 180.",
     "why": [
-      "Truck ETA 20:15 vs need‑by 19:15 and cut‑off 20:00 gives a 60 min short gap.",
-      "Risk class is critical (connection missed).",
-      "Option Rebook via ZRH delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low."
+      "Truck ETA 20:15 LT (disruption) is after LEJ cut‑off 20:00 LT (cutoffs).",
+      "Gap to required‑by 19:15 LT is 60 min short (calculate_risk).",
+      "ZRH option delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low (find_alternatives).",
+      "ZRH station IFR: within window 30 of 30 (100%) (get_station_evidence)."
     ],
-    "reply": "Before: truck ETA 19:45, gap 30 min short, risk High. After: truck ETA 20:15, gap 60 min short, risk Critical. Recommendation: Rebook via ZRH.",
-    "customer_note": "AWB 615-12345675 sera réacheminé via ZRH avec une nouvelle heure de livraison prévue le 15 octobre à 13:10 heure locale à DEL (retard de +4 h)."
+    "reply": "Before: truck ETA 19:45 LT (‑90 min delay) → gap 30 min short, risk High. After: truck ETA 20:15 LT (‑120 min delay) → gap 60 min short, risk Critical. Recommend Rebook via ZRH.",
+    "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13h10 heure locale à Delhi."
   },
   "verdict": {
     "accepted": true,
@@ -671,9 +752,9 @@
   "external": {
     "evidence": {
       "backend": "mirror",
-      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkExcep); offline mirror answered",
+      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 134.0 failed 1 times, most recent failure:); offline mirror answered",
       "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 552', 'AYC 7841', 'AYC 9864')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
-      "fetched_at": "2026-10-25T23:24:13.496Z",
+      "fetched_at": "2026-10-25T23:30:56.236Z",
       "rows": [
         {
           "station": "FRA",
@@ -827,9 +908,9 @@
           "observed_at": "2026-10-25T23:20:00.000Z",
           "metar": "METAR EDDP 252320Z AUTO 22015KT CAVOK 08/03 Q1009 NOSIG",
           "metar_category": "VFR",
-          "taf": "TAF EDDP 251700Z 2518/2618 23013KT 9999 FEW040 TEMPO 2518/2522 25015G30KT SHRA BKN030CB BECMG 2615/2617 20005KT",
+          "taf": "TAF EDDP 252300Z 2600/2624 24014KT 9999 FEW040 PROB30 TEMPO 2600/2606 24015G25KT PROB30 TEMPO 2609/2614 24015G25KT BECMG 2614/2616 21008KT",
           "taf_worst_category": "VFR",
-          "taf_worst_reason": "BASE 18:00–15:00 UTC"
+          "taf_worst_reason": "BASE 00:00–14:00 UTC"
         },
         {
           "station": "ZRH",
@@ -847,9 +928,9 @@
           "observed_at": "2026-10-25T23:20:00.000Z",
           "metar": "METAR EDDF 252320Z AUTO 17007KT CAVOK 06/04 Q1015 NOSIG",
           "metar_category": "VFR",
-          "taf": "TAF EDDF 251700Z 2518/2624 23010KT CAVOK PROB30 TEMPO 2605/2608 BKN020 PROB30 TEMPO 2608/2611 BKN012 BECMG 2616/2618 19005KT TEMPO 2618/2624 BKN040",
-          "taf_worst_category": "MVFR",
-          "taf_worst_reason": "PROB30 TEMPO 05:00–08:00 UTC"
+          "taf": "TAF EDDF 252300Z 2600/2706 21010KT CAVOK PROB30 TEMPO 2608/2611 BKN015 BECMG 2615/2618 18005KT BECMG 2621/2624 BKN020",
+          "taf_worst_category": "VFR",
+          "taf_worst_reason": "BASE 00:00–15:00 UTC NSW"
         }
       ],
       "weather_source": "aviationweather.gov"
@@ -949,9 +1030,9 @@
           "get_station_evidence"
         ],
         "risk": "low",
-        "issuedAt": "2026-10-25T23:24:13.496Z",
+        "issuedAt": "2026-10-25T23:30:56.236Z",
         "promptHash": "d96c8ee18550c7c2",
-        "signature": "572fb69858e1141e58cf82f72a8e4a3aae156cb44c5a98926c4492b58e755c43"
+        "signature": "3e198b60e57a80be776b5fc9048dc45787a73d38eeddf64c7c8aaefd7f4e805a"
       }
     }
   }

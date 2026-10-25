@@ -1,0 +1,958 @@
+{
+  "version": 1,
+  "scenarioKey": "s615|d120|-|en|172b8ea0",
+  "scenario": {
+    "shipmentId": "s615",
+    "delayMin": 120,
+    "flags": {},
+    "locale": "en",
+    "operatorMessage": "What if the truck is delayed another 30 minutes?",
+    "priorDelayMin": 90
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "promptVersion": "v5",
+  "startedAt": "2026-10-25T23:24:15.574Z",
+  "latencyMs": 18341,
+  "promptTokens": 34013,
+  "completionTokens": 3145,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 754,
+      "promptTokens": 2988,
+      "completionTokens": 55,
+      "reasoningChars": 61,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b6578d945479292d",
+      "name": "get_shipment",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "awb": "615-12345675",
+        "origin": "GVA",
+        "destination": "DEL",
+        "booked_route": "GVA → LEJ → DEL",
+        "pieces": 4,
+        "weight_kg": 780,
+        "volume_m3": 4.2,
+        "dims": "120×80×100 cm",
+        "commodity": "General cargo",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Nyon Precision SA",
+        "customer_language": "French"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 612,
+      "promptTokens": 3146,
+      "completionTokens": 52,
+      "reasoningChars": 61,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-bd0bb39acda14872",
+      "name": "get_disruption",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "signal": "RFS 1840 · +120 min · LEJ",
+        "observed": [
+          "RFS 1840 GVA–LEJ +120 min · ETA 20:15 LT"
+        ],
+        "truck_delay_min": 120,
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "RFS 1840",
+            "value": "18:15",
+            "note": "Scheduled LEJ",
+            "state": "done"
+          },
+          {
+            "point": "Live ETA",
+            "value": "20:15",
+            "note": "+120 min",
+            "state": "risk"
+          },
+          {
+            "point": "Need by",
+            "value": "19:15",
+            "note": "45 min handling",
+            "state": "risk"
+          },
+          {
+            "point": "Cut-off",
+            "value": "20:00",
+            "note": "LEJ GCR",
+            "state": "risk"
+          },
+          {
+            "point": "AYC 7841",
+            "value": "21:00",
+            "note": "LEJ–DEL",
+            "state": "risk"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 2941,
+      "promptTokens": 3411,
+      "completionTokens": 424,
+      "reasoningChars": 1064,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a2488da35ac4b154",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "risk": "critical",
+        "classification": "Connection missed",
+        "rule": [
+          "CRITICAL · Connection missed"
+        ],
+        "drivers": [
+          {
+            "measure": "Truck ETA",
+            "value": "20:15",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Need by",
+            "value": "19:15",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Cut-off",
+            "value": "20:00",
+            "assessment": "bad"
+          },
+          {
+            "measure": "Gap",
+            "value": "60 min short",
+            "assessment": "bad"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 2254,
+      "promptTokens": 3568,
+      "completionTokens": 471,
+      "reasoningChars": 1372,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-85c8cb3a400a57a3",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "summary": [
+          "ZRH feasible · FRA tight on volume · AYC 7842 rejected · AYC 7843 +18 h"
+        ],
+        "options": [
+          {
+            "option_id": "keep",
+            "title": "Keep AYC 7841 via LEJ",
+            "via": "AYC 7841 LEJ–DEL",
+            "revised_eta": "15 Oct 09:05 LT DEL",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "blocked",
+            "constraint_check": "Truck arrives after the LEJ cut-off. The station will not accept it.",
+            "action": "Present AWB 615-12345675 to AYC 7841 only if LEJ accepts a late tender."
+          },
+          {
+            "option_id": "next",
+            "title": "Roll to AYC 7842",
+            "via": "AYC 7842 LEJ–DEL",
+            "revised_eta": "15 Oct 14:40 LT DEL",
+            "delay": "+6 h",
+            "cost": "CHF 0",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "AYC 7842 has 410 kg free. This shipment is 780 kg. Capacity is not theoretical — it is short.",
+            "action": "Do not plan AYC 7842."
+          },
+          {
+            "option_id": "zrh",
+            "title": "Rebook via ZRH",
+            "via": "RFS 2204 · AYC 9864 ZRH–DEL",
+            "revised_eta": "15 Oct 13:10 LT DEL",
+            "delay": "+4 h",
+            "cost": "+CHF 180",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "RFS 2204 leaves GVA at 18:10, on hand ZRH 19:05, cut-off 21:30. Free capacity 2,200 kg and a loose position. Dispatch in the next 15 minutes.",
+            "action": "Pull AWB 615-12345675 off RFS 1840 and move it to RFS 2204 for AYC 9864 ZRH–DEL."
+          },
+          {
+            "option_id": "fra",
+            "title": "Rebook via FRA",
+            "via": "RFS 3310 · AYC 552 FRA–DEL",
+            "revised_eta": "15 Oct 18:05 LT DEL",
+            "delay": "+9 h",
+            "cost": "+CHF 90",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Weight fits (900 kg free) but the remaining LD3 is 4.3 m³ against 4.2 m³ built. No contour tolerance.",
+            "action": "Move the shipment to RFS 3310 GVA–FRA for AYC 552, and flag the volume as tight."
+          },
+          {
+            "option_id": "later",
+            "title": "Wait for AYC 7843",
+            "via": "AYC 7843 LEJ–DEL",
+            "revised_eta": "16 Oct 03:10 LT DEL",
+            "delay": "+18 h",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Space is clean (3,100 kg) but the customer window on 15 Oct is missed by a full day.",
+            "action": "Hold at LEJ for AYC 7843 and warn the customer of +18 h."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 4800,
+      "promptTokens": 4396,
+      "completionTokens": 1157,
+      "reasoningChars": 2311,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": false,
+          "detail": "Not called: get_station_evidence, recall_desk_memory"
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "evidence",
+          "label": "Keeping the booking is consistent with tonight's station evidence",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
+          "id": "reply",
+          "label": "Answers the operator in the operator's language",
+          "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "critical",
+        "recommended_option_id": "zrh",
+        "ranking": [
+          "zrh",
+          "fra",
+          "later"
+        ],
+        "summary": "The truck ETA 20:15 misses the LEJ cut‑off 20:00 by 60 min, causing a critical connection miss. Rebook via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT DEL, +4 h delay, +CHF 180.",
+        "why": [
+          "Truck ETA 20:15 vs need‑by 19:15 and cut‑off 20:00 gives a 60 min short gap.",
+          "Risk class is critical (connection missed).",
+          "Option Rebook via ZRH delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low."
+        ],
+        "reply": "Before: truck ETA 19:45, gap 30 min short, risk High. After: truck ETA 20:15, gap 60 min short, risk Critical. Recommendation: Rebook via ZRH.",
+        "customer_note": "AWB 615-12345675 sera réacheminé via ZRH avec une nouvelle heure de livraison prévue le 15 octobre à 13:10 heure locale à DEL (retard de +4 h)."
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 1890,
+      "promptTokens": 4862,
+      "completionTokens": 178,
+      "reasoningChars": 647,
+      "toolCalls": [
+        "get_station_evidence"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-beec55bc4d01bfbe",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "applicable": true,
+        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
+        "weather_source": "aviationweather.gov",
+        "fetched_at": "2026-10-25T23:24:13.496Z",
+        "stations": [
+          {
+            "station": "LEJ",
+            "icao": "EDDP",
+            "role": "booked transfer at LEJ",
+            "process": "truck_to_flight",
+            "flight": "AYC 7841",
+            "window_min": 45,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "VFR",
+              "metar": "METAR EDDP 252320Z AUTO 22015KT CAVOK 08/03 Q1009 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "VFR",
+              "taf_worst_period": "BASE 18:00–15:00 UTC"
+            },
+            "history_90_days": {
+              "all_weather": "within window 140 of 180 (78%)",
+              "in_VFR": "within window 104 of 124 (84%), median 36 min, p90 47 min"
+            }
+          },
+          {
+            "station": "ZRH",
+            "icao": "LSZH",
+            "role": "reroute via ZRH",
+            "process": "truck_to_flight",
+            "flight": "AYC 9864",
+            "window_min": 60,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "IFR",
+              "metar": "METAR LSZH 252320Z AUTO 19005KT 9999 NCD 07/04 Q1020 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "IFR",
+              "taf_worst_period": "PROB40 03:00–08:00 UTC MIFG"
+            },
+            "history_90_days": {
+              "all_weather": "within window 171 of 180 (95%)",
+              "in_IFR": "within window 30 of 30 (100%), median 48 min, p90 55 min"
+            }
+          },
+          {
+            "station": "FRA",
+            "icao": "EDDF",
+            "role": "reroute via FRA",
+            "process": "truck_to_flight",
+            "flight": "AYC 552",
+            "window_min": 60,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "MVFR",
+              "metar": "METAR EDDF 252320Z AUTO 17007KT CAVOK 06/04 Q1015 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "MVFR",
+              "taf_worst_period": "PROB30 TEMPO 05:00–08:00 UTC"
+            },
+            "history_90_days": {
+              "all_weather": "within window 149 of 180 (83%)",
+              "in_MVFR": "within window 41 of 46 (89%), median 49 min, p90 61 min"
+            }
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 1180,
+      "promptTokens": 5626,
+      "completionTokens": 54,
+      "reasoningChars": 47,
+      "toolCalls": [
+        "recall_desk_memory"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b01515347926cb44",
+      "name": "recall_desk_memory",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "engine": "Meterless H-MEM",
+        "recalled": [
+          {
+            "memory_id": "mem-3",
+            "note": "When LEJ is at risk, the preferred fallback is the RFS 2204 truck to ZRH; it has been reliable all quarter.",
+            "source": "handover log (duty officer)",
+            "learned": "2026-09-23"
+          },
+          {
+            "memory_id": "mem-2",
+            "note": "Override: kept the LEJ booking on a foggy evening against advice and the freight missed AYC 7841. In fog at LEJ, take the ZRH reroute early.",
+            "source": "handover log (duty officer)",
+            "learned": "2026-10-05"
+          },
+          {
+            "memory_id": "mem-1",
+            "note": "LEJ build-up for AYC 7841 runs one team short after 19:30 local this month; late RFS trucks into LEJ are the first thing to slip.",
+            "source": "handover log (night shift)",
+            "learned": "2026-10-11"
+          },
+          {
+            "memory_id": "mem-4",
+            "note": "Nyon Precision SA (LEJ–DEL lane) accepts a later arrival if told before the evening, but refuses split shipments. Always write to them in French.",
+            "source": "handover log (key account)",
+            "learned": "2026-10-09"
+          }
+        ],
+        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 8,
+      "ms": 3908,
+      "promptTokens": 6016,
+      "completionTokens": 754,
+      "reasoningChars": 1206,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "evidence",
+          "label": "Keeping the booking is consistent with tonight's station evidence",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
+          "id": "reply",
+          "label": "Answers the operator in the operator's language",
+          "pass": true
+        },
+        {
+          "id": "customer",
+          "label": "Customer note cites the AWB in the customer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "critical",
+        "recommended_option_id": "zrh",
+        "ranking": [
+          "zrh",
+          "fra",
+          "later"
+        ],
+        "summary": "The truck ETA 20:15 misses the LEJ cut‑off 20:00 by 60 min, causing a critical connection miss. Rebook via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT DEL, +4 h delay, +CHF 180.",
+        "why": [
+          "Truck ETA 20:15 vs need‑by 19:15 and cut‑off 20:00 gives a 60 min short gap.",
+          "Risk class is critical (connection missed).",
+          "Option Rebook via ZRH delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low."
+        ],
+        "reply": "Before: truck ETA 19:45, gap 30 min short, risk High. After: truck ETA 20:15, gap 60 min short, risk Critical. Recommendation: Rebook via ZRH.",
+        "customer_note": "AWB 615-12345675 sera réacheminé via ZRH avec une nouvelle heure de livraison prévue le 15 octobre à 13:10 heure locale à DEL (retard de +4 h)."
+      }
+    }
+  ],
+  "decision": {
+    "risk": "critical",
+    "recommended_option_id": "zrh",
+    "ranking": [
+      "zrh",
+      "fra",
+      "later"
+    ],
+    "summary": "The truck ETA 20:15 misses the LEJ cut‑off 20:00 by 60 min, causing a critical connection miss. Rebook via ZRH (RFS 2204 → AYC 9864) for delivery 15 Oct 13:10 LT DEL, +4 h delay, +CHF 180.",
+    "why": [
+      "Truck ETA 20:15 vs need‑by 19:15 and cut‑off 20:00 gives a 60 min short gap.",
+      "Risk class is critical (connection missed).",
+      "Option Rebook via ZRH delivers 15 Oct 13:10 LT DEL, delay +4 h, cost +CHF 180, risk Low."
+    ],
+    "reply": "Before: truck ETA 19:45, gap 30 min short, risk High. After: truck ETA 20:15, gap 60 min short, risk Critical. Recommendation: Rebook via ZRH.",
+    "customer_note": "AWB 615-12345675 sera réacheminé via ZRH avec une nouvelle heure de livraison prévue le 15 octobre à 13:10 heure locale à DEL (retard de +4 h)."
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 2,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "evidence",
+        "label": "Keeping the booking is consistent with tonight's station evidence",
+        "pass": true
+      },
+      {
+        "id": "memory",
+        "label": "Every cited memory was recalled for this file",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
+        "pass": true
+      },
+      {
+        "id": "reply",
+        "label": "Answers the operator in the operator's language",
+        "pass": true
+      },
+      {
+        "id": "customer",
+        "label": "Customer note cites the AWB in the customer's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "zrh",
+    "risk": "critical",
+    "agrees": true
+  },
+  "external": {
+    "evidence": {
+      "backend": "mirror",
+      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkExcep); offline mirror answered",
+      "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 552', 'AYC 7841', 'AYC 9864')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
+      "fetched_at": "2026-10-25T23:24:13.496Z",
+      "rows": [
+        {
+          "station": "FRA",
+          "process": "truck_to_flight",
+          "flight": "AYC 552",
+          "window_min": 60,
+          "wx_category": "IFR",
+          "n": 12,
+          "within": 9,
+          "p50_min": 51,
+          "p90_min": 65,
+          "max_min": 69
+        },
+        {
+          "station": "FRA",
+          "process": "truck_to_flight",
+          "flight": "AYC 552",
+          "window_min": 60,
+          "wx_category": "LIFR",
+          "n": 10,
+          "within": 5,
+          "p50_min": 60,
+          "p90_min": 74,
+          "max_min": 81
+        },
+        {
+          "station": "FRA",
+          "process": "truck_to_flight",
+          "flight": "AYC 552",
+          "window_min": 60,
+          "wx_category": "MVFR",
+          "n": 46,
+          "within": 41,
+          "p50_min": 49,
+          "p90_min": 61,
+          "max_min": 93
+        },
+        {
+          "station": "FRA",
+          "process": "truck_to_flight",
+          "flight": "AYC 552",
+          "window_min": 60,
+          "wx_category": "VFR",
+          "n": 112,
+          "within": 94,
+          "p50_min": 46,
+          "p90_min": 68,
+          "max_min": 89
+        },
+        {
+          "station": "LEJ",
+          "process": "truck_to_flight",
+          "flight": "AYC 7841",
+          "window_min": 45,
+          "wx_category": "IFR",
+          "n": 8,
+          "within": 5,
+          "p50_min": 40,
+          "p90_min": 73,
+          "max_min": 73
+        },
+        {
+          "station": "LEJ",
+          "process": "truck_to_flight",
+          "flight": "AYC 7841",
+          "window_min": 45,
+          "wx_category": "LIFR",
+          "n": 8,
+          "within": 2,
+          "p50_min": 58,
+          "p90_min": 70,
+          "max_min": 70
+        },
+        {
+          "station": "LEJ",
+          "process": "truck_to_flight",
+          "flight": "AYC 7841",
+          "window_min": 45,
+          "wx_category": "MVFR",
+          "n": 40,
+          "within": 29,
+          "p50_min": 41,
+          "p90_min": 50,
+          "max_min": 62
+        },
+        {
+          "station": "LEJ",
+          "process": "truck_to_flight",
+          "flight": "AYC 7841",
+          "window_min": 45,
+          "wx_category": "VFR",
+          "n": 124,
+          "within": 104,
+          "p50_min": 36,
+          "p90_min": 47,
+          "max_min": 63
+        },
+        {
+          "station": "ZRH",
+          "process": "truck_to_flight",
+          "flight": "AYC 9864",
+          "window_min": 60,
+          "wx_category": "IFR",
+          "n": 30,
+          "within": 30,
+          "p50_min": 48,
+          "p90_min": 55,
+          "max_min": 60
+        },
+        {
+          "station": "ZRH",
+          "process": "truck_to_flight",
+          "flight": "AYC 9864",
+          "window_min": 60,
+          "wx_category": "LIFR",
+          "n": 10,
+          "within": 8,
+          "p50_min": 56,
+          "p90_min": 62,
+          "max_min": 64
+        },
+        {
+          "station": "ZRH",
+          "process": "truck_to_flight",
+          "flight": "AYC 9864",
+          "window_min": 60,
+          "wx_category": "MVFR",
+          "n": 38,
+          "within": 36,
+          "p50_min": 45,
+          "p90_min": 55,
+          "max_min": 66
+        },
+        {
+          "station": "ZRH",
+          "process": "truck_to_flight",
+          "flight": "AYC 9864",
+          "window_min": 60,
+          "wx_category": "VFR",
+          "n": 102,
+          "within": 97,
+          "p50_min": 40,
+          "p90_min": 52,
+          "max_min": 80
+        }
+      ],
+      "weather": [
+        {
+          "station": "LEJ",
+          "icao": "EDDP",
+          "observed_at": "2026-10-25T23:20:00.000Z",
+          "metar": "METAR EDDP 252320Z AUTO 22015KT CAVOK 08/03 Q1009 NOSIG",
+          "metar_category": "VFR",
+          "taf": "TAF EDDP 251700Z 2518/2618 23013KT 9999 FEW040 TEMPO 2518/2522 25015G30KT SHRA BKN030CB BECMG 2615/2617 20005KT",
+          "taf_worst_category": "VFR",
+          "taf_worst_reason": "BASE 18:00–15:00 UTC"
+        },
+        {
+          "station": "ZRH",
+          "icao": "LSZH",
+          "observed_at": "2026-10-25T23:20:00.000Z",
+          "metar": "METAR LSZH 252320Z AUTO 19005KT 9999 NCD 07/04 Q1020 NOSIG",
+          "metar_category": "VFR",
+          "taf": "TAF LSZH 252025Z 2521/2703 19005KT 9999 SCT035 TX13/2614Z TN04/2606Z BECMG 2523/2602 CAVOK PROB40 2603/2608 4000 MIFG SCT020 PROB40 TEMPO 2618/2702 9999 SCT075 BECMG 2701/2703 4000 MIFG NSC",
+          "taf_worst_category": "IFR",
+          "taf_worst_reason": "PROB40 03:00–08:00 UTC MIFG"
+        },
+        {
+          "station": "FRA",
+          "icao": "EDDF",
+          "observed_at": "2026-10-25T23:20:00.000Z",
+          "metar": "METAR EDDF 252320Z AUTO 17007KT CAVOK 06/04 Q1015 NOSIG",
+          "metar_category": "VFR",
+          "taf": "TAF EDDF 251700Z 2518/2624 23010KT CAVOK PROB30 TEMPO 2605/2608 BKN020 PROB30 TEMPO 2608/2611 BKN012 BECMG 2616/2618 19005KT TEMPO 2618/2624 BKN040",
+          "taf_worst_category": "MVFR",
+          "taf_worst_reason": "PROB30 TEMPO 05:00–08:00 UTC"
+        }
+      ],
+      "weather_source": "aviationweather.gov"
+    },
+    "memory": {
+      "engine": "meterless-hmem-reference@1742dec",
+      "query": "LEJ DEL Nyon ZRH fog IFR",
+      "recalled": [
+        {
+          "id": "mem-3",
+          "content": "When LEJ is at risk, the preferred fallback is the RFS 2204 truck to ZRH; it has been reliable all quarter.",
+          "source": "handover log (duty officer)",
+          "learned": "2026-09-23",
+          "relevance": 0.35
+        },
+        {
+          "id": "mem-2",
+          "content": "Override: kept the LEJ booking on a foggy evening against advice and the freight missed AYC 7841. In fog at LEJ, take the ZRH reroute early.",
+          "source": "handover log (duty officer)",
+          "learned": "2026-10-05",
+          "relevance": 0.32
+        },
+        {
+          "id": "mem-1",
+          "content": "LEJ build-up for AYC 7841 runs one team short after 19:30 local this month; late RFS trucks into LEJ are the first thing to slip.",
+          "source": "handover log (night shift)",
+          "learned": "2026-10-11",
+          "relevance": 0.26
+        },
+        {
+          "id": "mem-4",
+          "content": "Nyon Precision SA (LEJ–DEL lane) accepts a later arrival if told before the evening, but refuses split shipments. Always write to them in French.",
+          "source": "handover log (key account)",
+          "learned": "2026-10-09",
+          "relevance": 0.23
+        }
+      ],
+      "added": [],
+      "trace": {
+        "strategy": "comprehensive",
+        "reason": "hybrid ranking for \"LEJ DEL Nyon ZRH fog IFR\" (domain: general)"
+      }
+    },
+    "scout": {
+      "intent": {
+        "primary": "desk.whatif",
+        "confidence": 1
+      },
+      "candidates": [
+        {
+          "intent": "desk.whatif",
+          "score": 1
+        }
+      ],
+      "risk": {
+        "level": "low",
+        "flags": []
+      },
+      "toolPlan": [
+        {
+          "capability": "get_shipment"
+        },
+        {
+          "capability": "get_disruption"
+        },
+        {
+          "capability": "get_cutoffs"
+        },
+        {
+          "capability": "check_connection"
+        },
+        {
+          "capability": "calculate_risk"
+        },
+        {
+          "capability": "find_alternatives"
+        },
+        {
+          "capability": "get_station_evidence"
+        }
+      ],
+      "executionContract": {
+        "version": 1,
+        "intent": {
+          "primary": {
+            "id": "desk.whatif",
+            "confidence": 1
+          }
+        },
+        "toolPlan": [
+          "get_shipment",
+          "get_disruption",
+          "get_cutoffs",
+          "check_connection",
+          "calculate_risk",
+          "find_alternatives",
+          "get_station_evidence"
+        ],
+        "risk": "low",
+        "issuedAt": "2026-10-25T23:24:13.496Z",
+        "promptHash": "d96c8ee18550c7c2",
+        "signature": "572fb69858e1141e58cf82f72a8e4a3aae156cb44c5a98926c4492b58e755c43"
+      }
+    }
+  }
+}

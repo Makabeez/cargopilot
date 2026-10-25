@@ -11,8 +11,8 @@
   "mode": "blocked",
   "model": "none",
   "provider": "Meterless Scout (local)",
-  "startedAt": "2026-10-25T23:24:33.921Z",
-  "latencyMs": 1,
+  "startedAt": "2026-10-25T23:31:42.096Z",
+  "latencyMs": 0,
   "promptTokens": 0,
   "completionTokens": 0,
   "steps": [

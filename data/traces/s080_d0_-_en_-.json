@@ -10,17 +10,17 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v5",
-  "startedAt": "2026-10-25T23:23:31.021Z",
-  "latencyMs": 12259,
-  "promptTokens": 31553,
-  "completionTokens": 1511,
+  "promptVersion": "v6",
+  "startedAt": "2026-10-25T23:30:08.126Z",
+  "latencyMs": 11668,
+  "promptTokens": 35123,
+  "completionTokens": 1070,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 570,
-      "promptTokens": 2879,
+      "ms": 1612,
+      "promptTokens": 2902,
       "completionTokens": 54,
       "reasoningChars": 52,
       "toolCalls": [
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b1dff1d34421223e",
+      "callId": "chatcmpl-tool-b1dd01e18492e164",
       "name": "get_shipment",
       "args": {
         "awb": "080-22991006"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 515,
-      "promptTokens": 3027,
-      "completionTokens": 61,
-      "reasoningChars": 93,
+      "ms": 963,
+      "promptTokens": 3050,
+      "completionTokens": 93,
+      "reasoningChars": 217,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a058ef8b36679e05",
+      "callId": "chatcmpl-tool-88fd829b1af19958",
       "name": "get_disruption",
       "args": {
         "awb": "080-22991006"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 689,
-      "promptTokens": 3178,
-      "completionTokens": 58,
-      "reasoningChars": 68,
+      "ms": 824,
+      "promptTokens": 3201,
+      "completionTokens": 86,
+      "reasoningChars": 179,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8e2b7f2cf48212ec",
+      "callId": "chatcmpl-tool-860fd9c360cbc4c0",
       "name": "get_cutoffs",
       "args": {
         "awb": "080-22991006"
@@ -124,17 +124,42 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1636,
-      "promptTokens": 3256,
-      "completionTokens": 68,
-      "reasoningChars": 137,
+      "ms": 742,
+      "promptTokens": 3279,
+      "completionTokens": 80,
+      "reasoningChars": 167,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-82d5363fb14d29e2",
+      "name": "check_connection",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check connection issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 923,
+      "promptTokens": 3355,
+      "completionTokens": 75,
+      "reasoningChars": 140,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a458dbd9363118c9",
+      "callId": "chatcmpl-tool-9bacf37cc06f7d31",
       "name": "get_capacity",
       "args": {
         "awb": "080-22991006"
@@ -148,18 +173,18 @@
     },
     {
       "kind": "model",
-      "turn": 5,
-      "ms": 837,
-      "promptTokens": 3332,
-      "completionTokens": 72,
-      "reasoningChars": 130,
+      "turn": 6,
+      "ms": 710,
+      "promptTokens": 3431,
+      "completionTokens": 70,
+      "reasoningChars": 114,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-84a7958f614ebe91",
+      "callId": "chatcmpl-tool-8241f74abbad86d1",
       "name": "calculate_risk",
       "args": {
         "awb": "080-22991006"
@@ -195,18 +220,18 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 655,
-      "promptTokens": 3480,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "turn": 7,
+      "ms": 1036,
+      "promptTokens": 3579,
+      "completionTokens": 72,
+      "reasoningChars": 121,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b7dc061b27f0eaaa",
+      "callId": "chatcmpl-tool-8f38f4666c279b88",
       "name": "find_alternatives",
       "args": {
         "awb": "080-22991006"
@@ -256,96 +281,42 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 2440,
-      "promptTokens": 3899,
-      "completionTokens": 409,
-      "reasoningChars": 872,
+      "turn": 8,
+      "ms": 905,
+      "promptTokens": 3998,
+      "completionTokens": 61,
+      "reasoningChars": 74,
       "toolCalls": [
-        "submit_decision"
+        "get_station_evidence"
       ]
     },
     {
-      "kind": "verify",
-      "attempt": 1,
-      "accepted": false,
-      "checks": [
-        {
-          "id": "tools",
-          "label": "Read the risk and the options before deciding",
-          "pass": false,
-          "detail": "Not called: recall_desk_memory"
-        },
-        {
-          "id": "option",
-          "label": "Recommended option exists",
-          "pass": true
-        },
-        {
-          "id": "allowed",
-          "label": "Recommended option passes hard constraints",
-          "pass": true
-        },
-        {
-          "id": "ranking",
-          "label": "Ranking starts with the pick and holds only allowed options",
-          "pass": true
-        },
-        {
-          "id": "risk",
-          "label": "Risk class matches calculate_risk",
-          "pass": true
-        },
-        {
-          "id": "figures",
-          "label": "Every time and figure traces to a tool output",
-          "pass": true
-        },
-        {
-          "id": "refs",
-          "label": "Every flight, truck and AWB reference is real",
-          "pass": true
-        },
-        {
-          "id": "memory",
-          "label": "Every cited memory was recalled for this file",
-          "pass": true
-        },
-        {
-          "id": "language",
-          "label": "Summary and evidence are in the duty officer's language",
-          "pass": true
-        }
-      ],
-      "submitted": {
-        "risk": "watch",
-        "recommended_option_id": "repack",
-        "ranking": [
-          "repack",
-          "active"
-        ],
-        "summary": "The gel qualification is short by 2 hours, making the current gels unusable. Repack with fresh gels restores qualification and keeps the shipment on time.",
-        "why": [
-          "Gel life qualified 14 h, lane 16 h – gel life short by 2 h (watch risk).",
-          "Repack option: revised ETA 15 Oct 21:00 LT YYZ, delay On time, cost +CHF 60, risk Low, status allowed.",
-          "Active box option: same ETA, cost +CHF 220, risk Low, status allowed; higher cost."
-        ]
-      }
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8377c7da176f9c22",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "applicable": false,
+        "note": "No station handling evidence applies to this file (no transfer or acceptance process at risk)."
+      },
+      "ms": 0
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 1287,
-      "promptTokens": 4167,
-      "completionTokens": 64,
-      "reasoningChars": 87,
+      "turn": 9,
+      "ms": 1061,
+      "promptTokens": 4080,
+      "completionTokens": 49,
+      "reasoningChars": 32,
       "toolCalls": [
         "recall_desk_memory"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a79dc515c87f67f4",
+      "callId": "chatcmpl-tool-8d81c68e84f36d2f",
       "name": "recall_desk_memory",
       "args": {
         "awb": "080-22991006"
@@ -366,18 +337,18 @@
     },
     {
       "kind": "model",
-      "turn": 9,
-      "ms": 3628,
-      "promptTokens": 4335,
-      "completionTokens": 678,
-      "reasoningChars": 2071,
+      "turn": 10,
+      "ms": 2891,
+      "promptTokens": 4248,
+      "completionTokens": 430,
+      "reasoningChars": 1031,
       "toolCalls": [
         "submit_decision"
       ]
     },
     {
       "kind": "verify",
-      "attempt": 2,
+      "attempt": 1,
       "accepted": true,
       "checks": [
         {
@@ -428,37 +399,37 @@
       ],
       "submitted": {
         "risk": "watch",
-        "recommended_option_id": "active",
+        "recommended_option_id": "repack",
         "ranking": [
-          "active",
-          "repack"
+          "repack",
+          "active"
         ],
-        "summary": "The gel qualification is short by 2 hours, making the current gels unusable. Upgrading to an active box restores qualification and keeps the shipment on time.",
+        "summary": "Gel life is short by 2 h versus the lane time, creating a claim risk. Repack with fresh gels restores qualification and maintains on‑time delivery.",
         "why": [
-          "Gel life qualified 14 h, lane 16 h – gel life short by 2 h (watch risk).",
-          "Active box option: revised ETA 15 Oct 21:00 LT YYZ, delay On time, cost +CHF 220, risk Low, status allowed (mem-10 prefers active over re-icing).",
-          "Repack option: same ETA, cost +CHF 60, risk Low, status allowed; higher cost advantage for repack but memory indicates active container."
+          "Gel life qualified 14 h < lane 16 h (risk)",
+          "Repack adds +CHF 60, Low risk, On time",
+          "Active box +CHF 220 also Low risk but higher cost"
         ]
       }
     }
   ],
   "decision": {
     "risk": "watch",
-    "recommended_option_id": "active",
+    "recommended_option_id": "repack",
     "ranking": [
-      "active",
-      "repack"
+      "repack",
+      "active"
     ],
-    "summary": "The gel qualification is short by 2 hours, making the current gels unusable. Upgrading to an active box restores qualification and keeps the shipment on time.",
+    "summary": "Gel life is short by 2 h versus the lane time, creating a claim risk. Repack with fresh gels restores qualification and maintains on‑time delivery.",
     "why": [
-      "Gel life qualified 14 h, lane 16 h – gel life short by 2 h (watch risk).",
-      "Active box option: revised ETA 15 Oct 21:00 LT YYZ, delay On time, cost +CHF 220, risk Low, status allowed (mem-10 prefers active over re-icing).",
-      "Repack option: same ETA, cost +CHF 60, risk Low, status allowed; higher cost advantage for repack but memory indicates active container."
+      "Gel life qualified 14 h < lane 16 h (risk)",
+      "Repack adds +CHF 60, Low risk, On time",
+      "Active box +CHF 220 also Low risk but higher cost"
     ]
   },
   "verdict": {
     "accepted": true,
-    "attempts": 2,
+    "attempts": 1,
     "fellBack": false,
     "checks": [
       {
@@ -511,7 +482,7 @@
   "baseline": {
     "recommended_option_id": "repack",
     "risk": "watch",
-    "agrees": false
+    "agrees": true
   },
   "external": {
     "memory": {

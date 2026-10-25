@@ -13,17 +13,17 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v5",
-  "startedAt": "2026-10-25T23:23:59.418Z",
-  "latencyMs": 18997,
-  "promptTokens": 44233,
-  "completionTokens": 2681,
+  "promptVersion": "v6",
+  "startedAt": "2026-10-25T23:30:39.090Z",
+  "latencyMs": 17124,
+  "promptTokens": 44091,
+  "completionTokens": 1995,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 865,
-      "promptTokens": 2879,
+      "ms": 944,
+      "promptTokens": 2902,
       "completionTokens": 54,
       "reasoningChars": 52,
       "toolCalls": [
@@ -32,7 +32,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a65548153fc076d5",
+      "callId": "chatcmpl-tool-9778de7e9a2c5eea",
       "name": "get_shipment",
       "args": {
         "awb": "125-88342111"
@@ -57,17 +57,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 787,
-      "promptTokens": 3037,
-      "completionTokens": 73,
-      "reasoningChars": 168,
+      "ms": 1497,
+      "promptTokens": 3060,
+      "completionTokens": 70,
+      "reasoningChars": 145,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bea0afeabb7c7c30",
+      "callId": "chatcmpl-tool-b152edea460820bf",
       "name": "get_disruption",
       "args": {
         "awb": "125-88342111"
@@ -105,17 +105,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 911,
-      "promptTokens": 3230,
-      "completionTokens": 127,
-      "reasoningChars": 365,
+      "ms": 530,
+      "promptTokens": 3253,
+      "completionTokens": 86,
+      "reasoningChars": 179,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-845af941db74d41f",
+      "callId": "chatcmpl-tool-8d007988ec5f7e0c",
       "name": "get_cutoffs",
       "args": {
         "awb": "125-88342111"
@@ -130,17 +130,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1679,
-      "promptTokens": 3308,
-      "completionTokens": 77,
-      "reasoningChars": 157,
+      "ms": 706,
+      "promptTokens": 3331,
+      "completionTokens": 80,
+      "reasoningChars": 166,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8a38168b0a7fd797",
+      "callId": "chatcmpl-tool-a0c1154ea8586f62",
       "name": "check_connection",
       "args": {
         "awb": "125-88342111"
@@ -156,17 +156,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 757,
-      "promptTokens": 3394,
-      "completionTokens": 60,
-      "reasoningChars": 109,
+      "ms": 745,
+      "promptTokens": 3417,
+      "completionTokens": 75,
+      "reasoningChars": 141,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bc58e63f0c64671d",
+      "callId": "chatcmpl-tool-a0342c23b2594eee",
       "name": "get_capacity",
       "args": {
         "awb": "125-88342111"
@@ -181,17 +181,17 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 917,
-      "promptTokens": 3470,
-      "completionTokens": 74,
-      "reasoningChars": 138,
+      "ms": 1079,
+      "promptTokens": 3493,
+      "completionTokens": 70,
+      "reasoningChars": 119,
       "toolCalls": [
         "check_restrictions"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b9acff9ff59d201b",
+      "callId": "chatcmpl-tool-8420301fb665fbec",
       "name": "check_restrictions",
       "args": {
         "awb": "125-88342111"
@@ -206,17 +206,17 @@
     {
       "kind": "model",
       "turn": 7,
-      "ms": 675,
-      "promptTokens": 3547,
-      "completionTokens": 50,
-      "reasoningChars": 45,
+      "ms": 603,
+      "promptTokens": 3570,
+      "completionTokens": 67,
+      "reasoningChars": 101,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a754ad7a34e43b75",
+      "callId": "chatcmpl-tool-a414f3404a7725bc",
       "name": "calculate_risk",
       "args": {
         "awb": "125-88342111"
@@ -253,17 +253,94 @@
     {
       "kind": "model",
       "turn": 8,
-      "ms": 788,
-      "promptTokens": 3699,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "ms": 1401,
+      "promptTokens": 3722,
+      "completionTokens": 67,
+      "reasoningChars": 99,
+      "toolCalls": [
+        "get_station_evidence"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9f8cce1ead9edb3e",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": true,
+        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
+        "weather_source": "aviationweather.gov",
+        "fetched_at": "2026-10-25T23:30:36.950Z",
+        "stations": [
+          {
+            "station": "CDG",
+            "icao": "LFPG",
+            "role": "booked connection at CDG",
+            "process": "flight_connection",
+            "flight": "AYC 045",
+            "window_min": 50,
+            "weather": {
+              "basis": "what-if set by the duty officer",
+              "flight_category": "IFR"
+            },
+            "history_90_days": {
+              "all_weather": "within window 68 of 90 (76%)",
+              "in_IFR": "within window 6 of 12 (50%), median 50 min, p90 64 min",
+              "sample_note": "small sample: 12 movements in IFR"
+            }
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 9,
+      "ms": 680,
+      "promptTokens": 3974,
+      "completionTokens": 49,
+      "reasoningChars": 32,
+      "toolCalls": [
+        "recall_desk_memory"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-99ed328d1bbb3c16",
+      "name": "recall_desk_memory",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "engine": "Meterless H-MEM",
+        "recalled": [
+          {
+            "memory_id": "mem-7",
+            "note": "CDG transfer team: the 50 min connection holds on clear evenings but slips in morning and evening fog. Watch the CDG forecast before keeping a tight connection.",
+            "source": "handover log (duty officer)",
+            "learned": "2026-09-29"
+          }
+        ],
+        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 10,
+      "ms": 954,
+      "promptTokens": 4143,
+      "completionTokens": 49,
+      "reasoningChars": 33,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-af6a364763337199",
+      "callId": "chatcmpl-tool-87270f0ee0c738cc",
       "name": "find_alternatives",
       "args": {
         "awb": "125-88342111"
@@ -301,11 +378,11 @@
     },
     {
       "kind": "model",
-      "turn": 9,
-      "ms": 3004,
-      "promptTokens": 4017,
-      "completionTokens": 482,
-      "reasoningChars": 1210,
+      "turn": 11,
+      "ms": 3174,
+      "promptTokens": 4461,
+      "completionTokens": 500,
+      "reasoningChars": 1025,
       "toolCalls": [
         "submit_decision"
       ]
@@ -318,8 +395,7 @@
         {
           "id": "tools",
           "label": "Read the risk and the options before deciding",
-          "pass": false,
-          "detail": "Not called: get_station_evidence, recall_desk_memory"
+          "pass": true
         },
         {
           "id": "option",
@@ -375,99 +451,21 @@
           "keep",
           "fra"
         ],
-        "summary": "The CDG connection is tight but still within the required window, with 12 minutes of slack. Keep the current routing via CDG and monitor the connection.",
+        "summary": "The CDG connection is tight but currently on time with a 12‑minute slack. Keep the booked plan; reroute via FRA if the truck misses the 20:52 need‑by time.",
         "why": [
-          "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 giving 12 min slack.",
-          "Risk class from calculate_risk is watch.",
-          "Option ‘Keep CDG connection’ has Medium risk and is allowed.",
-          "Alternative ‘Rebook via FRA’ adds +6 h delay and +CHF 150 cost."
+          "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 giving 12 min slack (check_connection).",
+          "Station evidence: CDG IFR – within window 6 of 12 (50 %) (get_station_evidence).",
+          "Booked option ‘Keep CDG connection’ has Medium risk and is allowed (find_alternatives)."
         ]
       }
     },
     {
       "kind": "model",
-      "turn": 10,
-      "ms": 3075,
-      "promptTokens": 4325,
-      "completionTokens": 552,
-      "reasoningChars": 2001,
-      "toolCalls": [
-        "get_station_evidence"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-bf878cc9c07475ae",
-      "name": "get_station_evidence",
-      "args": {
-        "awb": "125-88342111"
-      },
-      "output": {
-        "applicable": true,
-        "source": "Zetaris federated query (Postgres handling history JOIN live METAR REST table)",
-        "weather_source": "aviationweather.gov",
-        "fetched_at": "2026-10-25T23:23:58.854Z",
-        "stations": [
-          {
-            "station": "CDG",
-            "icao": "LFPG",
-            "role": "booked connection at CDG",
-            "process": "flight_connection",
-            "flight": "AYC 045",
-            "window_min": 50,
-            "weather": {
-              "basis": "what-if set by the duty officer",
-              "flight_category": "IFR"
-            },
-            "history_90_days": {
-              "all_weather": "within window 68 of 90 (76%)",
-              "in_IFR": "within window 6 of 12 (50%), median 50 min, p90 64 min",
-              "sample_note": "small sample: 12 movements in IFR"
-            }
-          }
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 11,
-      "ms": 709,
-      "promptTokens": 4579,
-      "completionTokens": 59,
-      "reasoningChars": 72,
-      "toolCalls": [
-        "recall_desk_memory"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-bdd7cecfaa8a0ee7",
-      "name": "recall_desk_memory",
-      "args": {
-        "awb": "125-88342111"
-      },
-      "output": {
-        "engine": "Meterless H-MEM",
-        "recalled": [
-          {
-            "memory_id": "mem-7",
-            "note": "CDG transfer team: the 50 min connection holds on clear evenings but slips in morning and evening fog. Watch the CDG forecast before keeping a tight connection.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-09-29"
-          }
-        ],
-        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
       "turn": 12,
-      "ms": 4829,
-      "promptTokens": 4748,
-      "completionTokens": 1026,
-      "reasoningChars": 2507,
+      "ms": 4809,
+      "promptTokens": 4765,
+      "completionTokens": 828,
+      "reasoningChars": 1878,
       "toolCalls": [
         "submit_decision"
       ]
@@ -540,14 +538,13 @@
           "fra",
           "keep"
         ],
-        "summary": "The CDG connection is tight with only 12 minutes slack and the IFR history shows the 50‑minute window held only 6 of 12 times (50 %), below the desk’s two‑in‑three threshold. Therefore rebook the shipment via FRA to avoid a likely missed connection.",
+        "summary": "The CDG connection is tight with only 12 minutes slack and the IFR history shows the window held only 50 % of the time, so the booked plan does not qualify for keep‑first. Rebook via FRA to avoid a high risk of missing the connection.",
         "why": [
-          "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 gives 12 min slack.",
-          "Station evidence for CDG IFR: within window 6 of 12 (50 %), median 50 min, p90 64 min.",
-          "Option “Keep CDG connection” has Medium risk, while “Rebook via FRA” has Low risk.",
-          "Rebooking via FRA adds +6 h delay and +CHF 150 cost but protects the connection."
+          "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 → 12 min slack (check_connection).",
+          "Station evidence: CDG IFR – within window 6 of 12 (50 %) (get_station_evidence).",
+          "Fra option: Low risk, +6 h delay, +CHF 150; Keep option: Medium risk, on‑time, CHF 0 (find_alternatives)."
         ],
-        "customer_note": "Votre expédition AWB 125-88342111 sera réacheminée via Francfort avec une nouvelle heure d'arrivée estimée au 15 octobre 07:30 heure locale à JFK."
+        "customer_note": "AWB 125-88342111 : nouveau routage via FRA, arrivée prévue le 15 oct. à 07:30 LT à JFK."
       }
     }
   ],
@@ -558,14 +555,13 @@
       "fra",
       "keep"
     ],
-    "summary": "The CDG connection is tight with only 12 minutes slack and the IFR history shows the 50‑minute window held only 6 of 12 times (50 %), below the desk’s two‑in‑three threshold. Therefore rebook the shipment via FRA to avoid a likely missed connection.",
+    "summary": "The CDG connection is tight with only 12 minutes slack and the IFR history shows the window held only 50 % of the time, so the booked plan does not qualify for keep‑first. Rebook via FRA to avoid a high risk of missing the connection.",
     "why": [
-      "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 gives 12 min slack.",
-      "Station evidence for CDG IFR: within window 6 of 12 (50 %), median 50 min, p90 64 min.",
-      "Option “Keep CDG connection” has Medium risk, while “Rebook via FRA” has Low risk.",
-      "Rebooking via FRA adds +6 h delay and +CHF 150 cost but protects the connection."
+      "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 → 12 min slack (check_connection).",
+      "Station evidence: CDG IFR – within window 6 of 12 (50 %) (get_station_evidence).",
+      "Fra option: Low risk, +6 h delay, +CHF 150; Keep option: Medium risk, on‑time, CHF 0 (find_alternatives)."
     ],
-    "customer_note": "Votre expédition AWB 125-88342111 sera réacheminée via Francfort avec une nouvelle heure d'arrivée estimée au 15 octobre 07:30 heure locale à JFK."
+    "customer_note": "AWB 125-88342111 : nouveau routage via FRA, arrivée prévue le 15 oct. à 07:30 LT à JFK."
   },
   "verdict": {
     "accepted": true,
@@ -636,10 +632,10 @@
   },
   "external": {
     "evidence": {
-      "backend": "zetaris",
-      "backend_note": "reconciled with the offline mirror: identical aggregates",
+      "backend": "mirror",
+      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 126.0 failed 1 times, most recent failure:); offline mirror answered",
       "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 045')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
-      "fetched_at": "2026-10-25T23:23:58.854Z",
+      "fetched_at": "2026-10-25T23:30:36.950Z",
       "rows": [
         {
           "station": "CDG",
