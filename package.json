@@ -10,11 +10,12 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "npm run test:agent",
-    "test:agent": "node --import tsx --test tests/agent.test.ts",
+    "test:agent": "node --import tsx --test tests/agent.test.ts tests/v5.test.ts",
     "judge-demo": "npm run test:agent && tsx scripts/agent-cli.ts judge",
     "agent:models": "tsx scripts/agent-cli.ts models",
     "agent:record": "tsx scripts/agent-cli.ts record",
-    "agent:eval": "tsx scripts/agent-cli.ts eval"
+    "agent:eval": "tsx scripts/agent-cli.ts eval",
+    "ops:history": "tsx scripts/gen-ops-history.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",

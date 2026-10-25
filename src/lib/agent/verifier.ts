@@ -10,6 +10,7 @@
  */
 import type { Locale } from "../cargo/engine";
 import { optionStatus, type ToolContext } from "./tools";
+import { bookedLegVerdict } from "../ops/evidence";
 import type { Check, Decision } from "./types";
 
 type Unit = "kg" | "min" | "h" | "cm" | "C" | "m3" | "%" | "pcs" | "CHF";
@@ -246,7 +247,11 @@ export function verifyDecision(
   const opts = ctx.analysis.options;
   const byId = new Map(opts.map((o) => [o.id, o]));
 
-  const missing = ["calculate_risk", "find_alternatives"].filter((t) => !calledTools.includes(t));
+  const required = ["calculate_risk", "find_alternatives"];
+  // v5: a file with station evidence or desk memory must be judged with them.
+  if (ctx.external?.evidence) required.push("get_station_evidence");
+  if (ctx.external?.memory) required.push("recall_desk_memory");
+  const missing = required.filter((t) => !calledTools.includes(t));
   checks.push({
     id: "tools",
     label: "Read the risk and the options before deciding",
@@ -310,6 +315,32 @@ export function verifyDecision(
     pass: badRefs.length === 0,
     detail: badRefs.length ? `Unknown references: ${badRefs.join(", ")}` : undefined,
   });
+
+  if (ctx.external?.evidence) {
+    const v = bookedLegVerdict(ctx.shipment.id, ctx.external.evidence, ctx.scenario.wx ?? {});
+    const keepsBooked = decision.recommended_option_id === "keep";
+    const fail = !!v?.overridesKeep && keepsBooked;
+    checks.push({
+      id: "evidence",
+      label: "Keeping the booking is consistent with tonight's station evidence",
+      pass: !fail,
+      detail: fail && v
+        ? `${v.station} in ${v.category} held its window ${v.within} of ${v.n}; below the desk's two-in-three bar, keep-first does not apply`
+        : undefined,
+    });
+  }
+
+  if (ctx.external?.memory) {
+    const recalled = new Set(ctx.external.memory.recalled.map((m) => m.id));
+    const cited = [...new Set([...prose.matchAll(/\bmem-\d+\b/g)].map((m) => m[0]))];
+    const unknown = cited.filter((id) => !recalled.has(id));
+    checks.push({
+      id: "memory",
+      label: "Every cited memory was recalled for this file",
+      pass: unknown.length === 0,
+      detail: unknown.length ? `Not recalled by recall_desk_memory: ${unknown.join(", ")}` : undefined,
+    });
+  }
 
   {
     // summary + why are for the duty officer: same language as the operator.

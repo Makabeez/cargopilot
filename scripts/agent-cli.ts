@@ -15,8 +15,14 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync, existsSync, rename
 import { join } from "node:path";
 import { SHIPMENTS } from "../src/lib/cargo/engine";
 import { isValidAwb } from "../src/lib/agent/awb";
-import { DEFAULT_BASE_URL, DEFAULT_MODEL, groundingFor, runLiveAgent, runRulesAgent } from "../src/lib/agent/agent";
-import { evalMatrix, fullRulesMatrix } from "../src/lib/agent/matrix";
+import { DEFAULT_BASE_URL, DEFAULT_MODEL, blockedRun, groundingFor, runLiveAgent, runRulesAgent } from "../src/lib/agent/agent";
+import { evalMatrix, evalMatrixV5, fullRulesMatrix } from "../src/lib/agent/matrix";
+import { adverseConditions, gatherContext } from "../src/lib/agent/context";
+import { LEGS, aggKey, mirrorAggregate, stationCategories } from "../src/lib/ops/evidence";
+import { zetarisConfigFromEnv } from "../src/lib/ops/zetaris";
+import { recallFor, seedMemory, HANDOVER_NOTES, RECALL_THRESHOLD } from "../src/lib/memory/desk-memory";
+import { Scout } from "../src/lib/guard/scout";
+import { createHash } from "node:crypto";
 import { buildContext, executeTool } from "../src/lib/agent/tools";
 import { verifyDecision } from "../src/lib/agent/verifier";
 import type { AgentRun, ToolStep } from "../src/lib/agent/types";
@@ -96,7 +102,7 @@ const CORE_CHECKS = new Set(["tools", "option", "allowed", "ranking", "risk", "f
 
 /** Re-check a recorded decision against tool outputs recomputed from scratch. */
 function reverify(run: AgentRun, coreOnly = false) {
-  const ctx = buildContext(run.scenario);
+  const ctx = buildContext(run.scenario, run.external);
   const toolSteps = run.steps.filter((s): s is ToolStep => s.kind === "tool" && !s.error);
   const called = toolSteps.map((s) => s.name);
   const fresh = toolSteps.map((s) => JSON.stringify(executeTool(s.name, s.args, ctx)));
@@ -105,6 +111,65 @@ function reverify(run: AgentRun, coreOnly = false) {
   const all = verifyDecision(run.decision, ctx, called, groundingFor(run.scenario, fresh));
   const checks = coreOnly ? all.filter((c) => CORE_CHECKS.has(c.id)) : all;
   return { outputsMatch, checks, pass: checks.every((c) => c.pass) };
+}
+
+/**
+ * v5 integrity: what a recorded run says Zetaris and H-MEM returned must be
+ * re-derivable offline. Zetaris aggregates must equal the mirror over the
+ * pinned CSV; the H-MEM recall must equal a fresh recall from the seed notes,
+ * the recorded operator notes and the recorded weather.
+ */
+async function reverifyExternal(run: AgentRun): Promise<string[]> {
+  const ext = run.external;
+  const problems: string[] = [];
+  if (!ext) return problems;
+  if (ext.evidence) {
+    const legs = LEGS[run.scenario.shipmentId] ?? [];
+    if (aggKey(ext.evidence.rows) !== aggKey(mirrorAggregate(legs))) problems.push(`${ext.evidence.backend} aggregates differ from the mirror`);
+  }
+  if (ext.memory) {
+    const conditions = adverseConditions(stationCategories(run.scenario.shipmentId, ext.evidence, run.scenario.wx ?? {}));
+    const fresh = await recallFor(run.scenario.shipmentId, run.scenario.memoryNotes ?? [], conditions);
+    if (JSON.stringify(fresh.recalled) !== JSON.stringify(ext.memory.recalled)) problems.push("H-MEM recall differs from a fresh recall");
+  }
+  return problems;
+}
+
+const sha256 = (path: string) => createHash("sha256").update(readFileSync(path)).digest("hex");
+/** Pinned: the CSV every Zetaris answer is checked against. Regenerate with scripts/gen-ops-history.ts. */
+const HISTORY_CSV_SHA256 = "57034758e754ed6fd9255fda273c59e94bdeb2cde1bb63f42b07011014907ea2";
+
+/** Hand-labelled: which seed notes are relevant to which file (for recall precision/recall). */
+const MEMORY_TRUTH: Record<string, string[]> = {
+  s615: ["mem-1", "mem-3", "mem-4"],
+  s172: ["mem-5"],
+  s074: ["mem-6"],
+  s125: ["mem-7"],
+  s131: ["mem-8"],
+  s157: ["mem-9"],
+  s080: ["mem-10"],
+  s176: ["mem-11"],
+  s020: [],
+  s235: [],
+};
+
+async function scoutScore(path: string) {
+  const scout = new Scout();
+  let tp = 0;
+  let fp = 0;
+  let fn = 0;
+  let tn = 0;
+  for (const line of readFileSync(path, "utf8").trim().split("\n")) {
+    const ex = JSON.parse(line) as { prompt: string; expected: { injection?: boolean } };
+    if (ex.expected.injection === undefined) continue;
+    const blocked = (await scout.decide({ prompt: ex.prompt })).risk.level === "block";
+    if (ex.expected.injection) {
+      if (blocked) tp++;
+      else fn++;
+    } else if (blocked) fp++;
+    else tn++;
+  }
+  return { tp, fp, fn, tn, precision: tp + fp ? tp / (tp + fp) : 1, recall: tp + fn ? tp / (tp + fn) : 1 };
 }
 
 function pct(n: number, d: number) {
@@ -307,6 +372,65 @@ async function judge() {
     failures += bad;
   }
 
+  // ---- v5: Zetaris evidence, Meterless H-MEM memory, Meterless Scout guard (offline) ----
+  console.log("");
+  const csvOk = sha256("data/ops/handling_history.csv") === HISTORY_CSV_SHA256;
+  console.log(`[5] Station history CSV pinned (SHA-256) ...... ${ok(csvOk)}  data/ops/handling_history.csv`);
+  failures += csvOk ? 0 : 1;
+
+  let v5Fail = 0;
+  let flips = 0;
+  const v5Scenarios = evalMatrixV5().filter((s) => !s.operatorMessage?.startsWith("Ignore"));
+  for (const sc of v5Scenarios) {
+    const { external } = await gatherContext(sc, { offline: true });
+    const run = await runRulesAgent(sc, () => {}, external);
+    if (!run.verdict.accepted) {
+      v5Fail++;
+      console.log("    FAIL", run.scenarioKey, run.verdict.checks.filter((c) => !c.pass));
+    }
+    const engineRec = buildContext(sc).analysis.options.find((o) => o.recommended)?.id;
+    if (run.decision.recommended_option_id !== engineRec) flips++;
+  }
+  console.log(`[6] v5 rules agent with evidence + memory ...... ${ok(!v5Fail)}  ${v5Scenarios.length - v5Fail}/${v5Scenarios.length} scenarios · ${flips} where station evidence overrides keep-first`);
+  failures += v5Fail;
+
+  const v5Traces = traces.filter((t) => t.external);
+  let extBad = 0;
+  for (const t of v5Traces) {
+    const problems = await reverifyExternal(t);
+    if (problems.length) {
+      extBad++;
+      console.log("    FAIL", t.scenarioKey, problems);
+    }
+  }
+  const zetarisRuns = v5Traces.filter((t) => t.external?.evidence?.backend === "zetaris").length;
+  console.log(
+    `[7] Recorded v5 context re-derived offline ...... ${v5Traces.length ? ok(!extBad) : "NONE"}  ${v5Traces.length} traces` +
+      (v5Traces.length ? ` · ${zetarisRuns} answered by Zetaris, each checked against the mirror` : "  (record with npm run agent:record)"),
+  );
+  failures += extBad;
+
+  let tp = 0;
+  let fp = 0;
+  let fn = 0;
+  for (const s of SHIPMENTS) {
+    const got = seedMemory()
+      .query((await recallFor(s.id)).query, { topN: 4, threshold: RECALL_THRESHOLD })
+      .memories.map((m) => m.memory.id);
+    const want = MEMORY_TRUTH[s.id] ?? [];
+    tp += got.filter((x) => want.includes(x)).length;
+    fp += got.filter((x) => !want.includes(x)).length;
+    fn += want.filter((x) => !got.includes(x)).length;
+  }
+  console.log(`[8] H-MEM recall, ${HANDOVER_NOTES.length} handover notes ......... INFO  precision ${(tp / (tp + fp)).toFixed(2)} · recall ${(tp / (tp + fn)).toFixed(2)} (${tp} relevant, ${fp} noise, ${fn} missed)`);
+
+  const met = await scoutScore("tests/fixtures/meterless-scout-v1/adversarial.jsonl");
+  const desk = await scoutScore("tests/fixtures/desk-guard.jsonl");
+  const scoutOk = met.recall === 1 && met.precision === 1 && desk.fp === 0;
+  console.log(`[9] Scout guard, Meterless injection set v1 .... ${ok(scoutOk)}  blocked ${met.tp}/${met.tp + met.fn} attacks · ${met.fp}/${met.fp + met.tn} benign blocked`);
+  console.log(`    desk set (cargo attacks + desk phrasing) ... blocked ${desk.tp}/${desk.tp + desk.fn} attacks · ${desk.fp}/${desk.fp + desk.tn} benign blocked`);
+  failures += scoutOk ? 0 : 1;
+
   console.log(`\n${failures ? "FAILED" : "ALL CHECKS PASSED"} in ${((Date.now() - t0) / 1000).toFixed(1)} s`);
   process.exit(failures ? 1 : 0);
 }
@@ -326,7 +450,11 @@ async function models() {
 async function record() {
   if (!cfg.apiKey) throw new Error("Set NEBIUS_API_KEY (env or .env).");
   mkdirSync(TRACES, { recursive: true });
-  const matrix = evalMatrix();
+  // This build records prompt v5 (Zetaris evidence + H-MEM + Scout). RECORD_V4=1 records the Nebius build's matrix.
+  const v5 = process.env.RECORD_V4 !== "1";
+  const zcfg = zetarisConfigFromEnv();
+  if (v5) console.log(zcfg ? `Station evidence via Zetaris at ${zcfg.restUrl}` : "ZETARIS_REST_URL not set: station evidence from the offline mirror");
+  const matrix = v5 ? evalMatrixV5() : evalMatrix();
   const only = process.argv[3];
   const todo = only ? matrix.filter((s) => s.shipmentId === only) : matrix;
   if (!only) {
@@ -335,7 +463,15 @@ async function record() {
   }
   console.log(`Recording ${todo.length} live runs with ${cfg.model} …`);
   const runs = await pool(todo, Number(process.env.RECORD_CONCURRENCY ?? 3), async (sc, i) => {
-    const run = await runLiveAgent(sc, cfg);
+    let run: AgentRun;
+    if (v5) {
+      const pre = await gatherContext(sc, { scoutOnly: true });
+      if (pre.blocked) run = blockedRun(sc, pre.external, pre.blocked.flags);
+      else {
+        const g = await gatherContext({ ...sc, operatorMessage: undefined }, { zetaris: zcfg });
+        run = await runLiveAgent(sc, cfg, () => {}, undefined, { ...g.external, ...(pre.external.scout ? { scout: pre.external.scout } : {}) });
+      }
+    } else run = await runLiveAgent(sc, cfg);
     writeFileSync(fileFor(run.scenarioKey), JSON.stringify(run, null, 2));
     const tag = run.verdict.fellBack ? "FALLBACK" : run.verdict.attempts > 1 ? `ok after ${run.verdict.attempts}` : "ok";
     console.log(

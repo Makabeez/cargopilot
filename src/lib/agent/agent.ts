@@ -10,9 +10,10 @@
  *           tools and decides. Used when there is no API key and no recording.
  */
 import { L, SHIPMENTS, analyze, defaultFlags } from "../cargo/engine";
-import { optionStatus, rulesChoice, TOOL_SCHEMAS, buildContext, executeTool, type ToolContext } from "./tools";
+import { optionStatus, rulesChoice, TOOL_SCHEMAS, TOOL_SCHEMAS_V5, buildContext, executeTool, type ToolContext } from "./tools";
+import { bookedLegVerdict } from "../ops/evidence";
 import { coerceDecision, verifyDecision } from "./verifier";
-import type { AgentRun, Check, Decision, Scenario, Step, StepSink, ToolStep } from "./types";
+import type { AgentRun, Check, Decision, ExternalContext, Scenario, Step, StepSink, ToolStep } from "./types";
 import { scenarioKey } from "./key";
 export { scenarioKey };
 
@@ -21,6 +22,8 @@ export const DEFAULT_MODEL = "nvidia/nemotron-3-super-120b-a12b";
 export const PROVIDER = "Nebius Token Factory";
 /** Bump when the system/user prompt changes; recorded in every live run. */
 export const PROMPT_VERSION = "v4";
+/** Prompt for runs with external context (Zetaris evidence + H-MEM memory + Scout). */
+export const PROMPT_VERSION_V5 = "v5";
 const MAX_TURNS = 12;
 const MAX_SUBMISSIONS = 3;
 const DESK_CLOCK = "Wed 14 Oct 2026, 17:42 local time (GVA)";
@@ -39,6 +42,7 @@ const RULES_TOOL_ORDER = [
   "calculate_risk",
   "find_alternatives",
 ] as const;
+const RULES_TOOL_ORDER_V5 = [...RULES_TOOL_ORDER, "get_station_evidence", "recall_desk_memory"] as const;
 
 function localizedAnalysis(s: Scenario) {
   const shipment = SHIPMENTS.find((x) => x.id === s.shipmentId);
@@ -52,11 +56,21 @@ function rulesDecision(ctx: ToolContext): Decision {
   const localized = scenario.locale === "en" ? ctx.analysis : localizedAnalysis(scenario);
   const choice = rulesChoice(ctx);
   const pick = localized.options.find((o) => o.id === choice.recommended);
+  const engineRec = ctx.analysis.options.find((o) => o.recommended)?.id;
+  const v = ctx.external?.evidence ? bookedLegVerdict(ctx.shipment.id, ctx.external.evidence, scenario.wx ?? {}) : null;
+  const flipped = !!v && choice.recommended !== engineRec;
   return {
     risk: ctx.analysis.risk,
     recommended_option_id: choice.recommended,
     ranking: choice.ranking,
-    summary: localized.narrative,
+    summary:
+      flipped && v && pick
+        ? L(
+            scenario.locale,
+            `Station evidence: ${v.station} in ${v.category} held its window ${v.within} of ${v.n}, so the booking is not kept. Recommend ${pick.title}.`,
+            `Historique de station : ${v.station} en ${v.category} a tenu sa fenêtre ${v.within} fois sur ${v.n}, donc on ne garde pas la réservation. Recommandé : ${pick.title}.`,
+          )
+        : localized.narrative,
     why: pick ? [pick.reason] : [],
     reply: scenario.operatorMessage?.trim() ? localized.decision || localized.narrative : undefined,
   };
@@ -85,9 +99,10 @@ function baselineOf(ctx: ToolContext, decision: Decision) {
   return { recommended_option_id: rec, risk: ctx.analysis.risk, agrees: decision.recommended_option_id === rec };
 }
 
-export async function runRulesAgent(scenario: Scenario, onStep: StepSink = () => {}): Promise<AgentRun> {
+export async function runRulesAgent(scenario: Scenario, onStep: StepSink = () => {}, external?: ExternalContext): Promise<AgentRun> {
   const t0 = Date.now();
-  const ctx = buildContext(scenario);
+  const ctx = buildContext(scenario, external);
+  const order = external ? RULES_TOOL_ORDER_V5 : RULES_TOOL_ORDER;
   const steps: Step[] = [];
   const emit = (s: Step) => {
     steps.push(s);
@@ -102,7 +117,7 @@ export async function runRulesAgent(scenario: Scenario, onStep: StepSink = () =>
     ),
   });
   const toolSteps: ToolStep[] = [];
-  for (const name of RULES_TOOL_ORDER) {
+  for (const name of order) {
     const s0 = Date.now();
     const args = { awb: ctx.shipment.awb };
     const output = executeTool(name, args, ctx);
@@ -111,7 +126,7 @@ export async function runRulesAgent(scenario: Scenario, onStep: StepSink = () =>
     emit(step);
   }
   const decision = rulesDecision(ctx);
-  const checks = verifyDecision(decision, ctx, RULES_TOOL_ORDER.slice(), groundingTexts(ctx, toolSteps));
+  const checks = verifyDecision(decision, ctx, order.slice(), groundingTexts(ctx, toolSteps));
   const accepted = checks.every((c) => c.pass);
   emit({ kind: "verify", attempt: 1, accepted, checks, submitted: decision });
   return {
@@ -129,6 +144,7 @@ export async function runRulesAgent(scenario: Scenario, onStep: StepSink = () =>
     decision,
     verdict: { accepted, attempts: 1, fellBack: false, checks },
     baseline: baselineOf(ctx, decision),
+    ...(external ? { external } : {}),
   };
 }
 
@@ -158,7 +174,15 @@ type ChatMessage =
 
 type RawToolCall = { id: string; type: "function"; function: { name: string; arguments: string } };
 
-function systemPrompt(s: Scenario): string {
+const V5_RULES = [
+  "",
+  "Context from outside the network (prompt v5). Call both tools before deciding:",
+  "- get_station_evidence: Zetaris joins live station weather with 90 days of that station's handling history in the same flight category. When a plan depends on a station process (a transfer window, a connection, an acceptance), quote the station's flight category tonight and its record in that category exactly as the tool gives it (e.g. \"LEJ IFR: within window 5 of 8 (62%)\"). Say when a sample is small.",
+  "- Keep-first exception: if, in tonight's category, the booked transfer held its window in fewer than two of three past movements (with at least 8 movements), the booked plan no longer gets keep-first; rank the alternatives by the a)–d) order below. The verifier enforces this.",
+  "- recall_desk_memory: handover notes from earlier shifts (Meterless H-MEM). When a note changes your call or the customer note, cite it as (mem-N). Never cite a memory_id the tool did not return. Tool facts beat memory.",
+];
+
+function systemPrompt(s: Scenario, v5 = false): string {
   const lang = s.locale === "fr" ? "French" : "English";
   return [
     "You are CargoPilot, the recovery agent on the evening shift of a Geneva (GVA) air-cargo control desk.",
@@ -187,6 +211,7 @@ function systemPrompt(s: Scenario): string {
     "Keep summary to two sentences. why: 2-4 bullets, each carrying the figures that decide the case.",
     "In summary, why, reply and customer_note, name options by their title (e.g. \"Rebook via ZRH\"), never by option_id. option_id is only for recommended_option_id and ranking.",
     "risk is the FILE's risk class exactly as calculate_risk.risk returns it (critical | high | watch | ok) — not an option's Low/Medium/High label.",
+    ...(v5 ? V5_RULES : []),
   ].join("\n");
 }
 
@@ -213,6 +238,7 @@ async function chat(
   messages: ChatMessage[],
   deadline = Infinity,
   signal?: AbortSignal,
+  tools: readonly unknown[] = TOOL_SCHEMAS,
 ): Promise<{
   message: { content?: string | null; tool_calls?: RawToolCall[]; reasoning_content?: string; reasoning?: string };
   finishReason?: string;
@@ -223,7 +249,7 @@ async function chat(
   const body = {
     model: cfg.model ?? DEFAULT_MODEL,
     messages,
-    tools: TOOL_SCHEMAS,
+    tools,
     tool_choice: "auto",
     temperature: cfg.temperature ?? 0.2,
     max_tokens: cfg.maxTokens ?? 8192,
@@ -285,12 +311,15 @@ export async function runLiveAgent(
   cfg: LiveConfig,
   onStep: StepSink = () => {},
   signal?: AbortSignal,
+  external?: ExternalContext,
 ): Promise<AgentRun> {
   const t0 = Date.now();
+  const v5 = !!external;
+  const tools = v5 ? TOOL_SCHEMAS_V5 : TOOL_SCHEMAS;
   const budget = cfg.budgetMs ?? 100_000;
   const deadline = t0 + budget;
   const reserve = Math.min(8_000, budget / 10); // no new model turn without this much time left
-  const ctx = buildContext(scenario);
+  const ctx = buildContext(scenario, external);
   const model = cfg.model ?? DEFAULT_MODEL;
   const steps: Step[] = [];
   const emit = (s: Step) => {
@@ -300,7 +329,7 @@ export async function runLiveAgent(
   const toolSteps: ToolStep[] = [];
   const called: string[] = [];
   const messages: ChatMessage[] = [
-    { role: "system", content: systemPrompt(scenario) },
+    { role: "system", content: systemPrompt(scenario, v5) },
     { role: "user", content: userPrompt(scenario, ctx.shipment.awb) },
   ];
   let promptTokens = 0;
@@ -346,7 +375,7 @@ export async function runLiveAgent(
         break;
       }
       const s0 = Date.now();
-      const { message, usage, finishReason } = await chat({ ...cfg, model }, messages, deadline, signal);
+      const { message, usage, finishReason } = await chat({ ...cfg, model }, messages, deadline, signal, tools);
       promptTokens += usage?.prompt_tokens ?? 0;
       completionTokens += usage?.completion_tokens ?? 0;
       const calls = message.tool_calls ?? [];
@@ -454,7 +483,7 @@ export async function runLiveAgent(
     mode: "live",
     model,
     provider: PROVIDER,
-    promptVersion: PROMPT_VERSION,
+    promptVersion: v5 ? PROMPT_VERSION_V5 : PROMPT_VERSION,
     startedAt: new Date(t0).toISOString(),
     latencyMs: Date.now() - t0,
     promptTokens,
@@ -463,6 +492,39 @@ export async function runLiveAgent(
     decision,
     verdict: { accepted: !!accepted, attempts: submissions, fellBack, checks: lastChecks },
     baseline: baselineOf(ctx, decision),
+    ...(external ? { external } : {}),
+  };
+}
+
+/** Scout blocked the operator's message: a labelled run with no model call. */
+export function blockedRun(scenario: Scenario, external: ExternalContext, flags: string[], onStep: StepSink = () => {}): AgentRun {
+  const t0 = Date.now();
+  const ctx = buildContext(scenario, external);
+  const text = L(
+    scenario.locale,
+    `Scout blocked this message before any model call (${flags.join(", ")}). Nothing was sent to Nemotron. Rephrase it as a question about the file.`,
+    `Scout a bloqué ce message avant tout appel modèle (${flags.join(", ")}). Rien n'a été envoyé à Nemotron. Reformulez-le comme une question sur le dossier.`,
+  );
+  const step: Step = { kind: "note", text };
+  onStep(step);
+  const decision = rulesDecision({ ...ctx, scenario: { ...scenario, operatorMessage: undefined } });
+  return {
+    version: 1,
+    scenarioKey: scenarioKey(scenario),
+    scenario,
+    mode: "blocked",
+    model: "none",
+    provider: "Meterless Scout (local)",
+    startedAt: new Date(t0).toISOString(),
+    latencyMs: Date.now() - t0,
+    promptTokens: 0,
+    completionTokens: 0,
+    steps: [step],
+    decision: { ...decision, reply: text },
+    verdict: { accepted: false, attempts: 0, fellBack: true, checks: [] },
+    baseline: baselineOf(ctx, decision),
+    external,
+    blocked: { flags },
   };
 }
 

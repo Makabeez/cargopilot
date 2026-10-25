@@ -1,4 +1,8 @@
 import type { FlagKey, Locale, Risk } from "../cargo/engine";
+import type { EvidenceSnapshot } from "../ops/evidence";
+import type { Wx } from "../ops/weather";
+import type { MemorySnapshot } from "../memory/desk-memory";
+import type { ScoutDecision } from "../guard/scout";
 
 /** Everything that determines one agent run. Same scenario → same tool outputs. */
 export type Scenario = {
@@ -14,9 +18,23 @@ export type Scenario = {
    * scenario key — it tells the model the change is already in the tool outputs.
    */
   priorDelayMin?: number;
+  /** Duty officer's weather what-if per station (overrides live weather in the evidence). */
+  wx?: Partial<Record<string, Wx>>;
+  /** Handover notes the duty officer added this session ("Remember: …"), mined into H-MEM. */
+  memoryNotes?: string[];
 };
 
-export type AgentMode = "live" | "replay" | "rules";
+/**
+ * Context gathered before the model runs, recorded in the run so a replay can
+ * be re-verified offline: Zetaris station evidence, H-MEM recall, Scout verdict.
+ */
+export type ExternalContext = {
+  evidence?: EvidenceSnapshot;
+  memory?: MemorySnapshot;
+  scout?: ScoutDecision;
+};
+
+export type AgentMode = "live" | "replay" | "rules" | "blocked";
 
 export type ToolStep = {
   kind: "tool";
@@ -93,6 +111,10 @@ export type AgentRun = {
   baseline: { recommended_option_id: string; risk: Risk; agrees: boolean };
   /** System-prompt revision used for a live run (absent on v1 recordings). */
   promptVersion?: string;
+  /** Federated evidence, desk memory and guard verdict used by this run (prompt v5+). */
+  external?: ExternalContext;
+  /** Scout blocked the operator's message: no model call was made. */
+  blocked?: { flags: string[] };
   /** Set when this run was served from a recorded trace. */
   replayOf?: { recordedAt: string; model: string; promptVersion?: string };
 };

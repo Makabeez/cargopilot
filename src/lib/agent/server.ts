@@ -4,8 +4,10 @@
  */
 import { z } from "zod";
 import { SHIPMENTS } from "../cargo/engine";
-import { asReplay, runLiveAgent, runRulesAgent, scenarioKey, streamReplay, DEFAULT_MODEL, PROVIDER } from "./agent";
-import type { AgentRun, Scenario, Step } from "./types";
+import { asReplay, blockedRun, runLiveAgent, runRulesAgent, scenarioKey, streamReplay, DEFAULT_MODEL, PROVIDER } from "./agent";
+import { gatherContext } from "./context";
+import { zetarisConfigFromEnv } from "../ops/zetaris";
+import type { AgentRun, ExternalContext, Scenario, Step } from "./types";
 
 const RequestSchema = z.object({
   scenario: z.object({
@@ -22,6 +24,8 @@ const RequestSchema = z.object({
     locale: z.enum(["en", "fr"]),
     operatorMessage: z.string().max(400).optional(),
     priorDelayMin: z.number().int().min(0).max(180).optional(),
+    wx: z.record(z.enum(["GVA", "LEJ", "ZRH", "FRA", "CDG"]), z.enum(["VFR", "MVFR", "IFR", "LIFR"])).optional(),
+    memoryNotes: z.array(z.string().max(300)).max(5).optional(),
   }),
   mode: z.enum(["auto", "rules"]).default("auto"),
   /** Replay an archived recording set, e.g. "v1" → data/eval/history/*-prompt-v1. */
@@ -42,7 +46,9 @@ try {
 // Recorded live runs, bundled at build time (see `npm run agent:record`).
 const RECORDED = import.meta.glob<AgentRun>("/data/traces/*.json", { eager: true, import: "default" });
 const recordedByKey = new Map<string, AgentRun>();
-for (const run of Object.values(RECORDED)) recordedByKey.set(run.scenarioKey, run);
+// v5 build: only recordings made with external context are served by default; a v4
+// recording would hide the station evidence and desk memory. Archived sets stay replayable.
+for (const run of Object.values(RECORDED)) if (run.external) recordedByKey.set(run.scenarioKey, run);
 
 // Archived recordings (earlier prompt versions), replayable with ?replay=<set>.
 const HISTORY = import.meta.glob<AgentRun>("/data/eval/history/*/traces/*.json", { eager: true, import: "default" });
@@ -101,6 +107,7 @@ function extraBody(): Record<string, unknown> | undefined {
 export function agentStatus() {
   return {
     live: !!process.env.NEBIUS_API_KEY?.trim(),
+    zetaris: !!zetarisConfigFromEnv(),
     model: process.env.NEBIUS_MODEL?.trim() || DEFAULT_MODEL,
     provider: PROVIDER,
     recorded: recordedByKey.size,
@@ -131,6 +138,40 @@ export async function handleAgentRequest(request: Request): Promise<Response> {
       const onStep = (step: Step) => send({ type: "step", step });
       try {
         let run: AgentRun | undefined;
+        // v5, step 1: Scout screens the operator's free text before anything else (local, no model).
+        const zcfg = zetarisConfigFromEnv();
+        const scoutOnly = await gatherContext(scenario, { scoutOnly: true });
+        if (scoutOnly.external.scout) {
+          const sc = scoutOnly.external.scout;
+          onStep({
+            kind: "note",
+            text:
+              sc.risk.level === "block"
+                ? `Scout: BLOCKED (${sc.risk.flags.join(", ")}). The message is not sent to the model.`
+                : `Scout: signed contract issued · intent ${sc.executionContract?.intent.primary.id} · risk ${sc.risk.level}`,
+          });
+        }
+        if (scoutOnly.blocked) {
+          send({ type: "start", mode: "blocked", model: "none", provider: "Meterless Scout (local)" });
+          run = blockedRun(scenario, scoutOnly.external, scoutOnly.blocked.flags, onStep);
+          send({ type: "done", run });
+          return;
+        }
+        // Step 2+3, only when this request will actually run (live or rules), not for a replay:
+        // Zetaris station evidence, then H-MEM recall steered by it.
+        let fresh: ExternalContext | undefined;
+        const external = async (): Promise<ExternalContext> => {
+          if (fresh) return fresh;
+          const g = await gatherContext({ ...scenario, operatorMessage: undefined }, { zetaris: zcfg ? { ...zcfg, timeoutMs: 8_000 } : null });
+          fresh = { ...g.external, ...(scoutOnly.external.scout ? { scout: scoutOnly.external.scout } : {}) };
+          if (fresh.evidence) {
+            onStep({
+              kind: "note",
+              text: `Station evidence: ${fresh.evidence.backend === "zetaris" ? "Zetaris federated query" : "offline mirror"}${fresh.evidence.backend_note ? ` · ${fresh.evidence.backend_note}` : ""} · weather ${fresh.evidence.weather_source}`,
+            });
+          }
+          return fresh;
+        };
         const cached = cache.get(key);
         const recorded = recordedByKey.get(key);
 
@@ -138,7 +179,7 @@ export async function handleAgentRequest(request: Request): Promise<Response> {
 
         if (parsed.mode === "rules") {
           send({ type: "start", mode: "rules", model: "rules-engine", provider: "local" });
-          run = await runRulesAgent(scenario, onStep);
+          run = await runRulesAgent(scenario, onStep, await external());
         } else if (archived) {
           run = asReplay(archived);
           send({ type: "start", mode: "replay", model: run.model, provider: run.provider, replayOf: run.replayOf });
@@ -163,6 +204,7 @@ export async function handleAgentRequest(request: Request): Promise<Response> {
               },
               onStep,
               request.signal,
+              await external(),
             );
             if (run.verdict.accepted) {
               if (cache.size > 500) for (const [k, v] of cache) if (Date.now() - v.at > CACHE_MS) cache.delete(k);
@@ -185,7 +227,7 @@ export async function handleAgentRequest(request: Request): Promise<Response> {
         }
         if (!run) {
           send({ type: "start", mode: "rules", model: "rules-engine", provider: "local" });
-          run = await runRulesAgent(scenario, onStep);
+          run = await runRulesAgent(scenario, onStep, await external());
         }
         send({ type: "done", run });
       } catch (e) {

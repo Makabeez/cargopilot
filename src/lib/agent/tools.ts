@@ -16,21 +16,25 @@ import {
   type Option,
   type Shipment,
 } from "../cargo/engine";
-import type { Scenario } from "./types";
+import type { ExternalContext, Scenario } from "./types";
+import { bookedLegVerdict, stationEvidence } from "../ops/evidence";
+import { memoryToolOutput } from "../memory/desk-memory";
 
 export type ToolContext = {
   scenario: Scenario;
   shipment: Shipment;
   /** Rules-engine view of the scenario, English. Never sent to the model whole. */
   analysis: Analysis;
+  /** Prompt v5: Zetaris evidence + H-MEM recall gathered before the run. */
+  external?: ExternalContext;
 };
 
-export function buildContext(scenario: Scenario): ToolContext {
+export function buildContext(scenario: Scenario, external?: ExternalContext): ToolContext {
   const shipment = SHIPMENTS.find((s) => s.id === scenario.shipmentId);
   if (!shipment) throw new Error(`Unknown shipment ${scenario.shipmentId}`);
   const flags = defaultFlags(shipment, scenario.delayMin, scenario.flags);
   const analysis = analyze(shipment, flags, "en", null);
-  return { scenario, shipment, analysis };
+  return { scenario, shipment, analysis, external };
 }
 
 const AWB_PARAM = {
@@ -159,6 +163,30 @@ export const TOOL_SCHEMAS = [
   },
 ] as const;
 
+/** Prompt v5 adds two tools backed by sources outside the cargo network. */
+export const V5_TOOL_SCHEMAS = [
+  {
+    type: "function",
+    function: {
+      name: "get_station_evidence",
+      description:
+        "Federated evidence from Zetaris for the stations this file depends on: live weather (METAR now, worst TAF category next 6 h) joined with 90 days of that station's handling history in the same weather category. Returns how often the window held (counts and %), median and p90 times. Use it to judge whether a tight plan will hold tonight.",
+      parameters: AWB_PARAM,
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "recall_desk_memory",
+      description:
+        "Desk memory across shifts (Meterless H-MEM): handover notes, customer preferences and past overrides relevant to this file, each with a memory_id. Memory is context, not live data; tool facts win if they disagree.",
+      parameters: AWB_PARAM,
+    },
+  },
+] as const;
+
+export const TOOL_SCHEMAS_V5 = [...TOOL_SCHEMAS.slice(0, -1), ...V5_TOOL_SCHEMAS, TOOL_SCHEMAS[TOOL_SCHEMAS.length - 1]];
+
 export type ToolName = (typeof TOOL_SCHEMAS)[number]["function"]["name"];
 
 function facts(ctx: ToolContext, tool: string): string[] {
@@ -257,6 +285,12 @@ export function executeTool(name: string, args: Record<string, unknown>, ctx: To
         summary: facts(ctx, "find_alternatives"),
         options: analysis.options.map(optionFacts),
       };
+    case "get_station_evidence":
+      if (!ctx.external) return { error: "Unknown tool get_station_evidence" };
+      return stationEvidence(shipment.id, ctx.external.evidence, ctx.scenario.wx ?? {});
+    case "recall_desk_memory":
+      if (!ctx.external) return { error: "Unknown tool recall_desk_memory" };
+      return memoryToolOutput(ctx.external.memory);
     default:
       return { error: `Unknown tool ${name}` };
   }
@@ -265,8 +299,15 @@ export function executeTool(name: string, args: Record<string, unknown>, ctx: To
 /** The rules engine's own answer — used as the no-model baseline and fallback. */
 export function rulesChoice(ctx: ToolContext): { recommended: string; ranking: string[] } {
   const opts = ctx.analysis.options;
-  const rec = opts.find((o) => o.recommended) ?? opts.find((o) => optionStatus(o) === "allowed") ?? opts[0];
   const riskOrder = { ok: 0, watch: 1, high: 2, critical: 3 } as const;
+  let rec = opts.find((o) => o.recommended) ?? opts.find((o) => optionStatus(o) === "allowed") ?? opts[0];
+  // v5 desk policy: weak station evidence for tonight's weather removes keep-first.
+  if (rec.id === "keep" && ctx.external?.evidence && bookedLegVerdict(ctx.shipment.id, ctx.external.evidence, ctx.scenario.wx ?? {})?.overridesKeep) {
+    const alt = opts
+      .filter((o) => o.id !== "keep" && optionStatus(o) === "allowed")
+      .sort((a, b) => riskOrder[a.risk] - riskOrder[b.risk])[0];
+    if (alt) rec = alt;
+  }
   const rest = opts
     .filter((o) => o.id !== rec.id && optionStatus(o) === "allowed")
     .sort((a, b) => riskOrder[a.risk] - riskOrder[b.risk]);
