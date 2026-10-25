@@ -12,6 +12,7 @@
 import { L, SHIPMENTS, analyze, defaultFlags } from "../cargo/engine";
 import { optionStatus, rulesChoice, TOOL_SCHEMAS, TOOL_SCHEMAS_V5, buildContext, executeTool, type ToolContext } from "./tools";
 import { bookedLegVerdict } from "../ops/evidence";
+import { memoryToolOutput } from "../memory/desk-memory";
 import { coerceDecision, verifyDecision } from "./verifier";
 import type { AgentRun, Check, Decision, ExternalContext, Scenario, Step, StepSink, ToolStep } from "./types";
 import { scenarioKey } from "./key";
@@ -23,9 +24,11 @@ export const PROVIDER = "Nebius Token Factory";
 /** Bump when the system/user prompt changes; recorded in every live run. */
 export const PROMPT_VERSION = "v4";
 /** Prompt for runs with external context (Zetaris evidence + H-MEM memory + Scout). */
-export const PROMPT_VERSION_V5 = "v6";
+export const PROMPT_VERSION_V5 = "v7";
 // v5 (recorded 25 Oct, archived): the two context tools were only named at the end of the
-// prompt; Nemotron skipped recall_desk_memory on 20/20 first submissions. v6 lists them in step 1.
+// prompt; Nemotron skipped recall_desk_memory on 20/20 first submissions. v6 listed them in step 1:
+// still skipped on 15/20. v7 does what H-MEM's spec calls reinjection: the recall for the open file
+// is placed in the user message, and the tool stays available but is no longer required.
 const MAX_TURNS = 12;
 const MAX_SUBMISSIONS = 3;
 const DESK_CLOCK = "Wed 14 Oct 2026, 17:42 local time (GVA)";
@@ -82,9 +85,11 @@ function rulesDecision(ctx: ToolContext): Decision {
  * Everything a decision may quote from: this run's tool outputs, the applied delay change and the desk clock.
  * The operator's free text is deliberately NOT a source: a figure typed by the desk must still match a tool.
  */
-export function groundingFor(scenario: Scenario, toolOutputs: string[]): string[] {
+export function groundingFor(scenario: Scenario, toolOutputs: string[], external?: ExternalContext): string[] {
   return [
     ...toolOutputs,
+    // v7: desk memory is reinjected into the prompt, so it is a source even when the tool is not called.
+    external?.memory ? JSON.stringify(memoryToolOutput(external.memory)) : "",
     scenario.priorDelayMin !== undefined
       ? `previous truck delay ${scenario.priorDelayMin} min, current truck delay ${scenario.delayMin} min`
       : "",
@@ -93,7 +98,7 @@ export function groundingFor(scenario: Scenario, toolOutputs: string[]): string[
 }
 
 function groundingTexts(ctx: ToolContext, toolSteps: ToolStep[]): string[] {
-  return groundingFor(ctx.scenario, toolSteps.map((t) => JSON.stringify(t.output)));
+  return groundingFor(ctx.scenario, toolSteps.map((t) => JSON.stringify(t.output)), ctx.external);
 }
 
 function baselineOf(ctx: ToolContext, decision: Decision) {
@@ -181,7 +186,7 @@ const V5_RULES = [
   "Context from outside the network (prompt v5). Call both tools before deciding:",
   "- get_station_evidence: Zetaris joins live station weather with 90 days of that station's handling history in the same flight category. When a plan depends on a station process (a transfer window, a connection, an acceptance), quote the station's flight category tonight and its record in that category exactly as the tool gives it (e.g. \"LEJ IFR: within window 5 of 8 (62%)\"). Say when a sample is small.",
   "- Keep-first exception: if, in tonight's category, the booked transfer held its window in fewer than two of three past movements (with at least 8 movements), the booked plan no longer gets keep-first; rank the alternatives by the a)–d) order below. The verifier enforces this.",
-  "- recall_desk_memory: handover notes from earlier shifts (Meterless H-MEM). When a note changes your call or the customer note, cite it as (mem-N). Never cite a memory_id the tool did not return. Tool facts beat memory.",
+  "- Desk memory: the handover notes recalled for this file (Meterless H-MEM) are in the user message. When a note changes your call or the customer note, cite it as (mem-N). Never cite a memory_id that is not listed. Tool facts beat memory. recall_desk_memory returns the same notes if you need them again.",
 ];
 
 function systemPrompt(s: Scenario, v5 = false): string {
@@ -192,7 +197,7 @@ function systemPrompt(s: Scenario, v5 = false): string {
     "",
     "Work the open file like a duty officer:",
     v5
-      ? "1. Establish the facts with tools. Always call get_shipment, calculate_risk, find_alternatives, get_station_evidence and recall_desk_memory (the verifier rejects a decision made without all five); call get_disruption, get_cutoffs, check_connection, get_capacity and check_restrictions when they bear on the case."
+      ? "1. Establish the facts with tools. Always call get_shipment, calculate_risk, find_alternatives and get_station_evidence (the verifier rejects a decision made without all four); call get_disruption, get_cutoffs, check_connection, get_capacity and check_restrictions when they bear on the case."
       : "1. Establish the facts with tools. Always call get_shipment, calculate_risk and find_alternatives; call get_disruption, get_cutoffs, check_connection, get_capacity and check_restrictions when they bear on the case.",
     "2. Decide, then call submit_decision exactly once with your decision.",
     "",
@@ -219,8 +224,16 @@ function systemPrompt(s: Scenario, v5 = false): string {
   ].join("\n");
 }
 
-function userPrompt(s: Scenario, awb: string): string {
+function userPrompt(s: Scenario, awb: string, external?: ExternalContext): string {
   const lines = [`Open file: AWB ${awb}. Desk clock: ${DESK_CLOCK}.`];
+  if (external?.memory) {
+    const recalled = external.memory.recalled;
+    lines.push(
+      recalled.length
+        ? ["Desk memory recalled for this file (Meterless H-MEM, handover notes, not live data):", ...recalled.map((m) => `- ${m.id} (${m.source}, ${m.learned}): ${m.content}`)].join("\n")
+        : "Desk memory: nothing relevant recalled for this file.",
+    );
+  }
   if (s.operatorMessage?.trim()) {
     lines.push(`The duty officer says: "${s.operatorMessage.trim()}"`);
     if (s.priorDelayMin !== undefined && s.priorDelayMin !== s.delayMin) {
@@ -334,7 +347,7 @@ export async function runLiveAgent(
   const called: string[] = [];
   const messages: ChatMessage[] = [
     { role: "system", content: systemPrompt(scenario, v5) },
-    { role: "user", content: userPrompt(scenario, ctx.shipment.awb) },
+    { role: "user", content: userPrompt(scenario, ctx.shipment.awb, external) },
   ];
   let promptTokens = 0;
   let completionTokens = 0;

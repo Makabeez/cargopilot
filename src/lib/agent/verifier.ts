@@ -248,9 +248,8 @@ export function verifyDecision(
   const byId = new Map(opts.map((o) => [o.id, o]));
 
   const required = ["calculate_risk", "find_alternatives"];
-  // v5: a file with station evidence or desk memory must be judged with them.
+  // v5+: a file with station evidence must be judged with it (desk memory is reinjected since v7).
   if (ctx.external?.evidence) required.push("get_station_evidence");
-  if (ctx.external?.memory) required.push("recall_desk_memory");
   const missing = required.filter((t) => !calledTools.includes(t));
   checks.push({
     id: "tools",
@@ -338,7 +337,7 @@ export function verifyDecision(
       id: "memory",
       label: "Every cited memory was recalled for this file",
       pass: unknown.length === 0,
-      detail: unknown.length ? `Not recalled by recall_desk_memory: ${unknown.join(", ")}` : undefined,
+      detail: unknown.length ? `Not in this file's desk memory: ${unknown.join(", ")}` : undefined,
     });
   }
 

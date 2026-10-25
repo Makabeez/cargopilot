@@ -17,7 +17,8 @@
     "agent:eval": "tsx scripts/agent-cli.ts eval",
     "ops:history": "tsx scripts/gen-ops-history.ts",
     "zetaris:setup": "tsx scripts/zetaris-setup.ts setup",
-    "zetaris:check": "tsx scripts/zetaris-setup.ts check"
+    "zetaris:check": "tsx scripts/zetaris-setup.ts check",
+    "zetaris:diagnose": "tsx scripts/zetaris-setup.ts diagnose"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.0",

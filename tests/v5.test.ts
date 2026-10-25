@@ -131,14 +131,15 @@ test("verifier v5: keep-first is refused when tonight's station evidence is weak
   assert.equal(verifyDecision(zrh, ctx, ["get_shipment", "calculate_risk", "find_alternatives", "get_station_evidence", "recall_desk_memory"], outputs).find((c) => c.id === "evidence")?.pass, true);
 });
 
-test("verifier v5: both context tools are required, and only recalled memory ids may be cited", async () => {
+test("verifier v5+: station evidence is required, memory is optional (v7), only recalled memory ids may be cited", async () => {
   const { external } = await gatherContext(KEEP_ZONE, { offline: true });
   const ctx = buildContext(KEEP_ZONE, external);
   const recalled = external.memory!.recalled.map((m) => m.id);
   assert.ok(recalled.length > 0);
   const d: Decision = { risk: ctx.analysis.risk, recommended_option_id: "keep", ranking: ["keep"], summary: `Keep the booking (${recalled[0]}).`, why: ["See mem-99."] };
   const checks = verifyDecision(d, ctx, ["calculate_risk", "find_alternatives"], []);
-  assert.match(checks.find((c) => c.id === "tools")?.detail ?? "", /get_station_evidence, recall_desk_memory/);
+  assert.match(checks.find((c) => c.id === "tools")?.detail ?? "", /get_station_evidence/);
+  assert.doesNotMatch(checks.find((c) => c.id === "tools")?.detail ?? "", /recall_desk_memory/, "v7: memory is reinjected, the tool is optional");
   assert.match(checks.find((c) => c.id === "memory")?.detail ?? "", /mem-99/);
   assert.doesNotMatch(checks.find((c) => c.id === "memory")?.detail ?? "", new RegExp(recalled[0] + "\\b"));
 });
@@ -201,7 +202,7 @@ test("live loop v5 (scripted model): evidence + memory tools, cited memory, acce
   }) as unknown as typeof fetch;
   const run = await runLiveAgent(sc, { apiKey: "test", fetchImpl }, () => {}, undefined, external);
   assert.ok(seen[0].tools.some((t) => t.function.name === "get_station_evidence"), "v5 tools are offered to the model");
-  assert.equal(run.promptVersion, "v6");
+  assert.equal(run.promptVersion, "v7");
   assert.equal(run.verdict.accepted, true, JSON.stringify(run.verdict.checks.filter((c) => !c.pass)));
   assert.equal(run.baseline.recommended_option_id, "zrh", "the evidence-aware rules baseline agrees");
 });

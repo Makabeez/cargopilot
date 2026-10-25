@@ -44,7 +44,7 @@ export async function runZetarisSql(cfg: ZetarisConfig, sql: string, limit = 500
     signal: AbortSignal.timeout(cfg.timeoutMs ?? 20_000),
   });
   const text = await res.text();
-  if (!res.ok) throw new Error(`Zetaris HTTP ${res.status}: ${text.slice(0, 200)}`);
+  if (!res.ok) throw new Error(`Zetaris HTTP ${res.status}: ${text.slice(0, 2000)}`);
   const out = (text ? JSON.parse(text) : null) as { data?: unknown[]; error?: unknown; message?: unknown } | null;
   if (out && (out.error || (typeof out.message === "string" && /error|fail|exception/i.test(out.message)))) {
     throw new Error(`Zetaris: ${String(out.error ?? out.message).slice(0, 300)}`);

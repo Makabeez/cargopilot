@@ -108,7 +108,7 @@ function reverify(run: AgentRun, coreOnly = false) {
   const fresh = toolSteps.map((s) => JSON.stringify(executeTool(s.name, s.args, ctx)));
   const recorded = toolSteps.map((s) => JSON.stringify(s.output));
   const outputsMatch = fresh.every((f, i) => f === recorded[i]);
-  const all = verifyDecision(run.decision, ctx, called, groundingFor(run.scenario, fresh));
+  const all = verifyDecision(run.decision, ctx, called, groundingFor(run.scenario, fresh, run.external));
   const checks = coreOnly ? all.filter((c) => CORE_CHECKS.has(c.id)) : all;
   return { outputsMatch, checks, pass: checks.every((c) => c.pass) };
 }

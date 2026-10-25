@@ -96,7 +96,30 @@ async function check() {
   process.exit(bad ? 1 : 0);
 }
 
-(process.argv[2] === "check" ? check : setup)().catch((e) => {
+/** Runs each source on its own and the join, printing full errors: tells a REST failure from a Postgres one. */
+async function diagnose() {
+  const probes: [string, string][] = [
+    ["engine", "SELECT 1 AS one"],
+    ["postgres (ops_pg)", "SELECT count(*) AS n FROM ops_pg.handling_history"],
+    ["REST raw (cargowx_rest.metar_geojson)", "SELECT type FROM cargowx_rest.metar_geojson"],
+    ["REST view (cargo_wx.metar_now)", "SELECT icao, fltcat FROM cargo_wx.metar_now"],
+    ["federated join (s615)", zetarisSql(LEGS.s615)],
+  ];
+  for (const [name, sql] of probes) {
+    const t0 = Date.now();
+    try {
+      const rows = await runZetarisSql(cfg!, sql, 50);
+      console.log(`  OK    ${name}  ${rows.length} rows  ${((Date.now() - t0) / 1000).toFixed(1)} s`);
+    } catch (e) {
+      const msg = mask(e instanceof Error ? e.message : String(e));
+      // The root cause sits after "Caused by" / "most recent failure"; print it whole.
+      console.log(`  FAIL  ${name}  ${((Date.now() - t0) / 1000).toFixed(1)} s\n${msg.replace(/\\n/g, "\n").slice(0, 1800)}\n`);
+    }
+  }
+}
+
+const mode = process.argv[2];
+(mode === "check" ? check : mode === "diagnose" ? diagnose : setup)().catch((e) => {
   console.error(mask(e instanceof Error ? e.message : String(e)));
   process.exit(1);
 });
