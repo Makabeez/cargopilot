@@ -15,6 +15,8 @@ Built for the Nebius × NVIDIA Global AI Hackathon, **Best Apps & Agents** track
 
 > Branch `open-agent`. The Nebius × NVIDIA submission is `main` at tag `nebius-submitted`. Everything below was built during the Open Agent build window (22–27 Oct 2026); `git log nebius-submitted..open-agent` is the delta. Pre-existing work is declared in [SUBMISSION.md](SUBMISSION.md).
 
+![v5 desk: LEJ set to IFR, station evidence overrides keep-first](docs/desk-v5.png)
+
 **The problem it fixes.** v4 could only say what the booking *says*. The night desk's real question is different: *will LEJ actually make the 45-minute window tonight?* The answer sits in two systems that never meet. Live weather is in one. How the station performed the last time the weather looked like this is in another. The duty officer's memory of what went wrong last time sits in a handover log nobody re-reads. v5 gives Nemotron all three, and the verifier still checks every number it quotes.
 
 | | What | Sponsor tech | Where |
