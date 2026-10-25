@@ -1,9 +1,10 @@
 -- Zetaris setup for CargoPilot's station evidence. Run each statement on its own,
+-- DESCRIBE BY values: letters, digits, _ . - , only (no spaces), or Zetaris rejects the statement.
 -- in order, in the Zetaris SQL Editor (one statement per call). Admin rights needed.
 -- Replace the <...> placeholders in the editor only; never commit credentials.
 
 -- Source 1: Postgres handling history (see 01_postgres_handling_history.sql)
-CREATE DATASOURCE ops_pg DESCRIBE BY "CargoPilot station handling history (Postgres)" OPTIONS (
+CREATE DATASOURCE ops_pg DESCRIBE BY "cargopilot_station_handling_history" OPTIONS (
   jdbcdriver "org.postgresql.Driver",
   jdbcurl "jdbc:postgresql://<neon-host>/<database>?sslmode=require",
   username "<read-only user>",
@@ -15,7 +16,7 @@ REGISTER DATASOURCE TABLE "handling_history" FROM ops_pg;
 
 -- Source 2: live METAR for the five stations, from the public aviationweather.gov
 -- Data API (no key). GeoJSON gives one object with a features array.
-CREATE LIGHTNING DATABASE CARGOWX_REST DESCRIBE BY "aviationweather.gov METAR (live)";
+CREATE LIGHTNING DATABASE CARGOWX_REST DESCRIBE BY "aviationweather.gov_metar_live";
 
 CREATE LIGHTNING REST TABLE metar_geojson FROM CARGOWX_REST REQUEST(
     endpoint "https://aviationweather.gov/api/data/metar?ids=LSGG,EDDP,LSZH,EDDF,LFPG&format=geojson",
