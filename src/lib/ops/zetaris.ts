@@ -83,6 +83,36 @@ export function parseZetarisRows(data: unknown[]): { rows: AggRow[]; metar: Reco
 }
 
 /**
+ * Federated answers are cached briefly per SQL text: every file opening on the
+ * desk sends the same query for its legs, and the history does not change
+ * within a minute. One retry absorbs a transient Spark/REST error (seen during
+ * recording when the METAR REST table was fetched by several queries at once).
+ */
+const zCache = new Map<string, { at: number; data: unknown[] }>();
+const Z_CACHE_MS = 60_000;
+
+/** Tests and the setup script reset the cache between scenarios. */
+export function clearZetarisCache(): void {
+  zCache.clear();
+}
+
+async function federated(cfg: ZetarisConfig, sql: string): Promise<unknown[]> {
+  const key = `${cfg.restUrl}\n${sql}`;
+  const hit = zCache.get(key);
+  if (hit && Date.now() - hit.at < Z_CACHE_MS) return hit.data;
+  let data: unknown[];
+  try {
+    data = await runZetarisSql(cfg, sql);
+  } catch (e) {
+    if (!/SparkException|HiveSQLException|HTTP 5\d\d|timeout|aborted/i.test(e instanceof Error ? e.message : String(e))) throw e;
+    await new Promise((r) => setTimeout(r, 1500));
+    data = await runZetarisSql(cfg, sql);
+  }
+  zCache.set(key, { at: Date.now(), data });
+  return data;
+}
+
+/**
  * Builds the evidence snapshot for a file. Zetaris answers when it is configured
  * and reachable; otherwise the offline mirror answers and the snapshot says so.
  * Weather is fetched directly in both cases for the TAF (the Zetaris REST table
@@ -111,7 +141,7 @@ export async function loadEvidence(
   const mirror = mirrorAggregate(legs);
   if (opts.zetaris && !opts.offline) {
     try {
-      const { rows, metar } = parseZetarisRows(await runZetarisSql(opts.zetaris, sql));
+      const { rows, metar } = parseZetarisRows(await federated(opts.zetaris, sql));
       // The METAR seen through Zetaris replaces the direct one, so the flight
       // category used for the join is the federated one.
       for (const w of weather) {
@@ -133,7 +163,7 @@ export async function loadEvidence(
     } catch (e) {
       return {
         backend: "mirror",
-        backend_note: `Zetaris unavailable (${e instanceof Error ? e.message.slice(0, 120) : "error"}); offline mirror answered`,
+        backend_note: `Zetaris unavailable (${e instanceof Error ? e.message.slice(0, 300) : "error"}); offline mirror answered`,
         sql,
         fetched_at: fetchedAt,
         rows: mirror,

@@ -23,7 +23,9 @@ export const PROVIDER = "Nebius Token Factory";
 /** Bump when the system/user prompt changes; recorded in every live run. */
 export const PROMPT_VERSION = "v4";
 /** Prompt for runs with external context (Zetaris evidence + H-MEM memory + Scout). */
-export const PROMPT_VERSION_V5 = "v5";
+export const PROMPT_VERSION_V5 = "v6";
+// v5 (recorded 25 Oct, archived): the two context tools were only named at the end of the
+// prompt; Nemotron skipped recall_desk_memory on 20/20 first submissions. v6 lists them in step 1.
 const MAX_TURNS = 12;
 const MAX_SUBMISSIONS = 3;
 const DESK_CLOCK = "Wed 14 Oct 2026, 17:42 local time (GVA)";
@@ -189,7 +191,9 @@ function systemPrompt(s: Scenario, v5 = false): string {
     "The network you query is a simulation. Flights AYC xxx are aircraft, RFS xxxx are road-feeder trucks.",
     "",
     "Work the open file like a duty officer:",
-    "1. Establish the facts with tools. Always call get_shipment, calculate_risk and find_alternatives; call get_disruption, get_cutoffs, check_connection, get_capacity and check_restrictions when they bear on the case.",
+    v5
+      ? "1. Establish the facts with tools. Always call get_shipment, calculate_risk, find_alternatives, get_station_evidence and recall_desk_memory (the verifier rejects a decision made without all five); call get_disruption, get_cutoffs, check_connection, get_capacity and check_restrictions when they bear on the case."
+      : "1. Establish the facts with tools. Always call get_shipment, calculate_risk and find_alternatives; call get_disruption, get_cutoffs, check_connection, get_capacity and check_restrictions when they bear on the case.",
     "2. Decide, then call submit_decision exactly once with your decision.",
     "",
     "Hard rules (the verifier enforces them and will send your decision back):",

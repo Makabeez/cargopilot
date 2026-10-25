@@ -15,7 +15,7 @@ import { buildContext, executeTool } from "../src/lib/agent/tools";
 import { verifyDecision } from "../src/lib/agent/verifier";
 import { LEGS, aggKey, bookedLegVerdict, mirrorAggregate, parseHistory, sparkPercentile, stationEvidence, zetarisSql } from "../src/lib/ops/evidence";
 import { flightCategory, summarize, visibilitySm } from "../src/lib/ops/weather";
-import { loadEvidence, parseZetarisRows } from "../src/lib/ops/zetaris";
+import { clearZetarisCache, loadEvidence, parseZetarisRows } from "../src/lib/ops/zetaris";
 import { recallFor } from "../src/lib/memory/desk-memory";
 import { Scout } from "../src/lib/guard/scout";
 import { HANDLING_HISTORY_CSV } from "../src/lib/ops/history.data";
@@ -98,6 +98,7 @@ test("loadEvidence: Zetaris answers when reachable, the mirror answers (labelled
     if (url.includes("aviationweather")) return new Response("[]", { status: 200 });
     return new Response("bad gateway", { status: 502 });
   }) as unknown as typeof fetch;
+  clearZetarisCache();
   const m = await loadEvidence("s615", { zetaris: { ...cfg, fetchImpl: down }, fetchImpl: weatherOnly });
   assert.equal(m?.backend, "mirror");
   assert.match(m?.backend_note ?? "", /Zetaris unavailable/);
@@ -200,7 +201,7 @@ test("live loop v5 (scripted model): evidence + memory tools, cited memory, acce
   }) as unknown as typeof fetch;
   const run = await runLiveAgent(sc, { apiKey: "test", fetchImpl }, () => {}, undefined, external);
   assert.ok(seen[0].tools.some((t) => t.function.name === "get_station_evidence"), "v5 tools are offered to the model");
-  assert.equal(run.promptVersion, "v5");
+  assert.equal(run.promptVersion, "v6");
   assert.equal(run.verdict.accepted, true, JSON.stringify(run.verdict.checks.filter((c) => !c.pass)));
   assert.equal(run.baseline.recommended_option_id, "zrh", "the evidence-aware rules baseline agrees");
 });

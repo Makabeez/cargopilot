@@ -348,7 +348,8 @@ async function judge() {
       }
     }
     console.log(
-      `[4] Recorded Nemotron traces re-verified ....... ${ok(!bad && !drift)}  ${traces.length} traces · ${[...new Set(traces.map((t) => t.model))].join(", ")}` +
+      `[4] Recorded Nemotron traces re-verified ....... ${ok(!bad && !drift)}  ${traces.length} traces · ${[...new Set(traces.filter((t) => t.mode !== "blocked").map((t) => t.model))].join(", ")}` +
+        (traces.some((t) => t.mode === "blocked") ? ` · ${traces.filter((t) => t.mode === "blocked").length} blocked by Scout (no model call)` : "") +
         (drift ? ` · ${drift} with tool-output drift (engine changed since recording — re-record)` : ""),
     );
     failures += bad + drift;
@@ -473,7 +474,7 @@ async function record() {
       }
     } else run = await runLiveAgent(sc, cfg);
     writeFileSync(fileFor(run.scenarioKey), JSON.stringify(run, null, 2));
-    const tag = run.verdict.fellBack ? "FALLBACK" : run.verdict.attempts > 1 ? `ok after ${run.verdict.attempts}` : "ok";
+    const tag = run.mode === "blocked" ? "BLOCKED" : run.verdict.fellBack ? "FALLBACK" : run.verdict.attempts > 1 ? `ok after ${run.verdict.attempts}` : "ok";
     console.log(
       `  [${String(i + 1).padStart(2)}/${todo.length}] ${run.scenarioKey.padEnd(28)} ${tag.padEnd(12)} pick=${run.decision.recommended_option_id.padEnd(9)} rules=${run.baseline.recommended_option_id.padEnd(9)} ${(run.latencyMs / 1000).toFixed(1)} s`,
     );
