@@ -21,9 +21,9 @@ Built for the Nebius × NVIDIA Global AI Hackathon, **Best Apps & Agents** track
 
 | | What | Sponsor tech | Where |
 | --- | --- | --- | --- |
-| 1 | **Station evidence.** One federated SQL query joins 90 days of station handling history (Postgres) with **live METAR** for the same stations (aviationweather.gov, registered as a REST table). The tool returns how often the window held *in tonight's flight category*. | **Zetaris** (federated query, REST table, datasource) | `src/lib/ops/`, `zetaris/*.sql` |
+| 1 | **Station evidence.** One federated SQL query joins 90 days of station handling history (Postgres) with **live METAR** for the same stations (aviationweather.gov, registered as a REST table through a small typed adapter). The tool returns how often the window held *in tonight's flight category*. | **Zetaris** (federated query, REST table, datasource) | `src/lib/ops/`, `zetaris/*.sql` |
 | 2 | **Keep-first, unless the station says otherwise.** If the booked transfer held its window in fewer than 2 of 3 past movements in tonight's category (n ≥ 8), the booking loses keep-first. The verifier enforces it (check `evidence`). | — | `bookedLegVerdict`, `verifier.ts` |
-| 3 | **Desk memory across shifts.** Handover notes, customer preferences and past overrides are recalled for the open file, with ids the model must cite exactly (check `memory`). Bad weather found in step 1 is added to the memory query, so "LEJ IFR" pulls the night shift's fog note. "Remember: …" typed at the desk is mined into memory. | **Meterless H-MEM** (vendored reference engine) | `src/lib/memory/`, `src/vendor/meterless-hmem/` |
+| 3 | **Desk memory across shifts.** Handover notes, customer preferences and past overrides are recalled for the open file, recall is reinjected into the prompt, and any id the model cites must match it exactly (check `memory`). Bad weather found in step 1 is added to the memory query, so "LEJ IFR" pulls the night shift's fog note. "Remember: …" typed at the desk is mined into memory. | **Meterless H-MEM** (vendored reference engine) | `src/lib/memory/`, `src/vendor/meterless-hmem/` |
 | 4 | **Guard on everything the duty officer types.** Messages *and* handover notes go through Scout before any model call. A blocked message never reaches Nemotron, and a blocked note is never stored. The signed execution contract travels with the run. | **Meterless Scout** (spec implemented, scored on Meterless's regression set) | `src/lib/guard/scout.ts` |
 | 5 | **Every external answer is re-derivable offline.** Each run records what Zetaris and H-MEM returned. `judge-demo` re-derives both: Zetaris aggregates must equal the mirror over the SHA-256-pinned CSV. | — | `scripts/agent-cli.ts` |
 
@@ -35,7 +35,8 @@ Built for the Nebius × NVIDIA Global AI Hackathon, **Best Apps & Agents** track
                           ▼
       Zetaris federated SQL ─────────────────────────────┐
       ops_pg.handling_history  ⋈  cargo_wx.metar_now      │  (offline mirror if
-      (Postgres, 90 days)        (REST: aviationweather)  │   Zetaris is down;
+      (Postgres, 90 days)        (REST: aviationweather   │   Zetaris is down;
+                                  via wx-adapter)         │
                           │                               │   same aggregates)
              adverse weather ("LEJ fog IFR")              │
                           ▼                               │
@@ -48,6 +49,35 @@ Built for the Nebius × NVIDIA Global AI Hackathon, **Best Apps & Agents** track
       submit_decision ──► VERIFIER (figures · refs · memory ids · evidence policy)
 ```
 
+### Live results: Nemotron with Zetaris, H-MEM and Scout
+
+21 recorded runs on 25–26 Oct 2026: 20 Nemotron runs plus one message that Scout blocked. Run them yourself with `npm run agent:record`; the full report is [`data/eval/report.md`](data/eval/report.md). The station evidence came from **local Zetaris in 14 of 14 runs that needed it**, and every one of those answers matched the offline mirror.
+
+| prompt v7 | |
+| --- | --- |
+| Accepted by the verifier on first submission | 17/20 |
+| Accepted after verifier feedback | 20/20 (no fallback to rules) |
+| Verified pick = evidence-aware rules pick | 19/20 |
+| Latency p50 / p95 | 16.4 s / 26.0 s |
+| Cost for 20 runs at list price | $0.25 |
+| Message blocked by Scout before any model call | 1/1 |
+
+**What the verifier caught: Nemotron keeps the booking in fog.** All 3 first-try rejections are the same case: LEJ set to IFR, truck +60 min, English and French desk. Nemotron had called `get_station_evidence` and had the numbers (window held 5 of 8 in IFR). It still recommended keeping AYC 7841, following the keep-first rule. The `evidence` check sent it back each time, and each time it rerouted via ZRH (30 of 30 in IFR) on the second submission. With CDG in IFR (6 of 12), it rerouted on the first try.
+
+**Desk memory was cited once in 20 runs, and it did not change the call.** On the YYZ gel-pack file, Nemotron quoted (mem-10), the handover note advising the active container over re-icing. It still picked the cheaper repack, and both options pass the hard constraints. In the other 19 runs the recalled notes were not cited. On this eval, H-MEM is context the model can see and the verifier can check, not a driver of decisions. Making memory matter more is future work, not a result.
+
+**Three prompts to get here, all kept and re-verified** (`data/eval/history/`):
+
+| | v5 | v6 | v7 (current) |
+| --- | --- | --- | --- |
+| Change | context tools described at the end of the prompt | both tools listed in step 1 as required | desk memory reinjected into the user message (H-MEM's reinjection); the memory tool becomes optional |
+| First-try acceptance | 0/20 | 3/20 | **17/20** |
+| Main first-try failure | `recall_desk_memory` not called (20/20) | `recall_desk_memory` still skipped (15/20) | keep-in-fog (3/20), caught |
+
+v6's runs answered from the mirror, not Zetaris; see the finding below.
+
+**A Zetaris finding.** A Lightning REST table infers its JSON schema once, when it is created. aviationweather.gov's wind direction `wdir` is a number, or the string `"VRB"` in light winds. The table was created while Geneva reported VRB, so the column was typed string. About an hour later every station reported a number, and every query failed with `The value (170) of the type (java.lang.Long) cannot be converted to the string type`. `scripts/wx-adapter.mjs` keeps the same live data and GeoJSON layout with string-only fields. It runs as a container on the Zetaris network and fetches at most once a minute. `npm run zetaris:diagnose` probes each source separately, which is how this was isolated.
+
 ### Check it, no key and no network
 
 ```bash
@@ -58,7 +88,7 @@ npm ci && npm run judge-demo
 | --- | --- |
 | [5] | The history CSV that Zetaris reads is the pinned one (SHA-256). |
 | [6] | 20 v5 scenarios pass the verifier with evidence and memory. 4 of them are files where station evidence overrides keep-first. |
-| [7] | Every recorded v5 run's Zetaris and H-MEM answers re-derive offline. |
+| [7] | Every recorded v5+ run's Zetaris and H-MEM answers re-derive offline (21 traces, 14 answered by Zetaris). |
 | [8] | H-MEM recall on the 11 handover notes: **precision 0.63, recall 1.00** against a hand-labelled relevance table. |
 | [9] | Scout blocks **7/7** attacks on Meterless's injection set v1 (0/3 benign blocked), and **15/15** cargo-desk attacks with **0/22** desk phrasings blocked ("ignore the cost", "forget the ZRH option", "override: keep the booking"). |
 
@@ -88,7 +118,7 @@ CDG in LIFR has a single movement on record. The tool reports it as a small samp
 | Element | Status |
 | --- | --- |
 | METAR / TAF for GVA, LEJ, ZRH, FRA, CDG | **Real**, live from aviationweather.gov at run time (recorded in the trace) |
-| Zetaris federated query, REST table, Postgres datasource | **Real** when `ZETARIS_REST_URL` is set; otherwise the labelled offline mirror answers |
+| Zetaris federated query, REST table, Postgres datasource | **Real**: a local Zetaris 2.4.3.1 answered 14/14 evidence calls in the v7 recording. Without `ZETARIS_REST_URL` (e.g. the public deploy), the labelled offline mirror answers |
 | Station handling history (810 rows) | **Simulated**, seeded and reproducible |
 | Handover notes in desk memory | **Simulated**: invented people and events |
 | H-MEM engine | **Real** Meterless reference code (Apache-2.0), with one patched embedder ([why](src/vendor/meterless-hmem/README.md)) |
@@ -96,6 +126,8 @@ CDG in LIFR has a single movement on record. The tool reports it as a small samp
 | Weather what-if chips | **Simulated** by the duty officer, and labelled "what-if" in the evidence |
 
 ### Honest limits (v5)
+
+- **The model needed the policy check.** In 3 of 3 LEJ-IFR runs Nemotron had the weak evidence and still kept the booking on its first submission. The verifier is doing real work here; without it, those three decisions would have shipped.
 
 - **Weather is live, the desk is not.** The desk clock is a fixed scenario (14 Oct), but the METAR/TAF is today's. The evidence tool says which one it is using, and the what-if chips let you test fog on demand.
 - **The memory embedder is a hash, not a model.** Precision 0.63 means about 1 in 3 recalled notes is noise. The tool tells the model that tool facts beat memory, and only cited ids are checked.

@@ -26,7 +26,7 @@ The night desk of an air-cargo station has to decide whether a tight transfer wi
 
 - **Two fragmented sources, one query.**
   - `ops_pg.handling_history` is a Postgres datasource registered in Zetaris. It holds 90 days of station handling times, tagged with the flight category on the day.
-  - `cargo_wx.metar_now` is a SchemaStore view over a Lightning **REST table** that calls aviationweather.gov live for the five stations.
+  - `cargo_wx.metar_now` is a SchemaStore view over a Lightning **REST table** with live METAR for the five stations. It reads aviationweather.gov through `scripts/wx-adapter.mjs`, a container on the Zetaris network. The adapter pins the field types: the REST table infers its schema at creation, and aviationweather's `wdir` flips between a number and `"VRB"`, which broke every query an hour after creation. That finding is documented in the README.
   - The agent's `get_station_evidence` tool sends one federated SQL statement that joins them and aggregates by station, flight and weather category: count, hits, Spark `percentile_approx` p50/p90, max. Setup is in `zetaris/02_zetaris_setup.sql`, and the query is built by `zetarisSql()`.
 - **Called from the app server** through the Zetaris REST SQL endpoint (`/sql-editor/sqls/run`, bearer token, org id). The token stays on the server.
 - **Trusted, then checked.** Every Zetaris answer is recorded in the run and re-derived offline by `npm run judge-demo` from the same SHA-256-pinned CSV. Each answer is also reconciled live against an in-process mirror ("identical aggregates" is shown in the UI).
@@ -40,7 +40,7 @@ The night desk of an air-cargo station has to decide whether a tight transfer wi
   - `MemoryRetrievalService` ranks recall for the open file.
   - The TrustLedger records every read.
   - The weather found by Zetaris is added to the memory query, so fog at LEJ brings back the night shift's fog override note.
-  - The model must cite memory as `(mem-N)`. The verifier rejects any id that recall did not return.
+  - Recall is reinjected into the prompt, and memory is cited as `(mem-N)`. The verifier rejects any id that recall did not return.
   - Measured on the seed notes: precision 0.63, recall 1.00.
 - **Scout Intent (guard + execution contract).** Meterless ships Scout as a spec with a locked eval harness. CargoPilot implements the spec surface (`decide()` → intent, risk, tool plan, HMAC-signed execution contract).
   - Every operator message and every handover note goes through it before any model call or memory write.
@@ -58,6 +58,15 @@ NVIDIA **Nemotron 3 Super 120B-A12B** on Nebius Token Factory drives the whole t
 - It corrects itself from verifier feedback.
 
 Recorded live runs (traces with model id, tokens and latency) are in `data/traces/` and replay in the app.
+
+## Results (live, prompt v7, 25–26 Oct 2026)
+
+- **20 Nemotron runs plus 1 Scout block.** 17/20 were accepted on the first submission and 20/20 after verifier feedback, with no fallback to rules.
+- **p50 latency** 16.4 s; **cost** $0.25 for all 20 runs.
+- **Zetaris** answered 14 of 14 evidence calls, and every answer matched the offline mirror.
+- **The verifier's 3 catches were the same mistake:** with LEJ in IFR (5 of 8), Nemotron had the evidence and still kept the booking. Each time it was sent back and rerouted via ZRH.
+- **Desk memory** was cited once and did not change a decision. That is reported as such.
+- **Prompt history.** Prompts v5 and v6 got 0/20 and 3/20 on the first submission, because Nemotron skipped the memory tool. v7 reinjects the H-MEM recall instead. All three recordings are kept and re-verified.
 
 ## What is unique
 
