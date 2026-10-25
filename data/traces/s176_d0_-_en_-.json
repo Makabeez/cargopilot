@@ -10,17 +10,17 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v4",
-  "startedAt": "2026-10-04T15:39:25.466Z",
-  "latencyMs": 7578,
-  "promptTokens": 16135,
-  "completionTokens": 756,
+  "promptVersion": "v5",
+  "startedAt": "2026-10-25T23:23:06.808Z",
+  "latencyMs": 10445,
+  "promptTokens": 27437,
+  "completionTokens": 1256,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 790,
-      "promptTokens": 2329,
+      "ms": 980,
+      "promptTokens": 2879,
       "completionTokens": 54,
       "reasoningChars": 52,
       "toolCalls": [
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8d3607db5c2757a5",
+      "callId": "chatcmpl-tool-8dc668adc975d27c",
       "name": "get_shipment",
       "args": {
         "awb": "176-55287190"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 962,
-      "promptTokens": 2477,
-      "completionTokens": 52,
-      "reasoningChars": 60,
+      "ms": 579,
+      "promptTokens": 3027,
+      "completionTokens": 74,
+      "reasoningChars": 162,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-86fc4e9dda22b096",
+      "callId": "chatcmpl-tool-84f7e2643c0633c7",
       "name": "get_disruption",
       "args": {
         "awb": "176-55287190"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 934,
-      "promptTokens": 2623,
-      "completionTokens": 58,
-      "reasoningChars": 84,
+      "ms": 684,
+      "promptTokens": 3173,
+      "completionTokens": 97,
+      "reasoningChars": 238,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a1f0bd3e6a1837a6",
+      "callId": "chatcmpl-tool-820d27fc251c5cde",
       "name": "get_cutoffs",
       "args": {
         "awb": "176-55287190"
@@ -125,17 +125,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1123,
-      "promptTokens": 2704,
-      "completionTokens": 105,
-      "reasoningChars": 216,
+      "ms": 811,
+      "promptTokens": 3254,
+      "completionTokens": 82,
+      "reasoningChars": 173,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-88605d4add660e8f",
+      "callId": "chatcmpl-tool-9cc76bc5254fcf2a",
       "name": "calculate_risk",
       "args": {
         "awb": "176-55287190"
@@ -174,8 +174,8 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 769,
-      "promptTokens": 2856,
+      "ms": 666,
+      "promptTokens": 3406,
       "completionTokens": 46,
       "reasoningChars": 28,
       "toolCalls": [
@@ -184,7 +184,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a866bc0e9215b985",
+      "callId": "chatcmpl-tool-bd65674b1dd3a438",
       "name": "find_alternatives",
       "args": {
         "awb": "176-55287190"
@@ -223,10 +223,10 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 2998,
-      "promptTokens": 3146,
-      "completionTokens": 441,
-      "reasoningChars": 896,
+      "ms": 2932,
+      "promptTokens": 3696,
+      "completionTokens": 408,
+      "reasoningChars": 1081,
       "toolCalls": [
         "submit_decision"
       ]
@@ -234,6 +234,117 @@
     {
       "kind": "verify",
       "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": false,
+          "detail": "Not called: recall_desk_memory"
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "high",
+        "recommended_option_id": "chase",
+        "ranking": [
+          "chase",
+          "offload"
+        ],
+        "summary": "SLI is missing and screening requires ~40 min, but acceptance closes at 18:55; if the SLI arrives now the shipment can still make the booked flight.",
+        "why": [
+          "SLI missing (risk driver)",
+          "Screening needs ~40 min",
+          "Acceptance closes 18:55",
+          "Chase option keeps same flight with Medium risk and on-time ETA"
+        ]
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 895,
+      "promptTokens": 3918,
+      "completionTokens": 58,
+      "reasoningChars": 71,
+      "toolCalls": [
+        "recall_desk_memory"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-add68aaf4698e155",
+      "name": "recall_desk_memory",
+      "args": {
+        "awb": "176-55287190"
+      },
+      "output": {
+        "engine": "Meterless H-MEM",
+        "recalled": [
+          {
+            "memory_id": "mem-11",
+            "note": "BOM files with a missing SLI: the forwarder answers fastest on the phone; email requests go unanswered after 18:00.",
+            "source": "handover log (night shift)",
+            "learned": "2026-09-14"
+          }
+        ],
+        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 8,
+      "ms": 2895,
+      "promptTokens": 4084,
+      "completionTokens": 437,
+      "reasoningChars": 1062,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -272,6 +383,11 @@
           "pass": true
         },
         {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
           "id": "language",
           "label": "Summary and evidence are in the duty officer's language",
           "pass": true
@@ -284,11 +400,13 @@
           "chase",
           "offload"
         ],
-        "summary": "The SLI document is missing, creating a high risk situation, but chasing it now keeps the freight on the original flight and on‑time. If the SLI does not arrive by 18:15, offload to AYC 308 as the fallback.",
+        "summary": "SLI is missing and screening needs ~40 min, but acceptance closes at 18:55; if the SLI arrives now the shipment can still make the booked flight.",
         "why": [
-          "SLI missing (get_disruption: SLI value Missing, state risk)",
-          "GVA acceptance closes 18:55 with screening ~40 min (get_cutoffs: GVA acceptance 18:55 · screening ~40 min)",
-          "Chase the SLI now option: revised ETA 15 Oct 09:50 LT BOM, delay On time, cost CHF 0, risk Medium (find_alternatives option chase)"
+          "SLI missing (risk driver)",
+          "Screening needs ~40 min",
+          "Acceptance closes 18:55",
+          "Chase option keeps same flight with Medium risk and on‑time ETA",
+          "Per memory mem‑11, forwarder answers fastest on phone; email unanswered after 18:00"
         ]
       }
     }
@@ -300,16 +418,18 @@
       "chase",
       "offload"
     ],
-    "summary": "The SLI document is missing, creating a high risk situation, but chasing it now keeps the freight on the original flight and on‑time. If the SLI does not arrive by 18:15, offload to AYC 308 as the fallback.",
+    "summary": "SLI is missing and screening needs ~40 min, but acceptance closes at 18:55; if the SLI arrives now the shipment can still make the booked flight.",
     "why": [
-      "SLI missing (get_disruption: SLI value Missing, state risk)",
-      "GVA acceptance closes 18:55 with screening ~40 min (get_cutoffs: GVA acceptance 18:55 · screening ~40 min)",
-      "Chase the SLI now option: revised ETA 15 Oct 09:50 LT BOM, delay On time, cost CHF 0, risk Medium (find_alternatives option chase)"
+      "SLI missing (risk driver)",
+      "Screening needs ~40 min",
+      "Acceptance closes 18:55",
+      "Chase option keeps same flight with Medium risk and on‑time ETA",
+      "Per memory mem‑11, forwarder answers fastest on phone; email unanswered after 18:00"
     ]
   },
   "verdict": {
     "accepted": true,
-    "attempts": 1,
+    "attempts": 2,
     "fellBack": false,
     "checks": [
       {
@@ -348,6 +468,11 @@
         "pass": true
       },
       {
+        "id": "memory",
+        "label": "Every cited memory was recalled for this file",
+        "pass": true
+      },
+      {
         "id": "language",
         "label": "Summary and evidence are in the duty officer's language",
         "pass": true
@@ -358,5 +483,25 @@
     "recommended_option_id": "chase",
     "risk": "high",
     "agrees": true
+  },
+  "external": {
+    "memory": {
+      "engine": "meterless-hmem-reference@1742dec",
+      "query": "BOM Desk",
+      "recalled": [
+        {
+          "id": "mem-11",
+          "content": "BOM files with a missing SLI: the forwarder answers fastest on the phone; email requests go unanswered after 18:00.",
+          "source": "handover log (night shift)",
+          "learned": "2026-09-14",
+          "relevance": 0.33
+        }
+      ],
+      "added": [],
+      "trace": {
+        "strategy": "minimal",
+        "reason": "hybrid ranking for \"BOM Desk\" (domain: general)"
+      }
+    }
   }
 }

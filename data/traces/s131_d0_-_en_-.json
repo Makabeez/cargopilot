@@ -10,26 +10,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v4",
-  "startedAt": "2026-10-04T15:39:31.558Z",
-  "latencyMs": 10443,
-  "promptTokens": 25397,
-  "completionTokens": 1329,
+  "promptVersion": "v5",
+  "startedAt": "2026-10-25T23:23:18.483Z",
+  "latencyMs": 16188,
+  "promptTokens": 44171,
+  "completionTokens": 2081,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 581,
-      "promptTokens": 2329,
-      "completionTokens": 52,
-      "reasoningChars": 46,
+      "ms": 582,
+      "promptTokens": 2879,
+      "completionTokens": 54,
+      "reasoningChars": 52,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b7815e13b6e2f3fa",
+      "callId": "chatcmpl-tool-97fefe570d694b28",
       "name": "get_shipment",
       "args": {
         "awb": "131-77881204"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 786,
-      "promptTokens": 2486,
-      "completionTokens": 51,
-      "reasoningChars": 57,
+      "ms": 1104,
+      "promptTokens": 3036,
+      "completionTokens": 76,
+      "reasoningChars": 187,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9fe3ba9203eb3e25",
+      "callId": "chatcmpl-tool-9892fa2fc4794205",
       "name": "get_disruption",
       "args": {
         "awb": "131-77881204"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 818,
-      "promptTokens": 2643,
-      "completionTokens": 74,
-      "reasoningChars": 135,
+      "ms": 899,
+      "promptTokens": 3193,
+      "completionTokens": 55,
+      "reasoningChars": 60,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-add93acb9f4e0a8c",
+      "callId": "chatcmpl-tool-9fd5c570abd7fea8",
       "name": "get_cutoffs",
       "args": {
         "awb": "131-77881204"
@@ -124,17 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1014,
-      "promptTokens": 2721,
-      "completionTokens": 124,
-      "reasoningChars": 289,
+      "ms": 765,
+      "promptTokens": 3271,
+      "completionTokens": 82,
+      "reasoningChars": 189,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b7da21e072932263",
+      "callId": "chatcmpl-tool-ac0d0010def43604",
       "name": "check_connection",
       "args": {
         "awb": "131-77881204"
@@ -149,17 +149,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 831,
-      "promptTokens": 2797,
-      "completionTokens": 53,
-      "reasoningChars": 66,
+      "ms": 874,
+      "promptTokens": 3347,
+      "completionTokens": 69,
+      "reasoningChars": 148,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-80258b2a4666323e",
+      "callId": "chatcmpl-tool-ad8ca142aa6d7f3c",
       "name": "get_capacity",
       "args": {
         "awb": "131-77881204"
@@ -174,17 +174,17 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 819,
-      "promptTokens": 2873,
-      "completionTokens": 56,
-      "reasoningChars": 69,
+      "ms": 751,
+      "promptTokens": 3423,
+      "completionTokens": 74,
+      "reasoningChars": 138,
       "toolCalls": [
         "check_restrictions"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8dff729f7b7ed3a9",
+      "callId": "chatcmpl-tool-8cc3e669655c5d69",
       "name": "check_restrictions",
       "args": {
         "awb": "131-77881204"
@@ -200,8 +200,8 @@
     {
       "kind": "model",
       "turn": 7,
-      "ms": 828,
-      "promptTokens": 2957,
+      "ms": 670,
+      "promptTokens": 3507,
       "completionTokens": 50,
       "reasoningChars": 45,
       "toolCalls": [
@@ -210,7 +210,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-99164b593bae3560",
+      "callId": "chatcmpl-tool-8f95c628e2b46b46",
       "name": "calculate_risk",
       "args": {
         "awb": "131-77881204"
@@ -247,17 +247,17 @@
     {
       "kind": "model",
       "turn": 8,
-      "ms": 695,
-      "promptTokens": 3102,
-      "completionTokens": 47,
-      "reasoningChars": 26,
+      "ms": 803,
+      "promptTokens": 3652,
+      "completionTokens": 46,
+      "reasoningChars": 28,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b4321ae131f58cd9",
+      "callId": "chatcmpl-tool-ab19174036d797d5",
       "name": "find_alternatives",
       "args": {
         "awb": "131-77881204"
@@ -308,10 +308,10 @@
     {
       "kind": "model",
       "turn": 9,
-      "ms": 4068,
-      "promptTokens": 3489,
-      "completionTokens": 822,
-      "reasoningChars": 2110,
+      "ms": 2494,
+      "promptTokens": 4039,
+      "completionTokens": 492,
+      "reasoningChars": 1361,
       "toolCalls": [
         "submit_decision"
       ]
@@ -319,6 +319,177 @@
     {
       "kind": "verify",
       "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": false,
+          "detail": "Not called: get_station_evidence, recall_desk_memory"
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "evidence",
+          "label": "Keeping the booking is consistent with tonight's station evidence",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "hold",
+        "ranking": [
+          "hold",
+          "inspect"
+        ],
+        "summary": "The probe reads 9.2 °C for 18 min, under the 30‑min excursion limit but requiring verification. Place the shipment on QA hold to avoid risk while awaiting confirmation.",
+        "why": [
+          "Probe 9.2 °C · 18 min (rule trips at 30 min)",
+          "Risk classification: watch",
+          "Option hold: risk Low, delay +12 h, cost CHF 0",
+          "Option inspect: risk Medium, delay On time, cost CHF 0"
+        ]
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 10,
+      "ms": 1135,
+      "promptTokens": 4291,
+      "completionTokens": 72,
+      "reasoningChars": 132,
+      "toolCalls": [
+        "get_station_evidence"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-aaadda6c9f08e34a",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "131-77881204"
+      },
+      "output": {
+        "applicable": true,
+        "source": "Zetaris federated query (Postgres handling history JOIN live METAR REST table)",
+        "weather_source": "aviationweather.gov",
+        "fetched_at": "2026-10-25T23:23:17.258Z",
+        "stations": [
+          {
+            "station": "GVA",
+            "icao": "LSGG",
+            "role": "GVA acceptance for AYC 880",
+            "process": "acceptance_to_ready",
+            "flight": "AYC 880",
+            "window_min": 60,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "LIFR",
+              "metar": "METAR LSGG 252250Z AUTO VRB03KT 9999 NCD 05/05 Q1022 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "LIFR",
+              "taf_worst_period": "PROB40 22:00–08:00 UTC PRFG"
+            },
+            "history_90_days": {
+              "all_weather": "within window 89 of 90 (99%)",
+              "in_LIFR": "within window 2 of 2 (100%), median 37 min, p90 49 min",
+              "sample_note": "small sample: 2 movements in LIFR"
+            }
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 11,
+      "ms": 1395,
+      "promptTokens": 4648,
+      "completionTokens": 188,
+      "reasoningChars": 658,
+      "toolCalls": [
+        "recall_desk_memory"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-ae89973e12639947",
+      "name": "recall_desk_memory",
+      "args": {
+        "awb": "131-77881204"
+      },
+      "output": {
+        "engine": "Meterless H-MEM",
+        "recalled": [
+          {
+            "memory_id": "mem-9",
+            "note": "Perishables to MAD: acceptance at GVA closes on time even when the truck is minutes away; call ahead, do not count on a late tender.",
+            "source": "handover log (acceptance)",
+            "learned": "2026-10-12"
+          },
+          {
+            "memory_id": "mem-8",
+            "note": "SIN pharma lane, Klinik Nord: customer QA wants the excursion report within the shift whenever a probe leaves the range, even if the reading recovers.",
+            "source": "handover log (pharma desk)",
+            "learned": "2026-10-10"
+          }
+        ],
+        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 12,
+      "ms": 4712,
+      "promptTokens": 4885,
+      "completionTokens": 823,
+      "reasoningChars": 2455,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -357,6 +528,16 @@
           "pass": true
         },
         {
+          "id": "evidence",
+          "label": "Keeping the booking is consistent with tonight's station evidence",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
           "id": "language",
           "label": "Summary and evidence are in the duty officer's language",
           "pass": true
@@ -364,39 +545,41 @@
       ],
       "submitted": {
         "risk": "watch",
-        "recommended_option_id": "inspect",
+        "recommended_option_id": "hold",
         "ranking": [
-          "inspect",
-          "hold"
+          "hold",
+          "inspect"
         ],
-        "summary": "The probe shows 9.2 °C for 18 min, exceeding the +2/+8 °C range but not yet triggering the 30‑min rule; the booked flight is blocked because ignoring the probe risks a claim. Recommend opening the box on the dock to verify contents before loading on AYC 880.",
+        "summary": "The probe reads 9.2 °C for 18 min, under the 30‑min excursion limit but requiring verification. Place the shipment on QA hold to avoid risk while awaiting confirmation.",
         "why": [
-          "Probe measured 9.2 °C for 18 min (get_disruption) while the allowed range is +2/+8 °C and the rule trips at 30 min or 10 °C (check_restrictions).",
-          "The booked option “Fly as booked” is blocked (find_alternatives) due to risk of ignoring the probe.",
-          "Opening the box (“Open the box on the dock”) keeps the shipment on AYC 880, incurs no delay or cost, and has Medium risk (find_alternatives).",
-          "Holding the shipment would add +12 h delay (find_alternatives) and though Low risk, it violates the must‑ride priority."
+          "Probe 9.2 °C · 18 min (rule trips at 30 min)",
+          "Risk classification: watch",
+          "Option hold: risk Low, delay +12 h, cost CHF 0",
+          "Option inspect: risk Medium, delay On time, cost CHF 0",
+          "GVA acceptance for AYC 880: LIFR category, within window 2 of 2 (100%), median 37 min, p90 49 min (sample small)"
         ]
       }
     }
   ],
   "decision": {
     "risk": "watch",
-    "recommended_option_id": "inspect",
+    "recommended_option_id": "hold",
     "ranking": [
-      "inspect",
-      "hold"
+      "hold",
+      "inspect"
     ],
-    "summary": "The probe shows 9.2 °C for 18 min, exceeding the +2/+8 °C range but not yet triggering the 30‑min rule; the booked flight is blocked because ignoring the probe risks a claim. Recommend opening the box on the dock to verify contents before loading on AYC 880.",
+    "summary": "The probe reads 9.2 °C for 18 min, under the 30‑min excursion limit but requiring verification. Place the shipment on QA hold to avoid risk while awaiting confirmation.",
     "why": [
-      "Probe measured 9.2 °C for 18 min (get_disruption) while the allowed range is +2/+8 °C and the rule trips at 30 min or 10 °C (check_restrictions).",
-      "The booked option “Fly as booked” is blocked (find_alternatives) due to risk of ignoring the probe.",
-      "Opening the box (“Open the box on the dock”) keeps the shipment on AYC 880, incurs no delay or cost, and has Medium risk (find_alternatives).",
-      "Holding the shipment would add +12 h delay (find_alternatives) and though Low risk, it violates the must‑ride priority."
+      "Probe 9.2 °C · 18 min (rule trips at 30 min)",
+      "Risk classification: watch",
+      "Option hold: risk Low, delay +12 h, cost CHF 0",
+      "Option inspect: risk Medium, delay On time, cost CHF 0",
+      "GVA acceptance for AYC 880: LIFR category, within window 2 of 2 (100%), median 37 min, p90 49 min (sample small)"
     ]
   },
   "verdict": {
     "accepted": true,
-    "attempts": 1,
+    "attempts": 2,
     "fellBack": false,
     "checks": [
       {
@@ -435,6 +618,16 @@
         "pass": true
       },
       {
+        "id": "evidence",
+        "label": "Keeping the booking is consistent with tonight's station evidence",
+        "pass": true
+      },
+      {
+        "id": "memory",
+        "label": "Every cited memory was recalled for this file",
+        "pass": true
+      },
+      {
         "id": "language",
         "label": "Summary and evidence are in the duty officer's language",
         "pass": true
@@ -444,6 +637,102 @@
   "baseline": {
     "recommended_option_id": "inspect",
     "risk": "watch",
-    "agrees": true
+    "agrees": false
+  },
+  "external": {
+    "evidence": {
+      "backend": "zetaris",
+      "backend_note": "reconciled with the offline mirror: identical aggregates",
+      "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 880')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
+      "fetched_at": "2026-10-25T23:23:17.258Z",
+      "rows": [
+        {
+          "station": "GVA",
+          "process": "acceptance_to_ready",
+          "flight": "AYC 880",
+          "window_min": 60,
+          "wx_category": "IFR",
+          "n": 7,
+          "within": 6,
+          "p50_min": 42,
+          "p90_min": 64,
+          "max_min": 64
+        },
+        {
+          "station": "GVA",
+          "process": "acceptance_to_ready",
+          "flight": "AYC 880",
+          "window_min": 60,
+          "wx_category": "LIFR",
+          "n": 2,
+          "within": 2,
+          "p50_min": 37,
+          "p90_min": 49,
+          "max_min": 49
+        },
+        {
+          "station": "GVA",
+          "process": "acceptance_to_ready",
+          "flight": "AYC 880",
+          "window_min": 60,
+          "wx_category": "MVFR",
+          "n": 20,
+          "within": 20,
+          "p50_min": 38,
+          "p90_min": 45,
+          "max_min": 52
+        },
+        {
+          "station": "GVA",
+          "process": "acceptance_to_ready",
+          "flight": "AYC 880",
+          "window_min": 60,
+          "wx_category": "VFR",
+          "n": 61,
+          "within": 61,
+          "p50_min": 39,
+          "p90_min": 46,
+          "max_min": 57
+        }
+      ],
+      "weather": [
+        {
+          "station": "GVA",
+          "icao": "LSGG",
+          "observed_at": "2026-10-25T23:00:00.000Z",
+          "metar": "METAR LSGG 252250Z AUTO VRB03KT 9999 NCD 05/05 Q1022 NOSIG",
+          "metar_category": "VFR",
+          "taf": "TAF COR LSGG 252047Z 2521/2703 28004KT 9999 SCT030 TX13/2614Z TN04/2606Z PROB40 2522/2608 1500 PRFG BKN003 PROB30 2603/2609 0500 FG VV001",
+          "taf_worst_category": "LIFR",
+          "taf_worst_reason": "PROB40 22:00–08:00 UTC PRFG"
+        }
+      ],
+      "weather_source": "aviationweather.gov"
+    },
+    "memory": {
+      "engine": "meterless-hmem-reference@1742dec",
+      "query": "SIN Klinik GVA fog LIFR",
+      "recalled": [
+        {
+          "id": "mem-9",
+          "content": "Perishables to MAD: acceptance at GVA closes on time even when the truck is minutes away; call ahead, do not count on a late tender.",
+          "source": "handover log (acceptance)",
+          "learned": "2026-10-12",
+          "relevance": 0.25
+        },
+        {
+          "id": "mem-8",
+          "content": "SIN pharma lane, Klinik Nord: customer QA wants the excursion report within the shift whenever a probe leaves the range, even if the reading recovers.",
+          "source": "handover log (pharma desk)",
+          "learned": "2026-10-10",
+          "relevance": 0.23
+        }
+      ],
+      "added": [],
+      "trace": {
+        "strategy": "comprehensive",
+        "reason": "hybrid ranking for \"SIN Klinik GVA fog LIFR\" (domain: general)"
+      }
+    }
   }
 }

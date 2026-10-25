@@ -1,0 +1,573 @@
+{
+  "version": 1,
+  "scenarioKey": "s615|d45|-|fr|962111ae",
+  "scenario": {
+    "shipmentId": "s615",
+    "delayMin": 45,
+    "flags": {},
+    "locale": "fr",
+    "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
+    "priorDelayMin": 90
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "promptVersion": "v4",
+  "startedAt": "2026-10-04T15:40:27.241Z",
+  "latencyMs": 16231,
+  "promptTokens": 23588,
+  "completionTokens": 2736,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 804,
+      "promptTokens": 2444,
+      "completionTokens": 54,
+      "reasoningChars": 55,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-ac3afe5b2bb2fa94",
+      "name": "get_shipment",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "awb": "615-12345675",
+        "origin": "GVA",
+        "destination": "DEL",
+        "booked_route": "GVA → LEJ → DEL",
+        "pieces": 4,
+        "weight_kg": 780,
+        "volume_m3": 4.2,
+        "dims": "120×80×100 cm",
+        "commodity": "General cargo",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Nyon Precision SA",
+        "customer_language": "French"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 615,
+      "promptTokens": 2602,
+      "completionTokens": 57,
+      "reasoningChars": 71,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-a6fc9f17ed81a53c",
+      "name": "get_disruption",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "signal": "RFS 1840 · +45 min · LEJ",
+        "observed": [
+          "RFS 1840 GVA–LEJ +45 min · ETA 19:00 LT"
+        ],
+        "truck_delay_min": 45,
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "RFS 1840",
+            "value": "18:15",
+            "note": "Scheduled LEJ",
+            "state": "done"
+          },
+          {
+            "point": "Live ETA",
+            "value": "19:00",
+            "note": "+45 min",
+            "state": "ok"
+          },
+          {
+            "point": "Need by",
+            "value": "19:15",
+            "note": "45 min handling",
+            "state": "ok"
+          },
+          {
+            "point": "Cut-off",
+            "value": "20:00",
+            "note": "LEJ GCR",
+            "state": "future"
+          },
+          {
+            "point": "AYC 7841",
+            "value": "21:00",
+            "note": "LEJ–DEL",
+            "state": "future"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 841,
+      "promptTokens": 2863,
+      "completionTokens": 50,
+      "reasoningChars": 45,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-83ef7e27cecf3a1f",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "risk": "watch",
+        "classification": "Connection tight",
+        "rule": [
+          "WATCH · Connection tight"
+        ],
+        "drivers": [
+          {
+            "measure": "Truck ETA",
+            "value": "19:00",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Need by",
+            "value": "19:15",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Cut-off",
+            "value": "20:00",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Slack",
+            "value": "15 min",
+            "assessment": "neutral"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 562,
+      "promptTokens": 3019,
+      "completionTokens": 47,
+      "reasoningChars": 26,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-99df596461bc7b94",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "615-12345675"
+      },
+      "output": {
+        "summary": [
+          "ZRH feasible · FRA tight on volume · AYC 7842 rejected · AYC 7843 +18 h"
+        ],
+        "options": [
+          {
+            "option_id": "keep",
+            "title": "Keep AYC 7841 via LEJ",
+            "via": "AYC 7841 LEJ–DEL",
+            "revised_eta": "15 Oct 09:05 LT DEL",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Truck meets the handling window. No change required.",
+            "action": "Present AWB 615-12345675 to AYC 7841 only if LEJ accepts a late tender."
+          },
+          {
+            "option_id": "next",
+            "title": "Roll to AYC 7842",
+            "via": "AYC 7842 LEJ–DEL",
+            "revised_eta": "15 Oct 14:40 LT DEL",
+            "delay": "+6 h",
+            "cost": "CHF 0",
+            "risk": "Blocked",
+            "status": "blocked",
+            "constraint_check": "AYC 7842 has 410 kg free. This shipment is 780 kg. Capacity is not theoretical — it is short.",
+            "action": "Do not plan AYC 7842."
+          },
+          {
+            "option_id": "zrh",
+            "title": "Rebook via ZRH",
+            "via": "RFS 2204 · AYC 9864 ZRH–DEL",
+            "revised_eta": "15 Oct 13:10 LT DEL",
+            "delay": "+4 h",
+            "cost": "+CHF 180",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "RFS 2204 leaves GVA at 18:10, on hand ZRH 19:05, cut-off 21:30. Free capacity 2,200 kg and a loose position. Dispatch in the next 15 minutes.",
+            "action": "Pull AWB 615-12345675 off RFS 1840 and move it to RFS 2204 for AYC 9864 ZRH–DEL."
+          },
+          {
+            "option_id": "fra",
+            "title": "Rebook via FRA",
+            "via": "RFS 3310 · AYC 552 FRA–DEL",
+            "revised_eta": "15 Oct 18:05 LT DEL",
+            "delay": "+9 h",
+            "cost": "+CHF 90",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Weight fits (900 kg free) but the remaining LD3 is 4.3 m³ against 4.2 m³ built. No contour tolerance.",
+            "action": "Move the shipment to RFS 3310 GVA–FRA for AYC 552, and flag the volume as tight."
+          },
+          {
+            "option_id": "later",
+            "title": "Wait for AYC 7843",
+            "via": "AYC 7843 LEJ–DEL",
+            "revised_eta": "16 Oct 03:10 LT DEL",
+            "delay": "+18 h",
+            "cost": "CHF 0",
+            "risk": "High",
+            "status": "allowed",
+            "constraint_check": "Space is clean (3,100 kg) but the customer window on 15 Oct is missed by a full day.",
+            "action": "Hold at LEJ for AYC 7843 and warn the customer of +18 h."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 6472,
+      "promptTokens": 3840,
+      "completionTokens": 1073,
+      "reasoningChars": 2674,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": false,
+          "detail": "why reads as en; the desk works in fr"
+        },
+        {
+          "id": "reply",
+          "label": "Answers the operator in the operator's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "keep",
+        "ranking": [
+          "keep",
+          "zrh",
+          "fra",
+          "later"
+        ],
+        "summary": "Le camion est maintenant en retard de 45 minutes, donnant une ETA de 19h00 et un slack de 15 minutes avant le besoin à 19h15 ; le risque est watch. On maintient le vol AYC 7841 via LEJ sans coût ni délai supplémentaire.",
+        "why": [
+          "Truck ETA 19:00 (delay +45 min)",
+          "Need by 19:15, slack 15 min",
+          "Risk class watch per calculate_risk",
+          "Option Keep AYC 7841: delay On time, cost CHF 0, risk Medium"
+        ],
+        "reply": "Avant : camion +90 min → ETA 19:45, dépassement de 30 min du besoin à 19:15, risque élevé. Après : camion +45 min → ETA 19:00, slack 15 min, risque watch, on maintient le vol AYC 7841."
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 3887,
+      "promptTokens": 4220,
+      "completionTokens": 819,
+      "reasoningChars": 1787,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": false,
+          "detail": "why reads as en; the desk works in fr"
+        },
+        {
+          "id": "reply",
+          "label": "Answers the operator in the operator's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "keep",
+        "ranking": [
+          "keep",
+          "zrh",
+          "fra",
+          "later"
+        ],
+        "summary": "Le camion est maintenant en retard de 45 minutes, donnant une ETA de 19h00 et un slack de 15 minutes avant le besoin à 19h15 ; le risque est watch. On maintient le vol AYC 7841 via LEJ sans coût ni délai supplémentaire.",
+        "why": [
+          "Truck ETA 19:00 (delay +45 min)",
+          "Need by 19:15, slack 15 min",
+          "Risk class watch per calculate_risk",
+          "Option Keep AYC 7841: delay On time, cost CHF 0, risk Medium"
+        ],
+        "reply": "Avant : camion +90 min → ETA 19:45, dépassement de 30 min du besoin à 19:15, risque élevé. Après : camion +45 min → ETA 19:00, slack 15 min, risque watch, on maintient le vol AYC 7841."
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 3047,
+      "promptTokens": 4600,
+      "completionTokens": 636,
+      "reasoningChars": 1112,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 3,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        },
+        {
+          "id": "reply",
+          "label": "Answers the operator in the operator's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "keep",
+        "ranking": [
+          "keep",
+          "zrh",
+          "fra",
+          "later"
+        ],
+        "summary": "Le camion est maintenant en retard de 45 minutes, donnant une ETA de 19h00 et un slack de 15 minutes avant le besoin à 19h15 ; le risque est watch. On maintient le vol AYC 7841 via LEJ sans coût ni délai supplémentaire.",
+        "why": [
+          "ETA du camion 19:00 (retard +45 min)",
+          "Besoin à 19:15, slack 15 min",
+          "Classe de risque watch selon calculate_risk",
+          "Option Keep AYC 7841: délai On time, coût CHF 0, risque Medium"
+        ],
+        "reply": "Avant : camion +90 min → ETA 19:45, dépassement de 30 min du besoin à 19:15, risque élevé. Après : camion +45 min → ETA 19:00, slack 15 min, risque watch, on maintient le vol AYC 7841."
+      }
+    }
+  ],
+  "decision": {
+    "risk": "watch",
+    "recommended_option_id": "keep",
+    "ranking": [
+      "keep",
+      "zrh",
+      "fra",
+      "later"
+    ],
+    "summary": "Le camion est maintenant en retard de 45 minutes, donnant une ETA de 19h00 et un slack de 15 minutes avant le besoin à 19h15 ; le risque est watch. On maintient le vol AYC 7841 via LEJ sans coût ni délai supplémentaire.",
+    "why": [
+      "ETA du camion 19:00 (retard +45 min)",
+      "Besoin à 19:15, slack 15 min",
+      "Classe de risque watch selon calculate_risk",
+      "Option Keep AYC 7841: délai On time, coût CHF 0, risque Medium"
+    ],
+    "reply": "Avant : camion +90 min → ETA 19:45, dépassement de 30 min du besoin à 19:15, risque élevé. Après : camion +45 min → ETA 19:00, slack 15 min, risque watch, on maintient le vol AYC 7841."
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 3,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
+        "pass": true
+      },
+      {
+        "id": "reply",
+        "label": "Answers the operator in the operator's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "keep",
+    "risk": "watch",
+    "agrees": true
+  }
+}

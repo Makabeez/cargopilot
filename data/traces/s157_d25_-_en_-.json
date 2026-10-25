@@ -10,26 +10,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v4",
-  "startedAt": "2026-10-04T15:39:34.599Z",
-  "latencyMs": 8658,
-  "promptTokens": 22438,
-  "completionTokens": 852,
+  "promptVersion": "v5",
+  "startedAt": "2026-10-25T23:23:18.348Z",
+  "latencyMs": 15605,
+  "promptTokens": 44428,
+  "completionTokens": 1850,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 786,
-      "promptTokens": 2329,
-      "completionTokens": 54,
-      "reasoningChars": 52,
+      "ms": 833,
+      "promptTokens": 2879,
+      "completionTokens": 70,
+      "reasoningChars": 75,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a2ef2bc2cb65ba41",
+      "callId": "chatcmpl-tool-919d61010bc09b46",
       "name": "get_shipment",
       "args": {
         "awb": "157-88001233"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 829,
-      "promptTokens": 2483,
-      "completionTokens": 56,
-      "reasoningChars": 68,
+      "ms": 959,
+      "promptTokens": 3033,
+      "completionTokens": 75,
+      "reasoningChars": 190,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b02347f579988e88",
+      "callId": "chatcmpl-tool-b9ee5e5b9900e849",
       "name": "get_disruption",
       "args": {
         "awb": "157-88001233"
@@ -102,17 +102,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1012,
-      "promptTokens": 2680,
-      "completionTokens": 55,
-      "reasoningChars": 72,
+      "ms": 1164,
+      "promptTokens": 3230,
+      "completionTokens": 150,
+      "reasoningChars": 372,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9a61a4d49162a8fd",
+      "callId": "chatcmpl-tool-ba8bce39ff35dbd9",
       "name": "get_cutoffs",
       "args": {
         "awb": "157-88001233"
@@ -128,8 +128,8 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 816,
-      "promptTokens": 2756,
+      "ms": 844,
+      "promptTokens": 3306,
       "completionTokens": 51,
       "reasoningChars": 63,
       "toolCalls": [
@@ -138,7 +138,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-be36096075b924a7",
+      "callId": "chatcmpl-tool-89884e5c3d2f277f",
       "name": "check_connection",
       "args": {
         "awb": "157-88001233"
@@ -153,17 +153,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 794,
-      "promptTokens": 2832,
-      "completionTokens": 53,
-      "reasoningChars": 66,
+      "ms": 1173,
+      "promptTokens": 3382,
+      "completionTokens": 56,
+      "reasoningChars": 91,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-84f0576702936cee",
+      "callId": "chatcmpl-tool-93e4a9416f395ed0",
       "name": "get_capacity",
       "args": {
         "awb": "157-88001233"
@@ -178,17 +178,42 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 1244,
-      "promptTokens": 2908,
-      "completionTokens": 152,
-      "reasoningChars": 354,
+      "ms": 749,
+      "promptTokens": 3458,
+      "completionTokens": 73,
+      "reasoningChars": 133,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9d13ae4852808db3",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check restrictions issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 689,
+      "promptTokens": 3535,
+      "completionTokens": 69,
+      "reasoningChars": 126,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b148bda5dedac370",
+      "callId": "chatcmpl-tool-ad534d94f7254d4f",
       "name": "calculate_risk",
       "args": {
         "awb": "157-88001233"
@@ -226,18 +251,18 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 703,
-      "promptTokens": 3066,
-      "completionTokens": 46,
-      "reasoningChars": 28,
+      "turn": 8,
+      "ms": 554,
+      "promptTokens": 3693,
+      "completionTokens": 47,
+      "reasoningChars": 26,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9bce55f61c1ccc25",
+      "callId": "chatcmpl-tool-8c9b50931e8fc3ea",
       "name": "find_alternatives",
       "args": {
         "awb": "157-88001233"
@@ -275,11 +300,11 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 2472,
-      "promptTokens": 3384,
-      "completionTokens": 385,
-      "reasoningChars": 709,
+      "turn": 9,
+      "ms": 3189,
+      "promptTokens": 4011,
+      "completionTokens": 483,
+      "reasoningChars": 1005,
       "toolCalls": [
         "submit_decision"
       ]
@@ -287,6 +312,170 @@
     {
       "kind": "verify",
       "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": false,
+          "detail": "Not called: get_station_evidence, recall_desk_memory"
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "evidence",
+          "label": "Keeping the booking is consistent with tonight's station evidence",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "rush",
+        "ranking": [
+          "rush",
+          "roll"
+        ],
+        "summary": "The truck RFS 441 is delayed 25 min, arriving at dock 18:12 with an 18‑minute slack before the PER close at 18:30. Keep the booked priority‑door option to load the cheese on AYC 090 without extra cost or delay.",
+        "why": [
+          "Truck ETA 18:12 (observed +25 min) vs PER close 18:30 gives 18 min slack.",
+          "Option rush (Priority door) keeps AYC 090, revised ETA 15 Oct 00:40 LT MAD, delay On time, cost CHF 0, risk Low.",
+          "Option roll (Roll to next MAD) would add +14 h delay, cost CHF 0, risk Medium."
+        ]
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 10,
+      "ms": 962,
+      "promptTokens": 4340,
+      "completionTokens": 73,
+      "reasoningChars": 138,
+      "toolCalls": [
+        "get_station_evidence"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9b407fecf7723523",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "applicable": true,
+        "source": "Zetaris federated query (Postgres handling history JOIN live METAR REST table)",
+        "weather_source": "aviationweather.gov",
+        "fetched_at": "2026-10-25T23:23:17.484Z",
+        "stations": [
+          {
+            "station": "GVA",
+            "icao": "LSGG",
+            "role": "GVA acceptance for AYC 090",
+            "process": "acceptance_to_ready",
+            "flight": "AYC 090",
+            "window_min": 40,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "LIFR",
+              "metar": "METAR LSGG 252250Z AUTO VRB03KT 9999 NCD 05/05 Q1022 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "LIFR",
+              "taf_worst_period": "PROB40 22:00–08:00 UTC PRFG"
+            },
+            "history_90_days": {
+              "all_weather": "within window 87 of 90 (97%)",
+              "in_LIFR": "within window 2 of 2 (100%), median 30 min, p90 32 min",
+              "sample_note": "small sample: 2 movements in LIFR"
+            }
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 11,
+      "ms": 873,
+      "promptTokens": 4697,
+      "completionTokens": 49,
+      "reasoningChars": 32,
+      "toolCalls": [
+        "recall_desk_memory"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-8f60b8c23dde134b",
+      "name": "recall_desk_memory",
+      "args": {
+        "awb": "157-88001233"
+      },
+      "output": {
+        "engine": "Meterless H-MEM",
+        "recalled": [
+          {
+            "memory_id": "mem-9",
+            "note": "Perishables to MAD: acceptance at GVA closes on time even when the truck is minutes away; call ahead, do not count on a late tender.",
+            "source": "handover log (acceptance)",
+            "learned": "2026-10-12"
+          }
+        ],
+        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 12,
+      "ms": 3615,
+      "promptTokens": 4864,
+      "completionTokens": 654,
+      "reasoningChars": 1379,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -325,6 +514,16 @@
           "pass": true
         },
         {
+          "id": "evidence",
+          "label": "Keeping the booking is consistent with tonight's station evidence",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
           "id": "language",
           "label": "Summary and evidence are in the duty officer's language",
           "pass": true
@@ -337,12 +536,12 @@
           "rush",
           "roll"
         ],
-        "summary": "The truck is expected at 18:12 with acceptance closing at 18:30, leaving an 18‑minute slack. Keep the shipment on the booked flight AYC 090 using the priority door option.",
+        "summary": "The truck RFS 441 is delayed 25 min, arriving at dock 18:12 with an 18‑minute slack before the PER close at 18:30. Keep the booked priority‑door option to load the cheese on AYC 090 without extra cost or delay.",
         "why": [
-          "Truck ETA 18:12, acceptance close 18:30 gives 18 min slack.",
-          "Risk class is watch (Dock window tight).",
-          "Option rush (Priority door) is allowed, risk Low, cost CHF 0, retains on‑time arrival.",
-          "Option roll adds +14 h delay, risk Medium, cost CHF 0."
+          "Truck ETA 18:12 (observed +25 min) vs PER close 18:30 gives 18 min slack.",
+          "Option rush (Priority door) keeps AYC 090, revised ETA 15 Oct 00:40 LT MAD, delay On time, cost CHF 0, risk Low.",
+          "Option roll (Roll to next MAD) would add +14 h delay, cost CHF 0, risk Medium.",
+          "GVA acceptance for AYC 090: LIFR: within window 2 of 2 (100%), median 30 min, p90 32 min, sample_note: small sample: 2 movements in LIFR."
         ]
       }
     }
@@ -354,17 +553,17 @@
       "rush",
       "roll"
     ],
-    "summary": "The truck is expected at 18:12 with acceptance closing at 18:30, leaving an 18‑minute slack. Keep the shipment on the booked flight AYC 090 using the priority door option.",
+    "summary": "The truck RFS 441 is delayed 25 min, arriving at dock 18:12 with an 18‑minute slack before the PER close at 18:30. Keep the booked priority‑door option to load the cheese on AYC 090 without extra cost or delay.",
     "why": [
-      "Truck ETA 18:12, acceptance close 18:30 gives 18 min slack.",
-      "Risk class is watch (Dock window tight).",
-      "Option rush (Priority door) is allowed, risk Low, cost CHF 0, retains on‑time arrival.",
-      "Option roll adds +14 h delay, risk Medium, cost CHF 0."
+      "Truck ETA 18:12 (observed +25 min) vs PER close 18:30 gives 18 min slack.",
+      "Option rush (Priority door) keeps AYC 090, revised ETA 15 Oct 00:40 LT MAD, delay On time, cost CHF 0, risk Low.",
+      "Option roll (Roll to next MAD) would add +14 h delay, cost CHF 0, risk Medium.",
+      "GVA acceptance for AYC 090: LIFR: within window 2 of 2 (100%), median 30 min, p90 32 min, sample_note: small sample: 2 movements in LIFR."
     ]
   },
   "verdict": {
     "accepted": true,
-    "attempts": 1,
+    "attempts": 2,
     "fellBack": false,
     "checks": [
       {
@@ -403,6 +602,16 @@
         "pass": true
       },
       {
+        "id": "evidence",
+        "label": "Keeping the booking is consistent with tonight's station evidence",
+        "pass": true
+      },
+      {
+        "id": "memory",
+        "label": "Every cited memory was recalled for this file",
+        "pass": true
+      },
+      {
         "id": "language",
         "label": "Summary and evidence are in the duty officer's language",
         "pass": true
@@ -413,5 +622,94 @@
     "recommended_option_id": "rush",
     "risk": "watch",
     "agrees": true
+  },
+  "external": {
+    "evidence": {
+      "backend": "zetaris",
+      "backend_note": "reconciled with the offline mirror: identical aggregates",
+      "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 090')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
+      "fetched_at": "2026-10-25T23:23:17.484Z",
+      "rows": [
+        {
+          "station": "GVA",
+          "process": "acceptance_to_ready",
+          "flight": "AYC 090",
+          "window_min": 40,
+          "wx_category": "IFR",
+          "n": 7,
+          "within": 6,
+          "p50_min": 27,
+          "p90_min": 42,
+          "max_min": 42
+        },
+        {
+          "station": "GVA",
+          "process": "acceptance_to_ready",
+          "flight": "AYC 090",
+          "window_min": 40,
+          "wx_category": "LIFR",
+          "n": 2,
+          "within": 2,
+          "p50_min": 30,
+          "p90_min": 32,
+          "max_min": 32
+        },
+        {
+          "station": "GVA",
+          "process": "acceptance_to_ready",
+          "flight": "AYC 090",
+          "window_min": 40,
+          "wx_category": "MVFR",
+          "n": 20,
+          "within": 20,
+          "p50_min": 31,
+          "p90_min": 36,
+          "max_min": 37
+        },
+        {
+          "station": "GVA",
+          "process": "acceptance_to_ready",
+          "flight": "AYC 090",
+          "window_min": 40,
+          "wx_category": "VFR",
+          "n": 61,
+          "within": 59,
+          "p50_min": 30,
+          "p90_min": 39,
+          "max_min": 47
+        }
+      ],
+      "weather": [
+        {
+          "station": "GVA",
+          "icao": "LSGG",
+          "observed_at": "2026-10-25T23:00:00.000Z",
+          "metar": "METAR LSGG 252250Z AUTO VRB03KT 9999 NCD 05/05 Q1022 NOSIG",
+          "metar_category": "VFR",
+          "taf": "TAF COR LSGG 252047Z 2521/2703 28004KT 9999 SCT030 TX13/2614Z TN04/2606Z PROB40 2522/2608 1500 PRFG BKN003 PROB30 2603/2609 0500 FG VV001",
+          "taf_worst_category": "LIFR",
+          "taf_worst_reason": "PROB40 22:00–08:00 UTC PRFG"
+        }
+      ],
+      "weather_source": "aviationweather.gov"
+    },
+    "memory": {
+      "engine": "meterless-hmem-reference@1742dec",
+      "query": "MAD Fromage GVA fog LIFR",
+      "recalled": [
+        {
+          "id": "mem-9",
+          "content": "Perishables to MAD: acceptance at GVA closes on time even when the truck is minutes away; call ahead, do not count on a late tender.",
+          "source": "handover log (acceptance)",
+          "learned": "2026-10-12",
+          "relevance": 0.33
+        }
+      ],
+      "added": [],
+      "trace": {
+        "strategy": "minimal",
+        "reason": "hybrid ranking for \"MAD Fromage GVA fog LIFR\" (domain: general)"
+      }
+    }
   }
 }
