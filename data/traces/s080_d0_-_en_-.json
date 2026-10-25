@@ -10,17 +10,17 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v6",
-  "startedAt": "2026-10-25T23:30:08.126Z",
-  "latencyMs": 11668,
-  "promptTokens": 35123,
-  "completionTokens": 1070,
+  "promptVersion": "v7",
+  "startedAt": "2026-10-25T23:44:50.604Z",
+  "latencyMs": 16739,
+  "promptTokens": 35578,
+  "completionTokens": 1883,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 1612,
-      "promptTokens": 2902,
+      "ms": 593,
+      "promptTokens": 2998,
       "completionTokens": 54,
       "reasoningChars": 52,
       "toolCalls": [
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b1dd01e18492e164",
+      "callId": "chatcmpl-tool-8df0259277039b7b",
       "name": "get_shipment",
       "args": {
         "awb": "080-22991006"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 963,
-      "promptTokens": 3050,
-      "completionTokens": 93,
-      "reasoningChars": 217,
+      "ms": 957,
+      "promptTokens": 3146,
+      "completionTokens": 68,
+      "reasoningChars": 141,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-88fd829b1af19958",
+      "callId": "chatcmpl-tool-b5067e67b0ee1fd7",
       "name": "get_disruption",
       "args": {
         "awb": "080-22991006"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 824,
-      "promptTokens": 3201,
-      "completionTokens": 86,
-      "reasoningChars": 179,
+      "ms": 1106,
+      "promptTokens": 3297,
+      "completionTokens": 95,
+      "reasoningChars": 225,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-860fd9c360cbc4c0",
+      "callId": "chatcmpl-tool-88347aacfd4d4f5c",
       "name": "get_cutoffs",
       "args": {
         "awb": "080-22991006"
@@ -124,17 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 742,
-      "promptTokens": 3279,
-      "completionTokens": 80,
-      "reasoningChars": 167,
+      "ms": 824,
+      "promptTokens": 3375,
+      "completionTokens": 81,
+      "reasoningChars": 173,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-82d5363fb14d29e2",
+      "callId": "chatcmpl-tool-b7169d2c14a0db05",
       "name": "check_connection",
       "args": {
         "awb": "080-22991006"
@@ -149,17 +149,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 923,
-      "promptTokens": 3355,
-      "completionTokens": 75,
-      "reasoningChars": 140,
+      "ms": 984,
+      "promptTokens": 3451,
+      "completionTokens": 81,
+      "reasoningChars": 170,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9bacf37cc06f7d31",
+      "callId": "chatcmpl-tool-b26008741be26f30",
       "name": "get_capacity",
       "args": {
         "awb": "080-22991006"
@@ -174,17 +174,43 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 710,
-      "promptTokens": 3431,
-      "completionTokens": 70,
-      "reasoningChars": 114,
+      "ms": 758,
+      "promptTokens": 3527,
+      "completionTokens": 69,
+      "reasoningChars": 113,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-acb9b74d0ee1d4e8",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "080-22991006"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "Lane time 16 h · short by 2 h"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 786,
+      "promptTokens": 3605,
+      "completionTokens": 57,
+      "reasoningChars": 70,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8241f74abbad86d1",
+      "callId": "chatcmpl-tool-85f5691ab0d33198",
       "name": "calculate_risk",
       "args": {
         "awb": "080-22991006"
@@ -220,18 +246,18 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 1036,
-      "promptTokens": 3579,
-      "completionTokens": 72,
-      "reasoningChars": 121,
+      "turn": 8,
+      "ms": 864,
+      "promptTokens": 3753,
+      "completionTokens": 69,
+      "reasoningChars": 115,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8f38f4666c279b88",
+      "callId": "chatcmpl-tool-a89666a6c722b9e4",
       "name": "find_alternatives",
       "args": {
         "awb": "080-22991006"
@@ -281,18 +307,18 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 905,
-      "promptTokens": 3998,
-      "completionTokens": 61,
-      "reasoningChars": 74,
+      "turn": 9,
+      "ms": 5101,
+      "promptTokens": 4172,
+      "completionTokens": 550,
+      "reasoningChars": 2284,
       "toolCalls": [
         "get_station_evidence"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8377c7da176f9c22",
+      "callId": "chatcmpl-tool-9920b93175b49625",
       "name": "get_station_evidence",
       "args": {
         "awb": "080-22991006"
@@ -305,43 +331,11 @@
     },
     {
       "kind": "model",
-      "turn": 9,
-      "ms": 1061,
-      "promptTokens": 4080,
-      "completionTokens": 49,
-      "reasoningChars": 32,
-      "toolCalls": [
-        "recall_desk_memory"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-8d81c68e84f36d2f",
-      "name": "recall_desk_memory",
-      "args": {
-        "awb": "080-22991006"
-      },
-      "output": {
-        "engine": "Meterless H-MEM",
-        "recalled": [
-          {
-            "memory_id": "mem-10",
-            "note": "YYZ clinical samples (Maple Clinical) with gel packs qualified below the lane time: switch to the active container offer rather than re-icing at transfer.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-09-26"
-          }
-        ],
-        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
       "turn": 10,
-      "ms": 2891,
-      "promptTokens": 4248,
-      "completionTokens": 430,
-      "reasoningChars": 1031,
+      "ms": 4765,
+      "promptTokens": 4254,
+      "completionTokens": 759,
+      "reasoningChars": 2206,
       "toolCalls": [
         "submit_decision"
       ]
@@ -404,11 +398,12 @@
           "repack",
           "active"
         ],
-        "summary": "Gel life is short by 2 h versus the lane time, creating a claim risk. Repack with fresh gels restores qualification and maintains on‑time delivery.",
+        "summary": "Gel life is short by 2 hours; repacking with fresh gels restores qualification and keeps the shipment on time.",
         "why": [
-          "Gel life qualified 14 h < lane 16 h (risk)",
-          "Repack adds +CHF 60, Low risk, On time",
-          "Active box +CHF 220 also Low risk but higher cost"
+          "Gel life qualified 14 h, lane 16 h, short by 2 h (disruption signal, check_restrictions).",
+          "Repack option adds +CHF 60, maintains ETA 15 Oct 21:00 LT YYZ, risk Low (find_alternatives).",
+          "Active box option adds +CHF 220, same ETA, risk Low (find_alternatives).",
+          "Memory note advises preferring active container over re-icing (mem-10)."
         ]
       }
     }
@@ -420,11 +415,12 @@
       "repack",
       "active"
     ],
-    "summary": "Gel life is short by 2 h versus the lane time, creating a claim risk. Repack with fresh gels restores qualification and maintains on‑time delivery.",
+    "summary": "Gel life is short by 2 hours; repacking with fresh gels restores qualification and keeps the shipment on time.",
     "why": [
-      "Gel life qualified 14 h < lane 16 h (risk)",
-      "Repack adds +CHF 60, Low risk, On time",
-      "Active box +CHF 220 also Low risk but higher cost"
+      "Gel life qualified 14 h, lane 16 h, short by 2 h (disruption signal, check_restrictions).",
+      "Repack option adds +CHF 60, maintains ETA 15 Oct 21:00 LT YYZ, risk Low (find_alternatives).",
+      "Active box option adds +CHF 220, same ETA, risk Low (find_alternatives).",
+      "Memory note advises preferring active container over re-icing (mem-10)."
     ]
   },
   "verdict": {

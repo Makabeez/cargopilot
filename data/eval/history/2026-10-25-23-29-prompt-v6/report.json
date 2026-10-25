@@ -1,0 +1,444 @@
+{
+  "generatedAt": "2026-10-25T23:32:27.349Z",
+  "models": [
+    "nvidia/nemotron-3-super-120b-a12b"
+  ],
+  "promptVersions": [
+    "v6"
+  ],
+  "scenarios": 20,
+  "acceptedFirstTry": 3,
+  "acceptedAfterRetries": 19,
+  "fellBackToRules": 1,
+  "agreesWithRules": 19,
+  "latencyMs": {
+    "p50": 18712,
+    "p95": 43683
+  },
+  "toolCallsPerRun": {
+    "min": 7,
+    "max": 10,
+    "mean": 9.55
+  },
+  "tokens": {
+    "prompt": 890211,
+    "completion": 46690,
+    "usdAtListPrice": 0.3090843
+  },
+  "rejectionsByCheck": {
+    "tools": 15,
+    "evidence": 3,
+    "reply": 1,
+    "figures": 1
+  },
+  "rejections": [
+    {
+      "key": "s074|d0|-|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s125|d0|-|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s125|d0|-|en|-|wx:CDG=IFR",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "evidence: CDG in IFR held its window 6 of 12; below the desk's two-in-three bar, keep-first does not apply"
+      ]
+    },
+    {
+      "key": "s131|d0|-|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s172|d0|-|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s176|d0|-|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s235|d0|-|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s615|d120|-|en|172b8ea0",
+      "operatorMessage": "What if the truck is delayed another 30 minutes?",
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s615|d45|-|fr|962111ae",
+      "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s615|d60|-|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s615|d60|-|en|-|mem:a40553de",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s615|d60|-|en|-|wx:LEJ=IFR",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s615|d60|-|en|-|wx:LEJ=MVFR",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s615|d60|-|en|228cfc09|wx:LEJ=IFR",
+      "operatorMessage": "Why not keep the booking? The truck is only an hour late.",
+      "attempt": 1,
+      "failures": [
+        "evidence: LEJ in IFR held its window 5 of 8; below the desk's two-in-three bar, keep-first does not apply",
+        "reply: reply reads as fr, operator wrote en"
+      ]
+    },
+    {
+      "key": "s615|d60|-|fr|-|wx:LEJ=IFR",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory",
+        "evidence: LEJ in IFR held its window 5 of 8; below the desk's two-in-three bar, keep-first does not apply"
+      ]
+    },
+    {
+      "key": "s615|d60|-|fr|-|wx:LEJ=IFR",
+      "operatorMessage": null,
+      "attempt": 2,
+      "failures": [
+        "figures: Not found in tool outputs: 62%"
+      ]
+    },
+    {
+      "key": "s615|d90|-|en|-",
+      "operatorMessage": null,
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    },
+    {
+      "key": "s615|d90|-|en|9d0870b6",
+      "operatorMessage": "Why this call?",
+      "attempt": 1,
+      "failures": [
+        "tools: Not called: recall_desk_memory"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "key": "s020|d0|-|en|-",
+      "awb": "020-77120562",
+      "operatorMessage": null,
+      "attempts": 1,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "main",
+      "rulesPick": "main",
+      "agrees": true,
+      "latencyMs": 18839,
+      "toolCalls": 10
+    },
+    {
+      "key": "s074|d0|-|en|-",
+      "awb": "074-33019873",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "later",
+      "rulesPick": "later",
+      "agrees": true,
+      "latencyMs": 17278,
+      "toolCalls": 10
+    },
+    {
+      "key": "s080|d0|-|en|-",
+      "awb": "080-22991006",
+      "operatorMessage": null,
+      "attempts": 1,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "repack",
+      "rulesPick": "repack",
+      "agrees": true,
+      "latencyMs": 11668,
+      "toolCalls": 9
+    },
+    {
+      "key": "s125|d0|-|en|-",
+      "awb": "125-88342111",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "keep",
+      "rulesPick": "keep",
+      "agrees": true,
+      "latencyMs": 15594,
+      "toolCalls": 10
+    },
+    {
+      "key": "s125|d0|-|en|-|wx:CDG=IFR",
+      "awb": "125-88342111",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "fra",
+      "rulesPick": "fra",
+      "agrees": true,
+      "latencyMs": 17124,
+      "toolCalls": 10
+    },
+    {
+      "key": "s131|d0|-|en|-",
+      "awb": "131-77881204",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "inspect",
+      "rulesPick": "inspect",
+      "agrees": true,
+      "latencyMs": 16312,
+      "toolCalls": 10
+    },
+    {
+      "key": "s157|d25|-|en|-",
+      "awb": "157-88001233",
+      "operatorMessage": null,
+      "attempts": 1,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "rush",
+      "rulesPick": "rush",
+      "agrees": true,
+      "latencyMs": 12082,
+      "toolCalls": 10
+    },
+    {
+      "key": "s172|d0|-|en|-",
+      "awb": "172-44091832",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "freighter",
+      "rulesPick": "freighter",
+      "agrees": true,
+      "latencyMs": 18712,
+      "toolCalls": 9
+    },
+    {
+      "key": "s176|d0|-|en|-",
+      "awb": "176-55287190",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "chase",
+      "rulesPick": "chase",
+      "agrees": true,
+      "latencyMs": 13833,
+      "toolCalls": 10
+    },
+    {
+      "key": "s235|d0|-|en|-",
+      "awb": "235-10092832",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "next",
+      "rulesPick": "next",
+      "agrees": true,
+      "latencyMs": 15998,
+      "toolCalls": 10
+    },
+    {
+      "key": "s615|d120|-|en|172b8ea0",
+      "awb": "615-12345675",
+      "operatorMessage": "What if the truck is delayed another 30 minutes?",
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "zrh",
+      "rulesPick": "zrh",
+      "agrees": true,
+      "latencyMs": 43683,
+      "toolCalls": 9
+    },
+    {
+      "key": "s615|d45|-|fr|962111ae",
+      "awb": "615-12345675",
+      "operatorMessage": "Le camion est en retard de 45 minutes. Qu'est-ce qu'on fait ?",
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "keep",
+      "rulesPick": "keep",
+      "agrees": true,
+      "latencyMs": 32490,
+      "toolCalls": 10
+    },
+    {
+      "key": "s615|d60|-|en|-",
+      "awb": "615-12345675",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "keep",
+      "rulesPick": "keep",
+      "agrees": true,
+      "latencyMs": 17838,
+      "toolCalls": 10
+    },
+    {
+      "key": "s615|d60|-|en|-|mem:a40553de",
+      "awb": "615-12345675",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "keep",
+      "rulesPick": "keep",
+      "agrees": true,
+      "latencyMs": 25163,
+      "toolCalls": 10
+    },
+    {
+      "key": "s615|d60|-|en|-|wx:LEJ=IFR",
+      "awb": "615-12345675",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "zrh",
+      "rulesPick": "zrh",
+      "agrees": true,
+      "latencyMs": 24131,
+      "toolCalls": 10
+    },
+    {
+      "key": "s615|d60|-|en|-|wx:LEJ=MVFR",
+      "awb": "615-12345675",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "keep",
+      "rulesPick": "keep",
+      "agrees": true,
+      "latencyMs": 17053,
+      "toolCalls": 10
+    },
+    {
+      "key": "s615|d60|-|en|228cfc09|wx:LEJ=IFR",
+      "awb": "615-12345675",
+      "operatorMessage": "Why not keep the booking? The truck is only an hour late.",
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "zrh",
+      "rulesPick": "zrh",
+      "agrees": true,
+      "latencyMs": 38956,
+      "toolCalls": 7
+    },
+    {
+      "key": "s615|d60|-|fr|-|wx:LEJ=IFR",
+      "awb": "615-12345675",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": false,
+      "fellBack": true,
+      "pick": "zrh",
+      "rulesPick": "zrh",
+      "agrees": true,
+      "latencyMs": 34530,
+      "toolCalls": 10
+    },
+    {
+      "key": "s615|d90|-|en|-",
+      "awb": "615-12345675",
+      "operatorMessage": null,
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "zrh",
+      "rulesPick": "zrh",
+      "agrees": true,
+      "latencyMs": 19617,
+      "toolCalls": 9
+    },
+    {
+      "key": "s615|d90|-|en|9d0870b6",
+      "awb": "615-12345675",
+      "operatorMessage": "Why this call?",
+      "attempts": 2,
+      "accepted": true,
+      "fellBack": false,
+      "pick": "zrh",
+      "rulesPick": "zrh",
+      "agrees": true,
+      "latencyMs": 26421,
+      "toolCalls": 8
+    }
+  ]
+}

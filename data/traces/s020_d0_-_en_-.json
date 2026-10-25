@@ -10,26 +10,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v6",
-  "startedAt": "2026-10-25T23:29:17.161Z",
-  "latencyMs": 18839,
-  "promptTokens": 39375,
-  "completionTokens": 2273,
+  "promptVersion": "v7",
+  "startedAt": "2026-10-25T23:44:12.321Z",
+  "latencyMs": 16117,
+  "promptTokens": 35903,
+  "completionTokens": 1234,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 987,
-      "promptTokens": 2902,
-      "completionTokens": 53,
-      "reasoningChars": 49,
+      "ms": 911,
+      "promptTokens": 2995,
+      "completionTokens": 56,
+      "reasoningChars": 64,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-90e8f1203445d155",
+      "callId": "chatcmpl-tool-8424452276c32195",
       "name": "get_shipment",
       "args": {
         "awb": "020-77120562"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 987,
-      "promptTokens": 3066,
-      "completionTokens": 57,
-      "reasoningChars": 77,
+      "ms": 750,
+      "promptTokens": 3159,
+      "completionTokens": 58,
+      "reasoningChars": 83,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b12647b66b626bae",
+      "callId": "chatcmpl-tool-914aa2bbdcf5409d",
       "name": "get_disruption",
       "args": {
         "awb": "020-77120562"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1083,
-      "promptTokens": 3226,
-      "completionTokens": 86,
-      "reasoningChars": 180,
+      "ms": 1728,
+      "promptTokens": 3319,
+      "completionTokens": 102,
+      "reasoningChars": 240,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8db36757479a62c3",
+      "callId": "chatcmpl-tool-b46da42e5436b250",
       "name": "get_cutoffs",
       "args": {
         "awb": "020-77120562"
@@ -124,17 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 935,
-      "promptTokens": 3304,
-      "completionTokens": 79,
-      "reasoningChars": 163,
+      "ms": 752,
+      "promptTokens": 3397,
+      "completionTokens": 90,
+      "reasoningChars": 195,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ac3a726000ad84d9",
+      "callId": "chatcmpl-tool-b2bfe548b3480dea",
       "name": "check_connection",
       "args": {
         "awb": "020-77120562"
@@ -149,17 +149,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 712,
-      "promptTokens": 3380,
-      "completionTokens": 58,
-      "reasoningChars": 94,
+      "ms": 3864,
+      "promptTokens": 3473,
+      "completionTokens": 56,
+      "reasoningChars": 87,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-853a0e886abb18f4",
+      "callId": "chatcmpl-tool-a50b1ae6f412abf8",
       "name": "get_capacity",
       "args": {
         "awb": "020-77120562"
@@ -174,17 +174,17 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 982,
-      "promptTokens": 3456,
-      "completionTokens": 74,
-      "reasoningChars": 133,
+      "ms": 1035,
+      "promptTokens": 3549,
+      "completionTokens": 56,
+      "reasoningChars": 82,
       "toolCalls": [
         "check_restrictions"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b756458423b47d6b",
+      "callId": "chatcmpl-tool-ba016e304b8b9dee",
       "name": "check_restrictions",
       "args": {
         "awb": "020-77120562"
@@ -200,17 +200,17 @@
     {
       "kind": "model",
       "turn": 7,
-      "ms": 511,
-      "promptTokens": 3546,
-      "completionTokens": 67,
-      "reasoningChars": 101,
+      "ms": 1107,
+      "promptTokens": 3639,
+      "completionTokens": 57,
+      "reasoningChars": 70,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a9a026dbf38f9447",
+      "callId": "chatcmpl-tool-abe796a1fd4e9523",
       "name": "calculate_risk",
       "args": {
         "awb": "020-77120562"
@@ -249,17 +249,17 @@
     {
       "kind": "model",
       "turn": 8,
-      "ms": 1220,
-      "promptTokens": 3703,
-      "completionTokens": 69,
-      "reasoningChars": 114,
+      "ms": 814,
+      "promptTokens": 3796,
+      "completionTokens": 54,
+      "reasoningChars": 51,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-84bb1a56fdc20c5a",
+      "callId": "chatcmpl-tool-8cd6962deeaeec54",
       "name": "find_alternatives",
       "args": {
         "awb": "020-77120562"
@@ -310,17 +310,17 @@
     {
       "kind": "model",
       "turn": 9,
-      "ms": 945,
-      "promptTokens": 4154,
-      "completionTokens": 65,
-      "reasoningChars": 97,
+      "ms": 1101,
+      "promptTokens": 4247,
+      "completionTokens": 58,
+      "reasoningChars": 57,
       "toolCalls": [
         "get_station_evidence"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-aae12bfd543d0a65",
+      "callId": "chatcmpl-tool-a9881dc869d5c37d",
       "name": "get_station_evidence",
       "args": {
         "awb": "020-77120562"
@@ -329,47 +329,15 @@
         "applicable": false,
         "note": "No station handling evidence applies to this file (no transfer or acceptance process at risk)."
       },
-      "ms": 0
+      "ms": 1
     },
     {
       "kind": "model",
       "turn": 10,
-      "ms": 798,
-      "promptTokens": 4236,
-      "completionTokens": 51,
-      "reasoningChars": 40,
-      "toolCalls": [
-        "recall_desk_memory"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-b8070d12f323e98a",
-      "name": "recall_desk_memory",
-      "args": {
-        "awb": "020-77120562"
-      },
-      "output": {
-        "engine": "Meterless H-MEM",
-        "recalled": [
-          {
-            "memory_id": "mem-11",
-            "note": "BOM files with a missing SLI: the forwarder answers fastest on the phone; email requests go unanswered after 18:00.",
-            "source": "handover log (night shift)",
-            "learned": "2026-09-14"
-          }
-        ],
-        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 11,
-      "ms": 9678,
-      "promptTokens": 4402,
-      "completionTokens": 1614,
-      "reasoningChars": 4209,
+      "ms": 4050,
+      "promptTokens": 4329,
+      "completionTokens": 647,
+      "reasoningChars": 1431,
       "toolCalls": [
         "submit_decision"
       ]
@@ -437,13 +405,14 @@
           "main",
           "split"
         ],
-        "summary": "Piece 3 is 168 cm tall, exceeding the A330 bulk hold limit of 160 cm, making the booked belly option blocked. Recommend rebooking all six pieces on the AYC 777F main deck to avoid the height violation.",
+        "summary": "The tallest piece exceeds the A330 bulk height limit, making the booked belly option blocked. Recommend moving all pieces to the main deck of AYC 777F via FRA.",
         "why": [
-          "Piece 3 measures 168 cm tall (disruption: Piece 3 value “168 cm”) while the A330 bulk hold allows only 160 cm (check_restrictions: “A330 bulk max height 160 cm”).",
-          "The AYC 777F main‑deck door accommodates up to 300 cm (check_restrictions: “777F door 300 cm”), so moving all 6 pieces (960 kg) there resolves the over‑height issue (find_alternatives main: constraint_check “Main‑deck door is 300 cm. Piece 3 at 168 cm is legal”).",
-          "This option carries Low risk, the same revised ETA of 16 Oct 11:20 LT GRU and +5 h delay as the split alternative, but lower risk than the Medium‑risk split (find_alternatives main risk Low, split risk Medium)."
+          "Piece 3 height 168 cm > A330 bulk max 160 cm (blocked)",
+          "Main‑deck door 300 cm accommodates 168 cm (allowed)",
+          "Rebook main deck: delay +5 h, cost +CHF 340, risk Low",
+          "Split option: delay +5 h, cost +CHF 210, risk Medium"
         ],
-        "customer_note": "Votre expédition AWB 020-77120562 sera livrée le 16 oct. 2026 à 11:20 heure locale à GRU (retard de +5 h)."
+        "customer_note": "AWB 020-77120562 : votre expédition sera acheminée par le pont principal de l'AYC 777F via FRA, arrivée prévue le 16 octobre à 11:20 heure locale à GRU (retard de +5 h)."
       }
     }
   ],
@@ -454,13 +423,14 @@
       "main",
       "split"
     ],
-    "summary": "Piece 3 is 168 cm tall, exceeding the A330 bulk hold limit of 160 cm, making the booked belly option blocked. Recommend rebooking all six pieces on the AYC 777F main deck to avoid the height violation.",
+    "summary": "The tallest piece exceeds the A330 bulk height limit, making the booked belly option blocked. Recommend moving all pieces to the main deck of AYC 777F via FRA.",
     "why": [
-      "Piece 3 measures 168 cm tall (disruption: Piece 3 value “168 cm”) while the A330 bulk hold allows only 160 cm (check_restrictions: “A330 bulk max height 160 cm”).",
-      "The AYC 777F main‑deck door accommodates up to 300 cm (check_restrictions: “777F door 300 cm”), so moving all 6 pieces (960 kg) there resolves the over‑height issue (find_alternatives main: constraint_check “Main‑deck door is 300 cm. Piece 3 at 168 cm is legal”).",
-      "This option carries Low risk, the same revised ETA of 16 Oct 11:20 LT GRU and +5 h delay as the split alternative, but lower risk than the Medium‑risk split (find_alternatives main risk Low, split risk Medium)."
+      "Piece 3 height 168 cm > A330 bulk max 160 cm (blocked)",
+      "Main‑deck door 300 cm accommodates 168 cm (allowed)",
+      "Rebook main deck: delay +5 h, cost +CHF 340, risk Low",
+      "Split option: delay +5 h, cost +CHF 210, risk Medium"
     ],
-    "customer_note": "Votre expédition AWB 020-77120562 sera livrée le 16 oct. 2026 à 11:20 heure locale à GRU (retard de +5 h)."
+    "customer_note": "AWB 020-77120562 : votre expédition sera acheminée par le pont principal de l'AYC 777F via FRA, arrivée prévue le 16 octobre à 11:20 heure locale à GRU (retard de +5 h)."
   },
   "verdict": {
     "accepted": true,

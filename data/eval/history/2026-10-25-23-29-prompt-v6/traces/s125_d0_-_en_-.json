@@ -1,0 +1,710 @@
+{
+  "version": 1,
+  "scenarioKey": "s125|d0|-|en|-",
+  "scenario": {
+    "shipmentId": "s125",
+    "delayMin": 0,
+    "flags": {},
+    "locale": "en"
+  },
+  "mode": "live",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
+  "provider": "Nebius Token Factory",
+  "promptVersion": "v6",
+  "startedAt": "2026-10-25T23:29:56.574Z",
+  "latencyMs": 15594,
+  "promptTokens": 44641,
+  "completionTokens": 1467,
+  "steps": [
+    {
+      "kind": "model",
+      "turn": 1,
+      "ms": 799,
+      "promptTokens": 2902,
+      "completionTokens": 54,
+      "reasoningChars": 52,
+      "toolCalls": [
+        "get_shipment"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-80ec60d771a8a7d4",
+      "name": "get_shipment",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "awb": "125-88342111",
+        "origin": "GVA",
+        "destination": "JFK",
+        "booked_route": "GVA → CDG → JFK",
+        "pieces": 3,
+        "weight_kg": 410,
+        "volume_m3": 2.1,
+        "dims": "100×80×70 cm",
+        "commodity": "General cargo",
+        "handling_code": "GCR",
+        "priority": "standard",
+        "customer": "Laurent & Fils",
+        "customer_language": "French"
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 2,
+      "ms": 1181,
+      "promptTokens": 3060,
+      "completionTokens": 89,
+      "reasoningChars": 195,
+      "toolCalls": [
+        "get_disruption"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9b54ad585944ee96",
+      "name": "get_disruption",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "signal": "CDG · ETA 20:40",
+        "observed": [
+          "GVA–CDG +0 min · ETA 20:40"
+        ],
+        "truck_delay_min": 0,
+        "what_if": [],
+        "operational_chain": [
+          {
+            "point": "GVA–CDG",
+            "value": "20:40",
+            "note": "+0 min",
+            "state": "ok"
+          },
+          {
+            "point": "Need by",
+            "value": "20:52",
+            "note": "50 min MCT",
+            "state": "ok"
+          },
+          {
+            "point": "AYC 045",
+            "value": "21:42",
+            "note": "CDG–JFK",
+            "state": "future"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 3,
+      "ms": 763,
+      "promptTokens": 3253,
+      "completionTokens": 86,
+      "reasoningChars": 180,
+      "toolCalls": [
+        "get_cutoffs"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b3bfd1a22021e287",
+      "name": "get_cutoffs",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get cutoffs issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 4,
+      "ms": 707,
+      "promptTokens": 3331,
+      "completionTokens": 80,
+      "reasoningChars": 166,
+      "toolCalls": [
+        "check_connection"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9ff5608ea1b61169",
+      "name": "check_connection",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "need 20:52 · cut-off 21:05 · CDG connection tight"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 5,
+      "ms": 810,
+      "promptTokens": 3417,
+      "completionTokens": 61,
+      "reasoningChars": 106,
+      "toolCalls": [
+        "get_capacity"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-848b6996bef494b4",
+      "name": "get_capacity",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No get capacity issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 6,
+      "ms": 830,
+      "promptTokens": 3493,
+      "completionTokens": 72,
+      "reasoningChars": 126,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b290c08b1472434a",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": false,
+        "facts": [],
+        "note": "No check restrictions issue recorded for this file."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 816,
+      "promptTokens": 3570,
+      "completionTokens": 67,
+      "reasoningChars": 102,
+      "toolCalls": [
+        "calculate_risk"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-931b4c28b36b5aff",
+      "name": "calculate_risk",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "risk": "watch",
+        "classification": "CDG connection tight",
+        "rule": [],
+        "drivers": [
+          {
+            "measure": "CDG ETA",
+            "value": "20:40",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Need by",
+            "value": "20:52",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Cut-off",
+            "value": "21:05",
+            "assessment": "neutral"
+          },
+          {
+            "measure": "Slack",
+            "value": "12 min",
+            "assessment": "neutral"
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 8,
+      "ms": 884,
+      "promptTokens": 3722,
+      "completionTokens": 67,
+      "reasoningChars": 99,
+      "toolCalls": [
+        "get_station_evidence"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-89488e4cf5ccf13c",
+      "name": "get_station_evidence",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "applicable": true,
+        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
+        "weather_source": "aviationweather.gov",
+        "fetched_at": "2026-10-25T23:29:52.005Z",
+        "stations": [
+          {
+            "station": "CDG",
+            "icao": "LFPG",
+            "role": "booked connection at CDG",
+            "process": "flight_connection",
+            "flight": "AYC 045",
+            "window_min": 50,
+            "weather": {
+              "basis": "worst of METAR now and TAF next 6 h",
+              "flight_category": "VFR",
+              "metar": "METAR LFPG 252300Z 23009KT 9999 OVC043 09/06 Q1018 NOSIG",
+              "metar_category": "VFR",
+              "taf_worst_category": "VFR",
+              "taf_worst_period": "BASE 18:00–02:00 UTC"
+            },
+            "history_90_days": {
+              "all_weather": "within window 68 of 90 (76%)",
+              "in_VFR": "within window 46 of 54 (85%), median 42 min, p90 52 min"
+            }
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 9,
+      "ms": 872,
+      "promptTokens": 4052,
+      "completionTokens": 53,
+      "reasoningChars": 54,
+      "toolCalls": [
+        "find_alternatives"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-9ec7a6393b5d3f9f",
+      "name": "find_alternatives",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "summary": [],
+        "options": [
+          {
+            "option_id": "keep",
+            "title": "Keep CDG connection",
+            "via": "AYC 045 CDG–JFK",
+            "revised_eta": "15 Oct 01:20 LT JFK",
+            "delay": "On time",
+            "cost": "CHF 0",
+            "risk": "Medium",
+            "status": "allowed",
+            "constraint_check": "Arrival CDG 20:40. Minimum connection wants the freight by 20:52. Cut-off 21:05.",
+            "action": "Keep AYC 045 only while the truck is inside the CDG window."
+          },
+          {
+            "option_id": "fra",
+            "title": "Rebook via FRA",
+            "via": "AYC 512 FRA–JFK",
+            "revised_eta": "15 Oct 07:30 LT JFK",
+            "delay": "+6 h",
+            "cost": "+CHF 150",
+            "risk": "Low",
+            "status": "allowed",
+            "constraint_check": "FRA truck is still open from GVA and AYC 512 has space. Use it once CDG is no longer legal.",
+            "action": "Pull 125-88342111 off the CDG truck and move it to the FRA departure."
+          }
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 10,
+      "ms": 3747,
+      "promptTokens": 4370,
+      "completionTokens": 418,
+      "reasoningChars": 768,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 1,
+      "accepted": false,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": false,
+          "detail": "Not called: recall_desk_memory"
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "evidence",
+          "label": "Keeping the booking is consistent with tonight's station evidence",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "keep",
+        "ranking": [
+          "keep",
+          "fra"
+        ],
+        "summary": "The CDG connection is tight but currently allowed with Medium risk. Keep the booked plan unless the truck misses the 20:52 need‑by time, then rebook via FRA.",
+        "why": [
+          "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 gives 12 min slack.",
+          "Station evidence: CDG VFR, within window 46 of 54 (85%) in VFR conditions.",
+          "Booked option Keep CDG connection has Medium risk, allowed; alternative Rebook via FRA adds +6 h delay and +CHF 150 cost with Low risk."
+        ]
+      }
+    },
+    {
+      "kind": "model",
+      "turn": 11,
+      "ms": 1198,
+      "promptTokens": 4651,
+      "completionTokens": 77,
+      "reasoningChars": 160,
+      "toolCalls": [
+        "recall_desk_memory"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-b9e85f65d54742cc",
+      "name": "recall_desk_memory",
+      "args": {
+        "awb": "125-88342111"
+      },
+      "output": {
+        "engine": "Meterless H-MEM",
+        "recalled": [
+          {
+            "memory_id": "mem-7",
+            "note": "CDG transfer team: the 50 min connection holds on clear evenings but slips in morning and evening fog. Watch the CDG forecast before keeping a tight connection.",
+            "source": "handover log (duty officer)",
+            "learned": "2026-09-29"
+          }
+        ],
+        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 12,
+      "ms": 2987,
+      "promptTokens": 4820,
+      "completionTokens": 343,
+      "reasoningChars": 607,
+      "toolCalls": [
+        "submit_decision"
+      ]
+    },
+    {
+      "kind": "verify",
+      "attempt": 2,
+      "accepted": true,
+      "checks": [
+        {
+          "id": "tools",
+          "label": "Read the risk and the options before deciding",
+          "pass": true
+        },
+        {
+          "id": "option",
+          "label": "Recommended option exists",
+          "pass": true
+        },
+        {
+          "id": "allowed",
+          "label": "Recommended option passes hard constraints",
+          "pass": true
+        },
+        {
+          "id": "ranking",
+          "label": "Ranking starts with the pick and holds only allowed options",
+          "pass": true
+        },
+        {
+          "id": "risk",
+          "label": "Risk class matches calculate_risk",
+          "pass": true
+        },
+        {
+          "id": "figures",
+          "label": "Every time and figure traces to a tool output",
+          "pass": true
+        },
+        {
+          "id": "refs",
+          "label": "Every flight, truck and AWB reference is real",
+          "pass": true
+        },
+        {
+          "id": "evidence",
+          "label": "Keeping the booking is consistent with tonight's station evidence",
+          "pass": true
+        },
+        {
+          "id": "memory",
+          "label": "Every cited memory was recalled for this file",
+          "pass": true
+        },
+        {
+          "id": "language",
+          "label": "Summary and evidence are in the duty officer's language",
+          "pass": true
+        }
+      ],
+      "submitted": {
+        "risk": "watch",
+        "recommended_option_id": "keep",
+        "ranking": [
+          "keep",
+          "fra"
+        ],
+        "summary": "The CDG connection is tight but currently allowed with Medium risk. Keep the booked plan unless the truck misses the 20:52 need‑by time, then rebook via FRA.",
+        "why": [
+          "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 gives 12 min slack.",
+          "Station evidence: CDG VFR, within window 46 of 54 (85%) in VFR conditions.",
+          "Booked option Keep CDG connection has Medium risk, allowed; alternative Rebook via FRA adds +6 h delay and +CHF 150 cost with Low risk."
+        ]
+      }
+    }
+  ],
+  "decision": {
+    "risk": "watch",
+    "recommended_option_id": "keep",
+    "ranking": [
+      "keep",
+      "fra"
+    ],
+    "summary": "The CDG connection is tight but currently allowed with Medium risk. Keep the booked plan unless the truck misses the 20:52 need‑by time, then rebook via FRA.",
+    "why": [
+      "CDG ETA 20:40, need‑by 20:52, cut‑off 21:05 gives 12 min slack.",
+      "Station evidence: CDG VFR, within window 46 of 54 (85%) in VFR conditions.",
+      "Booked option Keep CDG connection has Medium risk, allowed; alternative Rebook via FRA adds +6 h delay and +CHF 150 cost with Low risk."
+    ]
+  },
+  "verdict": {
+    "accepted": true,
+    "attempts": 2,
+    "fellBack": false,
+    "checks": [
+      {
+        "id": "tools",
+        "label": "Read the risk and the options before deciding",
+        "pass": true
+      },
+      {
+        "id": "option",
+        "label": "Recommended option exists",
+        "pass": true
+      },
+      {
+        "id": "allowed",
+        "label": "Recommended option passes hard constraints",
+        "pass": true
+      },
+      {
+        "id": "ranking",
+        "label": "Ranking starts with the pick and holds only allowed options",
+        "pass": true
+      },
+      {
+        "id": "risk",
+        "label": "Risk class matches calculate_risk",
+        "pass": true
+      },
+      {
+        "id": "figures",
+        "label": "Every time and figure traces to a tool output",
+        "pass": true
+      },
+      {
+        "id": "refs",
+        "label": "Every flight, truck and AWB reference is real",
+        "pass": true
+      },
+      {
+        "id": "evidence",
+        "label": "Keeping the booking is consistent with tonight's station evidence",
+        "pass": true
+      },
+      {
+        "id": "memory",
+        "label": "Every cited memory was recalled for this file",
+        "pass": true
+      },
+      {
+        "id": "language",
+        "label": "Summary and evidence are in the duty officer's language",
+        "pass": true
+      }
+    ]
+  },
+  "baseline": {
+    "recommended_option_id": "keep",
+    "risk": "watch",
+    "agrees": true
+  },
+  "external": {
+    "evidence": {
+      "backend": "mirror",
+      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 106.0 failed 1 times, most recent failure:); offline mirror answered",
+      "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 045')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
+      "fetched_at": "2026-10-25T23:29:52.005Z",
+      "rows": [
+        {
+          "station": "CDG",
+          "process": "flight_connection",
+          "flight": "AYC 045",
+          "window_min": 50,
+          "wx_category": "IFR",
+          "n": 12,
+          "within": 6,
+          "p50_min": 50,
+          "p90_min": 64,
+          "max_min": 73
+        },
+        {
+          "station": "CDG",
+          "process": "flight_connection",
+          "flight": "AYC 045",
+          "window_min": 50,
+          "wx_category": "LIFR",
+          "n": 1,
+          "within": 0,
+          "p50_min": 57,
+          "p90_min": 57,
+          "max_min": 57
+        },
+        {
+          "station": "CDG",
+          "process": "flight_connection",
+          "flight": "AYC 045",
+          "window_min": 50,
+          "wx_category": "MVFR",
+          "n": 23,
+          "within": 16,
+          "p50_min": 43,
+          "p90_min": 60,
+          "max_min": 72
+        },
+        {
+          "station": "CDG",
+          "process": "flight_connection",
+          "flight": "AYC 045",
+          "window_min": 50,
+          "wx_category": "VFR",
+          "n": 54,
+          "within": 46,
+          "p50_min": 42,
+          "p90_min": 52,
+          "max_min": 65
+        }
+      ],
+      "weather": [
+        {
+          "station": "CDG",
+          "icao": "LFPG",
+          "observed_at": "2026-10-25T23:00:00.000Z",
+          "metar": "METAR LFPG 252300Z 23009KT 9999 OVC043 09/06 Q1018 NOSIG",
+          "metar_category": "VFR",
+          "taf": "TAF LFPG 251700Z 2518/2624 27012KT CAVOK TX13/2623Z TN07/2605Z BECMG 2602/2604 20006KT BECMG 2612/2614 BKN014 BECMG 2617/2619 BKN008 PROB40 TEMPO 2620/2624 4000 -DZ BKN004",
+          "taf_worst_category": "VFR",
+          "taf_worst_reason": "BASE 18:00–02:00 UTC"
+        }
+      ],
+      "weather_source": "aviationweather.gov"
+    },
+    "memory": {
+      "engine": "meterless-hmem-reference@1742dec",
+      "query": "CDG JFK Laurent",
+      "recalled": [
+        {
+          "id": "mem-7",
+          "content": "CDG transfer team: the 50 min connection holds on clear evenings but slips in morning and evening fog. Watch the CDG forecast before keeping a tight connection.",
+          "source": "handover log (duty officer)",
+          "learned": "2026-09-29",
+          "relevance": 0.23
+        }
+      ],
+      "added": [],
+      "trace": {
+        "strategy": "minimal",
+        "reason": "hybrid ranking for \"CDG JFK Laurent\" (domain: general)"
+      }
+    }
+  }
+}

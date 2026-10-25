@@ -10,17 +10,17 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v6",
-  "startedAt": "2026-10-25T23:30:19.110Z",
-  "latencyMs": 17838,
-  "promptTokens": 49407,
-  "completionTokens": 2390,
+  "promptVersion": "v7",
+  "startedAt": "2026-10-25T23:44:54.316Z",
+  "latencyMs": 13828,
+  "promptTokens": 40343,
+  "completionTokens": 1494,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 453,
-      "promptTokens": 2902,
+      "ms": 619,
+      "promptTokens": 3187,
       "completionTokens": 56,
       "reasoningChars": 64,
       "toolCalls": [
@@ -29,7 +29,7 @@
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-86e81289fa8727d5",
+      "callId": "chatcmpl-tool-b72d646c90576bd8",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -54,17 +54,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 722,
-      "promptTokens": 3060,
-      "completionTokens": 93,
-      "reasoningChars": 217,
+      "ms": 744,
+      "promptTokens": 3345,
+      "completionTokens": 59,
+      "reasoningChars": 82,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bd5904700b0056c4",
+      "callId": "chatcmpl-tool-a1c05778665c25d8",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -114,17 +114,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 866,
-      "promptTokens": 3321,
-      "completionTokens": 86,
-      "reasoningChars": 180,
+      "ms": 768,
+      "promptTokens": 3606,
+      "completionTokens": 83,
+      "reasoningChars": 167,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9480e0a01ccd4ed3",
+      "callId": "chatcmpl-tool-bb146d3881cb32d9",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -140,17 +140,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 929,
-      "promptTokens": 3411,
-      "completionTokens": 80,
-      "reasoningChars": 165,
+      "ms": 1305,
+      "promptTokens": 3696,
+      "completionTokens": 165,
+      "reasoningChars": 356,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a37eed8ca9ea50c2",
+      "callId": "chatcmpl-tool-946c3da708c75069",
       "name": "check_connection",
       "args": {
         "awb": "615-12345675"
@@ -166,17 +166,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 772,
-      "promptTokens": 3496,
-      "completionTokens": 61,
-      "reasoningChars": 106,
+      "ms": 1237,
+      "promptTokens": 3781,
+      "completionTokens": 70,
+      "reasoningChars": 120,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b05459d1ff928194",
+      "callId": "chatcmpl-tool-acb27afa07ae90dc",
       "name": "get_capacity",
       "args": {
         "awb": "615-12345675"
@@ -192,17 +192,17 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 806,
-      "promptTokens": 3625,
-      "completionTokens": 70,
-      "reasoningChars": 119,
+      "ms": 868,
+      "promptTokens": 3910,
+      "completionTokens": 69,
+      "reasoningChars": 113,
       "toolCalls": [
         "check_restrictions"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a25c1aef3259f826",
+      "callId": "chatcmpl-tool-ada1bf9bc1b5d956",
       "name": "check_restrictions",
       "args": {
         "awb": "615-12345675"
@@ -218,17 +218,17 @@
     {
       "kind": "model",
       "turn": 7,
-      "ms": 486,
-      "promptTokens": 3703,
-      "completionTokens": 67,
-      "reasoningChars": 101,
+      "ms": 809,
+      "promptTokens": 3988,
+      "completionTokens": 62,
+      "reasoningChars": 81,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9f74c6f96658b16c",
+      "callId": "chatcmpl-tool-805177ec9cd374e3",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -267,17 +267,17 @@
     {
       "kind": "model",
       "turn": 8,
-      "ms": 828,
-      "promptTokens": 3858,
-      "completionTokens": 70,
-      "reasoningChars": 113,
+      "ms": 1563,
+      "promptTokens": 4143,
+      "completionTokens": 54,
+      "reasoningChars": 51,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-aeabdb4662ae1cf4",
+      "callId": "chatcmpl-tool-bec3c227306fa495",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -354,26 +354,26 @@
     {
       "kind": "model",
       "turn": 9,
-      "ms": 1121,
-      "promptTokens": 4679,
-      "completionTokens": 61,
-      "reasoningChars": 75,
+      "ms": 1178,
+      "promptTokens": 4964,
+      "completionTokens": 84,
+      "reasoningChars": 174,
       "toolCalls": [
         "get_station_evidence"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-94f2b92a5652ecc4",
+      "callId": "chatcmpl-tool-bc062396f160f9a2",
       "name": "get_station_evidence",
       "args": {
         "awb": "615-12345675"
       },
       "output": {
         "applicable": true,
-        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
+        "source": "Zetaris federated query (Postgres handling history JOIN live METAR REST table)",
         "weather_source": "aviationweather.gov",
-        "fetched_at": "2026-10-25T23:30:12.174Z",
+        "fetched_at": "2026-10-25T23:44:54.166Z",
         "stations": [
           {
             "station": "LEJ",
@@ -437,15 +437,15 @@
           }
         ]
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
       "turn": 10,
-      "ms": 4791,
-      "promptTokens": 5436,
-      "completionTokens": 809,
-      "reasoningChars": 2089,
+      "ms": 4737,
+      "promptTokens": 5723,
+      "completionTokens": 792,
+      "reasoningChars": 2174,
       "toolCalls": [
         "submit_decision"
       ]
@@ -453,142 +453,6 @@
     {
       "kind": "verify",
       "attempt": 1,
-      "accepted": false,
-      "checks": [
-        {
-          "id": "tools",
-          "label": "Read the risk and the options before deciding",
-          "pass": false,
-          "detail": "Not called: recall_desk_memory"
-        },
-        {
-          "id": "option",
-          "label": "Recommended option exists",
-          "pass": true
-        },
-        {
-          "id": "allowed",
-          "label": "Recommended option passes hard constraints",
-          "pass": true
-        },
-        {
-          "id": "ranking",
-          "label": "Ranking starts with the pick and holds only allowed options",
-          "pass": true
-        },
-        {
-          "id": "risk",
-          "label": "Risk class matches calculate_risk",
-          "pass": true
-        },
-        {
-          "id": "figures",
-          "label": "Every time and figure traces to a tool output",
-          "pass": true
-        },
-        {
-          "id": "refs",
-          "label": "Every flight, truck and AWB reference is real",
-          "pass": true
-        },
-        {
-          "id": "evidence",
-          "label": "Keeping the booking is consistent with tonight's station evidence",
-          "pass": true
-        },
-        {
-          "id": "memory",
-          "label": "Every cited memory was recalled for this file",
-          "pass": true
-        },
-        {
-          "id": "language",
-          "label": "Summary and evidence are in the duty officer's language",
-          "pass": true
-        }
-      ],
-      "submitted": {
-        "risk": "watch",
-        "recommended_option_id": "keep",
-        "ranking": [
-          "keep",
-          "zrh",
-          "fra",
-          "later"
-        ],
-        "summary": "The truck is delayed 60 min making the LEJ connection tight with zero slack; the booked plan remains allowed with Medium risk. Keep AWB 615‑12345675 on AYC 7841 via LEJ, preparing for a possible late tender.",
-        "why": [
-          "RFS 1840 +60 min → ETA 19:15 LT (disruption)",
-          "Need‑by 19:15, cut‑off 20:00, slack 0 min (connection)",
-          "LEJ GCR transfer window 45 min, VFR history within window 104 of 124 (84%) (station evidence)",
-          "Risk class watch (risk), option risk Medium (alternatives)"
-        ]
-      }
-    },
-    {
-      "kind": "model",
-      "turn": 11,
-      "ms": 697,
-      "promptTokens": 5763,
-      "completionTokens": 58,
-      "reasoningChars": 73,
-      "toolCalls": [
-        "recall_desk_memory"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-87d4532cdd561e15",
-      "name": "recall_desk_memory",
-      "args": {
-        "awb": "615-12345675"
-      },
-      "output": {
-        "engine": "Meterless H-MEM",
-        "recalled": [
-          {
-            "memory_id": "mem-3",
-            "note": "When LEJ is at risk, the preferred fallback is the RFS 2204 truck to ZRH; it has been reliable all quarter.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-09-23"
-          },
-          {
-            "memory_id": "mem-2",
-            "note": "Override: kept the LEJ booking on a foggy evening against advice and the freight missed AYC 7841. In fog at LEJ, take the ZRH reroute early.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-10-05"
-          },
-          {
-            "memory_id": "mem-1",
-            "note": "LEJ build-up for AYC 7841 runs one team short after 19:30 local this month; late RFS trucks into LEJ are the first thing to slip.",
-            "source": "handover log (night shift)",
-            "learned": "2026-10-11"
-          },
-          {
-            "memory_id": "mem-4",
-            "note": "Nyon Precision SA (LEJ–DEL lane) accepts a later arrival if told before the evening, but refuses split shipments. Always write to them in French.",
-            "source": "handover log (key account)",
-            "learned": "2026-10-09"
-          }
-        ],
-        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 12,
-      "ms": 5363,
-      "promptTokens": 6153,
-      "completionTokens": 879,
-      "reasoningChars": 2344,
-      "toolCalls": [
-        "submit_decision"
-      ]
-    },
-    {
-      "kind": "verify",
-      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -651,12 +515,12 @@
           "fra",
           "later"
         ],
-        "summary": "The truck is delayed 60 min making the LEJ connection tight with zero slack; the booked plan remains allowed with Medium risk. Keep AWB 615‑12345675 on AYC 7841 via LEJ, preparing for a possible late tender.",
+        "summary": "The truck is due at LEJ at 19:15 with zero slack to the 20:00 cut‑off, keeping the shipment on AYC 7841 via LEJ is feasible. The booked plan remains allowed and carries a watch risk, so we keep the current routing.",
         "why": [
-          "RFS 1840 +60 min → ETA 19:15 LT (disruption)",
-          "Need‑by 19:15, cut‑off 20:00, slack 0 min (connection)",
-          "LEJ GCR transfer window 45 min, VFR history within window 104 of 124 (84%) (station evidence)",
-          "Risk class watch (risk), option risk Medium (alternatives)"
+          "Truck ETA 19:15 vs required 19:15 · 0 min slack (check_connection)",
+          "LEJ GCR cut‑off 20:00 · transfer 45 min (get_cutoffs)",
+          "LEJ VFR history: within window 104 of 124 movements (84%) (get_station_evidence)",
+          "Risk class watch from calculate_risk (connection tight)"
         ]
       }
     }
@@ -670,17 +534,17 @@
       "fra",
       "later"
     ],
-    "summary": "The truck is delayed 60 min making the LEJ connection tight with zero slack; the booked plan remains allowed with Medium risk. Keep AWB 615‑12345675 on AYC 7841 via LEJ, preparing for a possible late tender.",
+    "summary": "The truck is due at LEJ at 19:15 with zero slack to the 20:00 cut‑off, keeping the shipment on AYC 7841 via LEJ is feasible. The booked plan remains allowed and carries a watch risk, so we keep the current routing.",
     "why": [
-      "RFS 1840 +60 min → ETA 19:15 LT (disruption)",
-      "Need‑by 19:15, cut‑off 20:00, slack 0 min (connection)",
-      "LEJ GCR transfer window 45 min, VFR history within window 104 of 124 (84%) (station evidence)",
-      "Risk class watch (risk), option risk Medium (alternatives)"
+      "Truck ETA 19:15 vs required 19:15 · 0 min slack (check_connection)",
+      "LEJ GCR cut‑off 20:00 · transfer 45 min (get_cutoffs)",
+      "LEJ VFR history: within window 104 of 124 movements (84%) (get_station_evidence)",
+      "Risk class watch from calculate_risk (connection tight)"
     ]
   },
   "verdict": {
     "accepted": true,
-    "attempts": 2,
+    "attempts": 1,
     "fellBack": false,
     "checks": [
       {
@@ -742,10 +606,10 @@
   },
   "external": {
     "evidence": {
-      "backend": "mirror",
-      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 114.0 failed 1 times, most recent failure:); offline mirror answered",
+      "backend": "zetaris",
+      "backend_note": "reconciled with the offline mirror: identical aggregates",
       "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 552', 'AYC 7841', 'AYC 9864')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
-      "fetched_at": "2026-10-25T23:30:12.174Z",
+      "fetched_at": "2026-10-25T23:44:54.166Z",
       "rows": [
         {
           "station": "FRA",

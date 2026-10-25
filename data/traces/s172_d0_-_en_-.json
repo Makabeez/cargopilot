@@ -10,26 +10,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v6",
-  "startedAt": "2026-10-25T23:29:17.158Z",
-  "latencyMs": 18712,
-  "promptTokens": 40787,
-  "completionTokens": 2343,
+  "promptVersion": "v7",
+  "startedAt": "2026-10-25T23:44:12.317Z",
+  "latencyMs": 16541,
+  "promptTokens": 36622,
+  "completionTokens": 1297,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 929,
-      "promptTokens": 2902,
-      "completionTokens": 54,
-      "reasoningChars": 52,
+      "ms": 912,
+      "promptTokens": 3046,
+      "completionTokens": 56,
+      "reasoningChars": 64,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a1f13dcededc78f1",
+      "callId": "chatcmpl-tool-9c54ca209dd3a32b",
       "name": "get_shipment",
       "args": {
         "awb": "172-44091832"
@@ -49,22 +49,22 @@
         "customer": "Helvetia Cell AG",
         "customer_language": "English"
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
       "turn": 2,
-      "ms": 1152,
-      "promptTokens": 3066,
-      "completionTokens": 93,
-      "reasoningChars": 223,
+      "ms": 747,
+      "promptTokens": 3210,
+      "completionTokens": 68,
+      "reasoningChars": 141,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9a4cbcb628db2216",
+      "callId": "chatcmpl-tool-bdfba54f370775b5",
       "name": "get_disruption",
       "args": {
         "awb": "172-44091832"
@@ -99,17 +99,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 975,
-      "promptTokens": 3221,
-      "completionTokens": 86,
-      "reasoningChars": 180,
+      "ms": 1630,
+      "promptTokens": 3365,
+      "completionTokens": 81,
+      "reasoningChars": 159,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b43dbceee81f5ff2",
+      "callId": "chatcmpl-tool-ace16fd1270f33e2",
       "name": "get_cutoffs",
       "args": {
         "awb": "172-44091832"
@@ -124,17 +124,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 923,
-      "promptTokens": 3299,
-      "completionTokens": 80,
-      "reasoningChars": 166,
+      "ms": 751,
+      "promptTokens": 3443,
+      "completionTokens": 75,
+      "reasoningChars": 146,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-960fc0327a3cdff8",
+      "callId": "chatcmpl-tool-aaad717de468a76a",
       "name": "check_connection",
       "args": {
         "awb": "172-44091832"
@@ -149,17 +149,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 557,
-      "promptTokens": 3375,
-      "completionTokens": 73,
-      "reasoningChars": 133,
+      "ms": 1007,
+      "promptTokens": 3519,
+      "completionTokens": 55,
+      "reasoningChars": 85,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-97507b8b0d9b5d41",
+      "callId": "chatcmpl-tool-86972d1534db9c5b",
       "name": "get_capacity",
       "args": {
         "awb": "172-44091832"
@@ -170,22 +170,48 @@
           "AYC 9006 DGR position open · AYC 9012 open"
         ]
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
       "turn": 6,
-      "ms": 470,
-      "promptTokens": 3461,
-      "completionTokens": 70,
-      "reasoningChars": 113,
+      "ms": 3568,
+      "promptTokens": 3605,
+      "completionTokens": 67,
+      "reasoningChars": 106,
+      "toolCalls": [
+        "check_restrictions"
+      ]
+    },
+    {
+      "kind": "tool",
+      "callId": "chatcmpl-tool-aa87a4a32c45636a",
+      "name": "check_restrictions",
+      "args": {
+        "awb": "172-44091832"
+      },
+      "output": {
+        "applicable": true,
+        "facts": [
+          "PAX FORBIDDEN · no variation on AYC 176"
+        ]
+      },
+      "ms": 0
+    },
+    {
+      "kind": "model",
+      "turn": 7,
+      "ms": 1274,
+      "promptTokens": 3688,
+      "completionTokens": 75,
+      "reasoningChars": 141,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a544eb7c15b4db41",
+      "callId": "chatcmpl-tool-9b2513d0eadde1fc",
       "name": "calculate_risk",
       "args": {
         "awb": "172-44091832"
@@ -219,22 +245,22 @@
           }
         ]
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 707,
-      "promptTokens": 3623,
-      "completionTokens": 67,
-      "reasoningChars": 97,
+      "turn": 8,
+      "ms": 840,
+      "promptTokens": 3850,
+      "completionTokens": 54,
+      "reasoningChars": 51,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-99bd8e9f9a8a7b99",
+      "callId": "chatcmpl-tool-a949242701db6fb5",
       "name": "find_alternatives",
       "args": {
         "awb": "172-44091832"
@@ -298,18 +324,18 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 895,
-      "promptTokens": 4180,
-      "completionTokens": 61,
-      "reasoningChars": 74,
+      "turn": 9,
+      "ms": 1745,
+      "promptTokens": 4407,
+      "completionTokens": 140,
+      "reasoningChars": 405,
       "toolCalls": [
         "get_station_evidence"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-903fde7ac2aa3817",
+      "callId": "chatcmpl-tool-84664ca34e5a230a",
       "name": "get_station_evidence",
       "args": {
         "awb": "172-44091832"
@@ -318,15 +344,15 @@
         "applicable": false,
         "note": "No station handling evidence applies to this file (no transfer or acceptance process at risk)."
       },
-      "ms": 1
+      "ms": 0
     },
     {
       "kind": "model",
-      "turn": 9,
-      "ms": 6554,
-      "promptTokens": 4262,
-      "completionTokens": 975,
-      "reasoningChars": 2872,
+      "turn": 10,
+      "ms": 4063,
+      "promptTokens": 4489,
+      "completionTokens": 626,
+      "reasoningChars": 1474,
       "toolCalls": [
         "submit_decision"
       ]
@@ -334,123 +360,6 @@
     {
       "kind": "verify",
       "attempt": 1,
-      "accepted": false,
-      "checks": [
-        {
-          "id": "tools",
-          "label": "Read the risk and the options before deciding",
-          "pass": false,
-          "detail": "Not called: recall_desk_memory"
-        },
-        {
-          "id": "option",
-          "label": "Recommended option exists",
-          "pass": true
-        },
-        {
-          "id": "allowed",
-          "label": "Recommended option passes hard constraints",
-          "pass": true
-        },
-        {
-          "id": "ranking",
-          "label": "Ranking starts with the pick and holds only allowed options",
-          "pass": true
-        },
-        {
-          "id": "risk",
-          "label": "Risk class matches calculate_risk",
-          "pass": true
-        },
-        {
-          "id": "figures",
-          "label": "Every time and figure traces to a tool output",
-          "pass": true
-        },
-        {
-          "id": "refs",
-          "label": "Every flight, truck and AWB reference is real",
-          "pass": true
-        },
-        {
-          "id": "memory",
-          "label": "Every cited memory was recalled for this file",
-          "pass": true
-        },
-        {
-          "id": "language",
-          "label": "Summary and evidence are in the duty officer's language",
-          "pass": true
-        }
-      ],
-      "submitted": {
-        "risk": "critical",
-        "recommended_option_id": "freighter",
-        "ranking": [
-          "freighter",
-          "next",
-          "return"
-        ],
-        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries, making the current plan critical. Recommend moving the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h).",
-        "why": [
-          "Risk class critical: DG refused on passenger aircraft (UN3480 PI965 forbidden on AYC 176).",
-          "Freighter AYC 9006 allowed: delay +7 h, cost +CHF 260, risk Low, capacity confirmed.",
-          "Alternative next freighter AYC 9012: delay +26 h, same cost, risk Medium; return to shipper: delay +48 h, cost CHF 0, risk High."
-        ]
-      }
-    },
-    {
-      "kind": "model",
-      "turn": 10,
-      "ms": 1139,
-      "promptTokens": 4585,
-      "completionTokens": 64,
-      "reasoningChars": 107,
-      "toolCalls": [
-        "recall_desk_memory"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-adce443fcbe3ec4d",
-      "name": "recall_desk_memory",
-      "args": {
-        "awb": "172-44091832"
-      },
-      "output": {
-        "engine": "Meterless H-MEM",
-        "recalled": [
-          {
-            "memory_id": "mem-5",
-            "note": "Helvetia Cell AG lithium shipments: book cargo aircraft only from the start; their forwarder keeps defaulting to passenger flights.",
-            "source": "handover log (DG desk)",
-            "learned": "2026-10-02"
-          },
-          {
-            "memory_id": "mem-3",
-            "note": "When LEJ is at risk, the preferred fallback is the RFS 2204 truck to ZRH; it has been reliable all quarter.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-09-23"
-          }
-        ],
-        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 11,
-      "ms": 4400,
-      "promptTokens": 4813,
-      "completionTokens": 720,
-      "reasoningChars": 1648,
-      "toolCalls": [
-        "submit_decision"
-      ]
-    },
-    {
-      "kind": "verify",
-      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -507,11 +416,11 @@
           "next",
           "return"
         ],
-        "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries, making the current plan critical. Recommend moving the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h).",
+        "summary": "The booked passenger flight AYC 176 refuses UN3480 lithium batteries (PI965) on passenger aircraft. Move the shipment to freighter AYC 9006 GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h, +CHF 260).",
         "why": [
-          "Risk class critical: DG refused on passenger aircraft (UN3480 PI965 forbidden on AYC 176).",
-          "Freighter AYC 9006 allowed: delay +7 h, cost +CHF 260, risk Low, capacity confirmed per get_capacity (\"AYC 9006 DGR position open\").",
-          "Alternative next freighter AYC 9012: delay +26 h, same cost, risk Medium; return to shipper: delay +48 h, cost CHF 0, risk High."
+          "Risk class is critical due to DG refused on passenger (AYC 176 pax).",
+          "Freighter AYC 9006 accepts UN3480 PI965, capacity confirmed, delay +7 h, cost +CHF 260, risk Low.",
+          "Alternative freighter AYC 9012 adds +26 h delay, risk Medium; return adds +48 h delay, risk High."
         ]
       }
     }
@@ -524,16 +433,16 @@
       "next",
       "return"
     ],
-    "summary": "The booked passenger flight AYC 176 cannot carry UN3480 lithium ion batteries, making the current plan critical. Recommend moving the shipment to freighter AYC 9006 via GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h).",
+    "summary": "The booked passenger flight AYC 176 refuses UN3480 lithium batteries (PI965) on passenger aircraft. Move the shipment to freighter AYC 9006 GVA–FRA–NRT, arriving 16 Oct 06:40 LT NRT (+7 h, +CHF 260).",
     "why": [
-      "Risk class critical: DG refused on passenger aircraft (UN3480 PI965 forbidden on AYC 176).",
-      "Freighter AYC 9006 allowed: delay +7 h, cost +CHF 260, risk Low, capacity confirmed per get_capacity (\"AYC 9006 DGR position open\").",
-      "Alternative next freighter AYC 9012: delay +26 h, same cost, risk Medium; return to shipper: delay +48 h, cost CHF 0, risk High."
+      "Risk class is critical due to DG refused on passenger (AYC 176 pax).",
+      "Freighter AYC 9006 accepts UN3480 PI965, capacity confirmed, delay +7 h, cost +CHF 260, risk Low.",
+      "Alternative freighter AYC 9012 adds +26 h delay, risk Medium; return adds +48 h delay, risk High."
     ]
   },
   "verdict": {
     "accepted": true,
-    "attempts": 2,
+    "attempts": 1,
     "fellBack": false,
     "checks": [
       {

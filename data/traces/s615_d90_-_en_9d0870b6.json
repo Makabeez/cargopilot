@@ -11,26 +11,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v6",
-  "startedAt": "2026-10-25T23:31:13.517Z",
-  "latencyMs": 26421,
-  "promptTokens": 41731,
-  "completionTokens": 2684,
+  "promptVersion": "v7",
+  "startedAt": "2026-10-25T23:45:42.756Z",
+  "latencyMs": 15486,
+  "promptTokens": 28061,
+  "completionTokens": 1437,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 880,
-      "promptTokens": 2936,
-      "completionTokens": 83,
-      "reasoningChars": 167,
+      "ms": 863,
+      "promptTokens": 3221,
+      "completionTokens": 78,
+      "reasoningChars": 147,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-99eada799e0fec7f",
+      "callId": "chatcmpl-tool-bd0e120fffeb8df5",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -55,17 +55,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 988,
-      "promptTokens": 3094,
-      "completionTokens": 81,
-      "reasoningChars": 177,
+      "ms": 832,
+      "promptTokens": 3379,
+      "completionTokens": 148,
+      "reasoningChars": 455,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a14fdd0dd94363dc",
+      "callId": "chatcmpl-tool-b9d4d473efff14a9",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -115,17 +115,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 1515,
-      "promptTokens": 3355,
-      "completionTokens": 52,
-      "reasoningChars": 54,
+      "ms": 931,
+      "promptTokens": 3640,
+      "completionTokens": 82,
+      "reasoningChars": 165,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-ae43f1d0e5c9757b",
+      "callId": "chatcmpl-tool-b094d3dd3f47cc2f",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -141,43 +141,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 1095,
-      "promptTokens": 3445,
-      "completionTokens": 83,
-      "reasoningChars": 193,
-      "toolCalls": [
-        "check_connection"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-a67045455c80330c",
-      "name": "check_connection",
-      "args": {
-        "awb": "615-12345675"
-      },
-      "output": {
-        "applicable": true,
-        "facts": [
-          "ETA 19:45 vs required 19:15 · 30 min short"
-        ]
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 5,
-      "ms": 1569,
-      "promptTokens": 3531,
-      "completionTokens": 113,
-      "reasoningChars": 310,
+      "ms": 5252,
+      "promptTokens": 3730,
+      "completionTokens": 73,
+      "reasoningChars": 145,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-958fe50387099c24",
+      "callId": "chatcmpl-tool-884d31ca0f99ce65",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -215,18 +189,18 @@
     },
     {
       "kind": "model",
-      "turn": 6,
-      "ms": 1288,
-      "promptTokens": 3689,
-      "completionTokens": 69,
-      "reasoningChars": 113,
+      "turn": 5,
+      "ms": 871,
+      "promptTokens": 3888,
+      "completionTokens": 63,
+      "reasoningChars": 85,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8b8b75caa713c770",
+      "callId": "chatcmpl-tool-a1300c020cd24ffb",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -302,27 +276,27 @@
     },
     {
       "kind": "model",
-      "turn": 7,
-      "ms": 1305,
-      "promptTokens": 4523,
-      "completionTokens": 63,
-      "reasoningChars": 90,
+      "turn": 6,
+      "ms": 1247,
+      "promptTokens": 4722,
+      "completionTokens": 79,
+      "reasoningChars": 157,
       "toolCalls": [
         "get_station_evidence"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-8f51e58d3b06a336",
+      "callId": "chatcmpl-tool-911e8788124ebc47",
       "name": "get_station_evidence",
       "args": {
         "awb": "615-12345675"
       },
       "output": {
         "applicable": true,
-        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
+        "source": "Zetaris federated query (Postgres handling history JOIN live METAR REST table)",
         "weather_source": "aviationweather.gov",
-        "fetched_at": "2026-10-25T23:31:11.214Z",
+        "fetched_at": "2026-10-25T23:45:37.553Z",
         "stations": [
           {
             "station": "LEJ",
@@ -390,11 +364,11 @@
     },
     {
       "kind": "model",
-      "turn": 8,
-      "ms": 10570,
-      "promptTokens": 5280,
-      "completionTokens": 1376,
-      "reasoningChars": 3559,
+      "turn": 7,
+      "ms": 5487,
+      "promptTokens": 5481,
+      "completionTokens": 914,
+      "reasoningChars": 1791,
       "toolCalls": [
         "submit_decision"
       ]
@@ -402,153 +376,6 @@
     {
       "kind": "verify",
       "attempt": 1,
-      "accepted": false,
-      "checks": [
-        {
-          "id": "tools",
-          "label": "Read the risk and the options before deciding",
-          "pass": false,
-          "detail": "Not called: recall_desk_memory"
-        },
-        {
-          "id": "option",
-          "label": "Recommended option exists",
-          "pass": true
-        },
-        {
-          "id": "allowed",
-          "label": "Recommended option passes hard constraints",
-          "pass": true
-        },
-        {
-          "id": "ranking",
-          "label": "Ranking starts with the pick and holds only allowed options",
-          "pass": true
-        },
-        {
-          "id": "risk",
-          "label": "Risk class matches calculate_risk",
-          "pass": true
-        },
-        {
-          "id": "figures",
-          "label": "Every time and figure traces to a tool output",
-          "pass": true
-        },
-        {
-          "id": "refs",
-          "label": "Every flight, truck and AWB reference is real",
-          "pass": true
-        },
-        {
-          "id": "evidence",
-          "label": "Keeping the booking is consistent with tonight's station evidence",
-          "pass": true
-        },
-        {
-          "id": "memory",
-          "label": "Every cited memory was recalled for this file",
-          "pass": true
-        },
-        {
-          "id": "language",
-          "label": "Summary and evidence are in the duty officer's language",
-          "pass": true
-        },
-        {
-          "id": "reply",
-          "label": "Answers the operator in the operator's language",
-          "pass": true
-        },
-        {
-          "id": "customer",
-          "label": "Customer note cites the AWB in the customer's language",
-          "pass": true
-        }
-      ],
-      "submitted": {
-        "risk": "high",
-        "recommended_option_id": "zrh",
-        "ranking": [
-          "zrh",
-          "fra",
-          "keep",
-          "later"
-        ],
-        "summary": "The truck to LEJ is 30 minutes short of the 45‑minute handling window, putting the connection at high risk. Rebook via ZRH (RFS 2204 → AYC 9864) to deliver with +4 h delay at lowest extra cost.",
-        "why": [
-          "ETA 19:45 vs required 19:15 · 30 min short (check_connection)",
-          "Risk class high due to connection at risk (calculate_risk)",
-          "Rebook via ZRH adds +CHF 180, +4 h delay, risk Low, capacity 2,200 kg free; LEJ VFR: within window 104 of 124 (84%); ZRH IFR: within window 30 of 30 (100%), median 48 min, p90 55 min (find_alternatives, get_station_evidence)"
-        ],
-        "reply": "The call is because the incoming truck is delayed, making the LEJ connection miss its 45‑minute window by 30 minutes, which raises the risk to high. The best recovery is to reroute via Zurich.",
-        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13:10 heure locale à Delhi (retard de +4 h)."
-      }
-    },
-    {
-      "kind": "model",
-      "turn": 9,
-      "ms": 1854,
-      "promptTokens": 5744,
-      "completionTokens": 58,
-      "reasoningChars": 73,
-      "toolCalls": [
-        "recall_desk_memory"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-b088c742b6853101",
-      "name": "recall_desk_memory",
-      "args": {
-        "awb": "615-12345675"
-      },
-      "output": {
-        "engine": "Meterless H-MEM",
-        "recalled": [
-          {
-            "memory_id": "mem-3",
-            "note": "When LEJ is at risk, the preferred fallback is the RFS 2204 truck to ZRH; it has been reliable all quarter.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-09-23"
-          },
-          {
-            "memory_id": "mem-2",
-            "note": "Override: kept the LEJ booking on a foggy evening against advice and the freight missed AYC 7841. In fog at LEJ, take the ZRH reroute early.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-10-05"
-          },
-          {
-            "memory_id": "mem-1",
-            "note": "LEJ build-up for AYC 7841 runs one team short after 19:30 local this month; late RFS trucks into LEJ are the first thing to slip.",
-            "source": "handover log (night shift)",
-            "learned": "2026-10-11"
-          },
-          {
-            "memory_id": "mem-4",
-            "note": "Nyon Precision SA (LEJ–DEL lane) accepts a later arrival if told before the evening, but refuses split shipments. Always write to them in French.",
-            "source": "handover log (key account)",
-            "learned": "2026-10-09"
-          }
-        ],
-        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 10,
-      "ms": 5353,
-      "promptTokens": 6134,
-      "completionTokens": 706,
-      "reasoningChars": 938,
-      "toolCalls": [
-        "submit_decision"
-      ]
-    },
-    {
-      "kind": "verify",
-      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -621,15 +448,15 @@
           "keep",
           "later"
         ],
-        "summary": "The truck to LEJ is 30 minutes short of the 45‑minute handling window, putting the connection at high risk. Rebook via ZRH (RFS 2204 → AYC 9864) to deliver with +4 h delay at lowest extra cost.",
+        "summary": "The RFS 1840 truck is ETA 19:45, 30 minutes short of the 19:15 need‑by time for LEJ transfer. Recommend rebooking via ZRH using RFS 2204 and AYC 9864.",
         "why": [
-          "ETA 19:45 vs required 19:15 · 30 min short (check_connection)",
-          "Risk class high due to connection at risk (calculate_risk)",
-          "Rebook via ZRH adds +CHF 180, +4 h delay, risk Low, capacity 2,200 kg free; LEJ VFR: within window 104 of 124 (84%); ZRH IFR: within window 30 of 30 (100%), median 48 min, p90 55 min (find_alternatives, get_station_evidence)",
-          "Desk memory notes prefer ZRH reroute when LEJ at risk (mem-3, mem-2)"
+          "Truck ETA 19:45 vs need‑by 19:15 gives a 30 minute shortfall (calculate_risk).",
+          "Weight 780 kg (get_shipment).",
+          "Option ZRH: delay +4 h, cost +CHF 180, risk Low (find_alternatives).",
+          "Station evidence: LEJ VFR within window 104 of 124 (84%); ZRH IFR within window 30 of 30 (100%) (get_station_evidence)."
         ],
-        "reply": "The call is because the incoming truck is delayed, making the LEJ connection miss its 45‑minute window by 30 minutes, which raises the risk to high. The best recovery is to reroute via Zurich.",
-        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13:10 heure locale à Delhi (retard de +4 h)."
+        "reply": "The truck is running 90 minutes late, missing the LEJ handling window by 30 minutes, so the current plan is high risk. The best recovery is to reroute via ZRH with RFS 2204 and AYC 9864.",
+        "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13:10 heure locale à DEL suite au réacheminement via ZRH."
       }
     }
   ],
@@ -642,19 +469,19 @@
       "keep",
       "later"
     ],
-    "summary": "The truck to LEJ is 30 minutes short of the 45‑minute handling window, putting the connection at high risk. Rebook via ZRH (RFS 2204 → AYC 9864) to deliver with +4 h delay at lowest extra cost.",
+    "summary": "The RFS 1840 truck is ETA 19:45, 30 minutes short of the 19:15 need‑by time for LEJ transfer. Recommend rebooking via ZRH using RFS 2204 and AYC 9864.",
     "why": [
-      "ETA 19:45 vs required 19:15 · 30 min short (check_connection)",
-      "Risk class high due to connection at risk (calculate_risk)",
-      "Rebook via ZRH adds +CHF 180, +4 h delay, risk Low, capacity 2,200 kg free; LEJ VFR: within window 104 of 124 (84%); ZRH IFR: within window 30 of 30 (100%), median 48 min, p90 55 min (find_alternatives, get_station_evidence)",
-      "Desk memory notes prefer ZRH reroute when LEJ at risk (mem-3, mem-2)"
+      "Truck ETA 19:45 vs need‑by 19:15 gives a 30 minute shortfall (calculate_risk).",
+      "Weight 780 kg (get_shipment).",
+      "Option ZRH: delay +4 h, cost +CHF 180, risk Low (find_alternatives).",
+      "Station evidence: LEJ VFR within window 104 of 124 (84%); ZRH IFR within window 30 of 30 (100%) (get_station_evidence)."
     ],
-    "reply": "The call is because the incoming truck is delayed, making the LEJ connection miss its 45‑minute window by 30 minutes, which raises the risk to high. The best recovery is to reroute via Zurich.",
-    "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13:10 heure locale à Delhi (retard de +4 h)."
+    "reply": "The truck is running 90 minutes late, missing the LEJ handling window by 30 minutes, so the current plan is high risk. The best recovery is to reroute via ZRH with RFS 2204 and AYC 9864.",
+    "customer_note": "AWB 615-12345675 : nouvel ETA prévu le 15 octobre à 13:10 heure locale à DEL suite au réacheminement via ZRH."
   },
   "verdict": {
     "accepted": true,
-    "attempts": 2,
+    "attempts": 1,
     "fellBack": false,
     "checks": [
       {
@@ -726,10 +553,10 @@
   },
   "external": {
     "evidence": {
-      "backend": "mirror",
-      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 138.0 failed 1 times, most recent failure:); offline mirror answered",
+      "backend": "zetaris",
+      "backend_note": "reconciled with the offline mirror: identical aggregates",
       "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 552', 'AYC 7841', 'AYC 9864')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
-      "fetched_at": "2026-10-25T23:31:11.214Z",
+      "fetched_at": "2026-10-25T23:45:37.553Z",
       "rows": [
         {
           "station": "FRA",
@@ -997,9 +824,9 @@
           "recall_desk_memory"
         ],
         "risk": "low",
-        "issuedAt": "2026-10-25T23:31:11.214Z",
+        "issuedAt": "2026-10-25T23:45:37.552Z",
         "promptHash": "e196c64dbe1ccdef",
-        "signature": "fed41df553bc5cbcbe8c47db8c7bb4bcfb3c03905601da6e70b522fee28cf710"
+        "signature": "3ea01075ece6a8a54293a02d5d2f1aa0bcf91c36f713bc9af9c2e660f4f3886b"
       }
     }
   }

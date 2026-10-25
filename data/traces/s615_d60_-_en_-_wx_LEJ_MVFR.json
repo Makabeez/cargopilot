@@ -13,26 +13,26 @@
   "mode": "live",
   "model": "nvidia/nemotron-3-super-120b-a12b",
   "provider": "Nebius Token Factory",
-  "promptVersion": "v6",
-  "startedAt": "2026-10-25T23:30:14.561Z",
-  "latencyMs": 17053,
-  "promptTokens": 49077,
-  "completionTokens": 2460,
+  "promptVersion": "v7",
+  "startedAt": "2026-10-25T23:44:59.843Z",
+  "latencyMs": 16159,
+  "promptTokens": 40258,
+  "completionTokens": 1691,
   "steps": [
     {
       "kind": "model",
       "turn": 1,
-      "ms": 641,
-      "promptTokens": 2902,
-      "completionTokens": 56,
-      "reasoningChars": 64,
+      "ms": 724,
+      "promptTokens": 3187,
+      "completionTokens": 54,
+      "reasoningChars": 52,
       "toolCalls": [
         "get_shipment"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-97ab1e4d252f31ee",
+      "callId": "chatcmpl-tool-9bffe4d1bf316fe9",
       "name": "get_shipment",
       "args": {
         "awb": "615-12345675"
@@ -57,17 +57,17 @@
     {
       "kind": "model",
       "turn": 2,
-      "ms": 890,
-      "promptTokens": 3060,
-      "completionTokens": 89,
-      "reasoningChars": 195,
+      "ms": 1731,
+      "promptTokens": 3345,
+      "completionTokens": 84,
+      "reasoningChars": 175,
       "toolCalls": [
         "get_disruption"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a3d1e616929a8bbb",
+      "callId": "chatcmpl-tool-930f1514e47ddbf4",
       "name": "get_disruption",
       "args": {
         "awb": "615-12345675"
@@ -117,17 +117,17 @@
     {
       "kind": "model",
       "turn": 3,
-      "ms": 888,
-      "promptTokens": 3321,
-      "completionTokens": 86,
-      "reasoningChars": 180,
+      "ms": 961,
+      "promptTokens": 3606,
+      "completionTokens": 81,
+      "reasoningChars": 157,
       "toolCalls": [
         "get_cutoffs"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-b7a47981f12a1e2a",
+      "callId": "chatcmpl-tool-b32dfe931059c193",
       "name": "get_cutoffs",
       "args": {
         "awb": "615-12345675"
@@ -143,17 +143,17 @@
     {
       "kind": "model",
       "turn": 4,
-      "ms": 883,
-      "promptTokens": 3411,
-      "completionTokens": 80,
-      "reasoningChars": 164,
+      "ms": 471,
+      "promptTokens": 3696,
+      "completionTokens": 50,
+      "reasoningChars": 56,
       "toolCalls": [
         "check_connection"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-958ee85067b06ae0",
+      "callId": "chatcmpl-tool-b8d57fa685406570",
       "name": "check_connection",
       "args": {
         "awb": "615-12345675"
@@ -169,17 +169,17 @@
     {
       "kind": "model",
       "turn": 5,
-      "ms": 525,
-      "promptTokens": 3496,
-      "completionTokens": 75,
-      "reasoningChars": 140,
+      "ms": 894,
+      "promptTokens": 3781,
+      "completionTokens": 70,
+      "reasoningChars": 120,
       "toolCalls": [
         "get_capacity"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-9e0a0ee3fe251cd3",
+      "callId": "chatcmpl-tool-9955381dca1a2832",
       "name": "get_capacity",
       "args": {
         "awb": "615-12345675"
@@ -195,17 +195,17 @@
     {
       "kind": "model",
       "turn": 6,
-      "ms": 625,
-      "promptTokens": 3625,
-      "completionTokens": 72,
-      "reasoningChars": 126,
+      "ms": 810,
+      "promptTokens": 3910,
+      "completionTokens": 67,
+      "reasoningChars": 106,
       "toolCalls": [
         "check_restrictions"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bed420acb72b45aa",
+      "callId": "chatcmpl-tool-8419702ccdf82d08",
       "name": "check_restrictions",
       "args": {
         "awb": "615-12345675"
@@ -221,17 +221,17 @@
     {
       "kind": "model",
       "turn": 7,
-      "ms": 568,
-      "promptTokens": 3703,
-      "completionTokens": 67,
-      "reasoningChars": 101,
+      "ms": 773,
+      "promptTokens": 3988,
+      "completionTokens": 62,
+      "reasoningChars": 81,
       "toolCalls": [
         "calculate_risk"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-802d4e3e51144a49",
+      "callId": "chatcmpl-tool-9e44e615b2b4826a",
       "name": "calculate_risk",
       "args": {
         "awb": "615-12345675"
@@ -270,17 +270,17 @@
     {
       "kind": "model",
       "turn": 8,
-      "ms": 820,
-      "promptTokens": 3858,
-      "completionTokens": 66,
-      "reasoningChars": 97,
+      "ms": 769,
+      "promptTokens": 4143,
+      "completionTokens": 54,
+      "reasoningChars": 51,
       "toolCalls": [
         "find_alternatives"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-bafd08a0398a5688",
+      "callId": "chatcmpl-tool-8fe69fc5ff67b152",
       "name": "find_alternatives",
       "args": {
         "awb": "615-12345675"
@@ -357,26 +357,26 @@
     {
       "kind": "model",
       "turn": 9,
-      "ms": 729,
-      "promptTokens": 4679,
-      "completionTokens": 63,
-      "reasoningChars": 81,
+      "ms": 870,
+      "promptTokens": 4964,
+      "completionTokens": 68,
+      "reasoningChars": 95,
       "toolCalls": [
         "get_station_evidence"
       ]
     },
     {
       "kind": "tool",
-      "callId": "chatcmpl-tool-a1832b1a6063b049",
+      "callId": "chatcmpl-tool-a2ce62e4c582b7ec",
       "name": "get_station_evidence",
       "args": {
         "awb": "615-12345675"
       },
       "output": {
         "applicable": true,
-        "source": "Offline mirror of the Zetaris query (same CSV, same aggregates)",
+        "source": "Zetaris federated query (Postgres handling history JOIN live METAR REST table)",
         "weather_source": "aviationweather.gov",
-        "fetched_at": "2026-10-25T23:30:12.196Z",
+        "fetched_at": "2026-10-25T23:44:59.807Z",
         "stations": [
           {
             "station": "LEJ",
@@ -423,15 +423,15 @@
             "window_min": 60,
             "weather": {
               "basis": "worst of METAR now and TAF next 6 h",
-              "flight_category": "MVFR",
-              "metar": "METAR EDDF 252250Z AUTO 17006KT CAVOK 05/04 Q1014 NOSIG",
+              "flight_category": "VFR",
+              "metar": "METAR EDDF 252320Z AUTO 17007KT CAVOK 06/04 Q1015 NOSIG",
               "metar_category": "VFR",
-              "taf_worst_category": "MVFR",
-              "taf_worst_period": "PROB30 TEMPO 05:00–08:00 UTC"
+              "taf_worst_category": "VFR",
+              "taf_worst_period": "BASE 00:00–15:00 UTC NSW"
             },
             "history_90_days": {
               "all_weather": "within window 149 of 180 (83%)",
-              "in_MVFR": "within window 41 of 46 (89%), median 49 min, p90 61 min"
+              "in_VFR": "within window 94 of 112 (84%), median 46 min, p90 68 min"
             }
           }
         ]
@@ -441,10 +441,10 @@
     {
       "kind": "model",
       "turn": 10,
-      "ms": 4163,
-      "promptTokens": 5358,
-      "completionTokens": 750,
-      "reasoningChars": 2088,
+      "ms": 8156,
+      "promptTokens": 5638,
+      "completionTokens": 1101,
+      "reasoningChars": 3064,
       "toolCalls": [
         "submit_decision"
       ]
@@ -452,142 +452,6 @@
     {
       "kind": "verify",
       "attempt": 1,
-      "accepted": false,
-      "checks": [
-        {
-          "id": "tools",
-          "label": "Read the risk and the options before deciding",
-          "pass": false,
-          "detail": "Not called: recall_desk_memory"
-        },
-        {
-          "id": "option",
-          "label": "Recommended option exists",
-          "pass": true
-        },
-        {
-          "id": "allowed",
-          "label": "Recommended option passes hard constraints",
-          "pass": true
-        },
-        {
-          "id": "ranking",
-          "label": "Ranking starts with the pick and holds only allowed options",
-          "pass": true
-        },
-        {
-          "id": "risk",
-          "label": "Risk class matches calculate_risk",
-          "pass": true
-        },
-        {
-          "id": "figures",
-          "label": "Every time and figure traces to a tool output",
-          "pass": true
-        },
-        {
-          "id": "refs",
-          "label": "Every flight, truck and AWB reference is real",
-          "pass": true
-        },
-        {
-          "id": "evidence",
-          "label": "Keeping the booking is consistent with tonight's station evidence",
-          "pass": true
-        },
-        {
-          "id": "memory",
-          "label": "Every cited memory was recalled for this file",
-          "pass": true
-        },
-        {
-          "id": "language",
-          "label": "Summary and evidence are in the duty officer's language",
-          "pass": true
-        }
-      ],
-      "submitted": {
-        "risk": "watch",
-        "recommended_option_id": "keep",
-        "ranking": [
-          "keep",
-          "zrh",
-          "fra",
-          "later"
-        ],
-        "summary": "The truck delay leaves zero minutes slack for the LEJ transfer, making the connection tight. Keep the booked AYC 7841 via LEJ and monitor acceptance.",
-        "why": [
-          "Truck ETA 19:15 vs required 19:15 · 0 min slack (disruption, check_connection)",
-          "LEJ transfer window 45 min; history in MVFR: within window 29 of 40 (73%) (station_evidence)",
-          "File risk watch due to connection tight (calculate_risk)",
-          "Keep option allowed, cost CHF 0, risk Medium (find_alternatives)"
-        ]
-      }
-    },
-    {
-      "kind": "model",
-      "turn": 11,
-      "ms": 970,
-      "promptTokens": 5637,
-      "completionTokens": 89,
-      "reasoningChars": 228,
-      "toolCalls": [
-        "recall_desk_memory"
-      ]
-    },
-    {
-      "kind": "tool",
-      "callId": "chatcmpl-tool-962726aa3a3e8a44",
-      "name": "recall_desk_memory",
-      "args": {
-        "awb": "615-12345675"
-      },
-      "output": {
-        "engine": "Meterless H-MEM",
-        "recalled": [
-          {
-            "memory_id": "mem-3",
-            "note": "When LEJ is at risk, the preferred fallback is the RFS 2204 truck to ZRH; it has been reliable all quarter.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-09-23"
-          },
-          {
-            "memory_id": "mem-2",
-            "note": "Override: kept the LEJ booking on a foggy evening against advice and the freight missed AYC 7841. In fog at LEJ, take the ZRH reroute early.",
-            "source": "handover log (duty officer)",
-            "learned": "2026-10-05"
-          },
-          {
-            "memory_id": "mem-1",
-            "note": "LEJ build-up for AYC 7841 runs one team short after 19:30 local this month; late RFS trucks into LEJ are the first thing to slip.",
-            "source": "handover log (night shift)",
-            "learned": "2026-10-11"
-          },
-          {
-            "memory_id": "mem-4",
-            "note": "Nyon Precision SA (LEJ–DEL lane) accepts a later arrival if told before the evening, but refuses split shipments. Always write to them in French.",
-            "source": "handover log (key account)",
-            "learned": "2026-10-09"
-          }
-        ],
-        "note": "Handover memory, not live data: cite memory_id when a note changes the call; tool facts win if they disagree."
-      },
-      "ms": 0
-    },
-    {
-      "kind": "model",
-      "turn": 12,
-      "ms": 5349,
-      "promptTokens": 6027,
-      "completionTokens": 967,
-      "reasoningChars": 2977,
-      "toolCalls": [
-        "submit_decision"
-      ]
-    },
-    {
-      "kind": "verify",
-      "attempt": 2,
       "accepted": true,
       "checks": [
         {
@@ -650,12 +514,12 @@
           "fra",
           "later"
         ],
-        "summary": "The truck delay leaves zero minutes slack for the LEJ transfer, making the connection tight. Keep the booked AYC 7841 via LEJ and monitor acceptance.",
+        "summary": "The truck is due at LEJ at 19:15 with zero slack to the 20:00 cut‑off, making the connection tight but still possible. We keep the booking on AYC 7841 via LEJ.",
         "why": [
-          "Truck ETA 19:15 vs required 19:15 · 0 min slack (disruption, check_connection)",
-          "LEJ transfer window 45 min; history in MVFR: within window 29 of 40 (73%) (station_evidence)",
-          "File risk watch due to connection tight (calculate_risk)",
-          "Keep option allowed, cost CHF 0, risk Medium (find_alternatives)"
+          "Truck ETA 19:15 LT (+60 min delay) matches required‑by 19:15 LT, giving 0 min slack (check_connection).",
+          "LEJ GCR cut‑off is 20:00 LT (get_cutoffs).",
+          "Station history shows LEJ MVFR transfers made the window 29 of 40 times (73%) (get_station_evidence).",
+          "Risk calculated as watch due to tight connection (calculate_risk)."
         ]
       }
     }
@@ -669,17 +533,17 @@
       "fra",
       "later"
     ],
-    "summary": "The truck delay leaves zero minutes slack for the LEJ transfer, making the connection tight. Keep the booked AYC 7841 via LEJ and monitor acceptance.",
+    "summary": "The truck is due at LEJ at 19:15 with zero slack to the 20:00 cut‑off, making the connection tight but still possible. We keep the booking on AYC 7841 via LEJ.",
     "why": [
-      "Truck ETA 19:15 vs required 19:15 · 0 min slack (disruption, check_connection)",
-      "LEJ transfer window 45 min; history in MVFR: within window 29 of 40 (73%) (station_evidence)",
-      "File risk watch due to connection tight (calculate_risk)",
-      "Keep option allowed, cost CHF 0, risk Medium (find_alternatives)"
+      "Truck ETA 19:15 LT (+60 min delay) matches required‑by 19:15 LT, giving 0 min slack (check_connection).",
+      "LEJ GCR cut‑off is 20:00 LT (get_cutoffs).",
+      "Station history shows LEJ MVFR transfers made the window 29 of 40 times (73%) (get_station_evidence).",
+      "Risk calculated as watch due to tight connection (calculate_risk)."
     ]
   },
   "verdict": {
     "accepted": true,
-    "attempts": 2,
+    "attempts": 1,
     "fellBack": false,
     "checks": [
       {
@@ -741,10 +605,10 @@
   },
   "external": {
     "evidence": {
-      "backend": "mirror",
-      "backend_note": "Zetaris unavailable (Zetaris HTTP 400: {\"msg\":\"org.apache.hive.service.cli.HiveSQLException: Error running query: org.apache.spark.SparkException: Job aborted due to stage failure: Task 0 in stage 110.0 failed 1 times, most recent failure:); offline mirror answered",
+      "backend": "zetaris",
+      "backend_note": "reconciled with the offline mirror: identical aggregates",
       "sql": "SELECT h.station, h.process, h.flight, h.window_min, h.wx_category,\n       COUNT(*) AS n,\n       SUM(CASE WHEN h.within_window THEN 1 ELSE 0 END) AS hits,\n       percentile_approx(h.actual_min, 0.5) AS p50_min,\n       percentile_approx(h.actual_min, 0.9) AS p90_min,\n       MAX(h.actual_min) AS max_min,\n       MAX(m.fltcat) AS metar_now, MAX(m.rawob) AS metar_raw\nFROM ops_pg.handling_history h\nLEFT JOIN cargo_wx.metar_now m ON m.icao = h.icao\nWHERE h.flight IN ('AYC 552', 'AYC 7841', 'AYC 9864')\nGROUP BY h.station, h.process, h.flight, h.window_min, h.wx_category\nORDER BY h.station, h.flight, h.wx_category",
-      "fetched_at": "2026-10-25T23:30:12.196Z",
+      "fetched_at": "2026-10-25T23:44:59.807Z",
       "rows": [
         {
           "station": "FRA",
@@ -898,9 +762,9 @@
           "observed_at": "2026-10-25T23:20:00.000Z",
           "metar": "METAR EDDP 252320Z AUTO 22015KT CAVOK 08/03 Q1009 NOSIG",
           "metar_category": "VFR",
-          "taf": "TAF EDDP 251700Z 2518/2618 23013KT 9999 FEW040 TEMPO 2518/2522 25015G30KT SHRA BKN030CB BECMG 2615/2617 20005KT",
+          "taf": "TAF EDDP 252300Z 2600/2624 24014KT 9999 FEW040 PROB30 TEMPO 2600/2606 24015G25KT PROB30 TEMPO 2609/2614 24015G25KT BECMG 2614/2616 21008KT",
           "taf_worst_category": "VFR",
-          "taf_worst_reason": "BASE 18:00–15:00 UTC"
+          "taf_worst_reason": "BASE 00:00–14:00 UTC"
         },
         {
           "station": "ZRH",
@@ -915,12 +779,12 @@
         {
           "station": "FRA",
           "icao": "EDDF",
-          "observed_at": "2026-10-25T23:00:00.000Z",
-          "metar": "METAR EDDF 252250Z AUTO 17006KT CAVOK 05/04 Q1014 NOSIG",
+          "observed_at": "2026-10-25T23:20:00.000Z",
+          "metar": "METAR EDDF 252320Z AUTO 17007KT CAVOK 06/04 Q1015 NOSIG",
           "metar_category": "VFR",
-          "taf": "TAF EDDF 251700Z 2518/2624 23010KT CAVOK PROB30 TEMPO 2605/2608 BKN020 PROB30 TEMPO 2608/2611 BKN012 BECMG 2616/2618 19005KT TEMPO 2618/2624 BKN040",
-          "taf_worst_category": "MVFR",
-          "taf_worst_reason": "PROB30 TEMPO 05:00–08:00 UTC"
+          "taf": "TAF EDDF 252300Z 2600/2706 21010KT CAVOK PROB30 TEMPO 2608/2611 BKN015 BECMG 2615/2618 18005KT BECMG 2621/2624 BKN020",
+          "taf_worst_category": "VFR",
+          "taf_worst_reason": "BASE 00:00–15:00 UTC NSW"
         }
       ],
       "weather_source": "aviationweather.gov"
