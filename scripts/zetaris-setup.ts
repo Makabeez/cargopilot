@@ -118,8 +118,21 @@ async function diagnose() {
   }
 }
 
+/** Drops the weather view and REST table (schema is inferred at CREATE), then runs setup again. */
+async function rewire() {
+  for (const sql of ["DROP SCHEMASTORE VIEW metar_now FROM cargo_wx", "DROP LIGHTNING DATABASE TABLE cargowx_rest.metar_geojson"]) {
+    try {
+      await runZetarisSql(cfg!, sql, 10, false);
+      console.log(`  OK    ${sql}`);
+    } catch (e) {
+      console.log(`  SKIP  ${sql}  (${(e instanceof Error ? e.message : String(e)).slice(0, 160)})`);
+    }
+  }
+  await setup();
+}
+
 const mode = process.argv[2];
-(mode === "check" ? check : mode === "diagnose" ? diagnose : setup)().catch((e) => {
+(mode === "check" ? check : mode === "diagnose" ? diagnose : mode === "rewire" ? rewire : setup)().catch((e) => {
   console.error(mask(e instanceof Error ? e.message : String(e)));
   process.exit(1);
 });

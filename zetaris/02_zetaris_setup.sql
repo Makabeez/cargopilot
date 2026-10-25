@@ -15,11 +15,14 @@ CREATE DATASOURCE ops_pg DESCRIBE BY "cargopilot_station_handling_history" OPTIO
 REGISTER DATASOURCE TABLE "handling_history" FROM ops_pg;
 
 -- Source 2: live METAR for the five stations, from the public aviationweather.gov
--- Data API (no key). GeoJSON gives one object with a features array.
+-- Data API (no key), through scripts/wx-adapter.mjs (a container on the Zetaris
+-- network). A REST table's schema is inferred once at CREATE; aviationweather's
+-- `wdir` flips between a number and "VRB", which broke every query an hour after
+-- creation. The adapter keeps the same GeoJSON layout with string-only fields.
 CREATE LIGHTNING DATABASE CARGOWX_REST DESCRIBE BY "aviationweather.gov_metar_live";
 
 CREATE LIGHTNING REST TABLE metar_geojson FROM CARGOWX_REST REQUEST(
-    endpoint "https://aviationweather.gov/api/data/metar?ids=LSGG,EDDP,LSZH,EDDF,LFPG&format=geojson",
+    endpoint "http://cargopilot-wx:8787/metar",
     method "get",
     response_type "json",
     http_encoding "URLENCODED"
