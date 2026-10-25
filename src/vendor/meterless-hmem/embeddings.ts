@@ -4,7 +4,10 @@
 // by replacing embed() in your own implementation; the contract is just
 // text -> number[].
 
-const DIM = 64;
+// CargoPilot patch (see README): 64 → 1024 dims and a stopword filter, so the
+// hash embedder separates short operational notes instead of colliding them.
+const DIM = 1024;
+const STOP = new Set(["the","and","for","are","is","to","of","in","on","at","it","if","be","as","an","or","by","with","this","that","from","their","they","them","when","even","has","have","been","was","all","one","first","thing","keep","keeps","always","do","not","but","its"]);
 
 export function tokenize(text: string): string[] {
   return text
@@ -26,6 +29,7 @@ function fnv1a(str: string): number {
 export function embed(text: string): number[] {
   const vec = new Array<number>(DIM).fill(0);
   for (const token of tokenize(text)) {
+    if (STOP.has(token)) continue;
     const h = fnv1a(token);
     const idx = h % DIM;
     const sign = (h >>> 8) % 2 === 0 ? 1 : -1;
