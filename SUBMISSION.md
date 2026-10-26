@@ -96,6 +96,6 @@ CargoPilot v4 was built for the Nebius × NVIDIA Global AI Hackathon before this
 
 ## Links
 
-- Demo video: <add after upload>
+- Demo video: https://youtu.be/77ZOa_HV2Tk
 - Slides (PDF): https://drive.google.com/file/d/1aimYU6n5NHwdCdz13PDLWXsLDtO5E4b1/view?usp=sharing
 - Live app: <add after deploy>
