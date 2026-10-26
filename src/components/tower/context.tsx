@@ -103,7 +103,9 @@ function Evidence({ run, shipmentId, locale }: { run: AgentRun | null; shipmentI
         })}
         {!snap ? (
           <li className="px-3 py-2 text-xs text-mute">
-            {run
+            {run?.external?.scout?.risk.level === "block"
+              ? L(locale, "Scout blocked the message, so no tools ran for it.", "Scout a bloqué le message : aucun outil n'a été appelé.")
+              : run
               ? L(locale, "This run was recorded before station evidence existed (prompt v4).", "Ce rejeu date d'avant l'historique des stations (prompt v4).")
               : L(locale, "Loading…", "Chargement…")}
           </li>

@@ -2,7 +2,7 @@ import { chrome, metricTone, stampTone } from "@/lib/cargo/copy";
 import { messages } from "@/lib/cargo/engine";
 import { evidencePick, scenarioOf, useCargo, useRows, verifiedModelPick } from "@/lib/cargo/store";
 import { useAgent } from "@/lib/agent/client";
-import { L } from "@/lib/cargo/engine";
+import { L, type Locale } from "@/lib/cargo/engine";
 import { cn } from "@/lib/cn";
 
 export function ShipmentFile() {
@@ -192,11 +192,11 @@ export function ShipmentFile() {
                         active ? "border-amber bg-paper-2" : "border-paper-line hover:border-amber",
                       )}
                     >
-                      <OptionBody option={option} copy={copy} modelPick={modelPick === option.id} />
+                      <OptionBody option={option} copy={copy} modelPick={modelPick === option.id} evidenceId={evidence?.optionId} locale={locale} />
                     </button>
                   ) : (
                     <div className="border border-paper-line px-3 py-2 opacity-70">
-                      <OptionBody option={option} copy={copy} modelPick={modelPick === option.id} />
+                      <OptionBody option={option} copy={copy} modelPick={modelPick === option.id} evidenceId={evidence?.optionId} locale={locale} />
                     </div>
                   )}
                 </li>
@@ -246,9 +246,14 @@ function OptionBody({
   option,
   copy,
   modelPick,
+  evidenceId,
+  locale,
 }: {
   modelPick: boolean;
+  evidenceId?: string;
+  locale: Locale;
   option: {
+    id: string;
     title: string;
     via: string;
     deltaLabel: string;
@@ -270,7 +275,12 @@ function OptionBody({
       </span>
       <span className="mt-1 flex flex-wrap gap-2 text-xs uppercase tracking-wide text-paper-mute">
         {modelPick ? <span className="bg-paper-ink px-1 text-paper">Nemotron</span> : null}
-        {option.recommended ? <span className="text-paper-ink">{copy.rulesPick}</span> : null}
+        {option.recommended ? (
+          <span className="text-paper-ink">
+            {evidenceId && evidenceId !== option.id ? L(locale, "Rules · booking only", "Règles · réservation seule") : copy.rulesPick}
+          </span>
+        ) : null}
+        {evidenceId === option.id && !option.recommended ? <span className="text-paper-ink">{L(locale, "Evidence pick", "Choix sur historique")}</span> : null}
         {!option.feasible ? <span>{copy.infeasible}</span> : null}
         <span>{option.riskLabel}</span>
         <span>{option.via}</span>
