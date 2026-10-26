@@ -98,4 +98,4 @@ CargoPilot v4 was built for the Nebius × NVIDIA Global AI Hackathon before this
 
 - Demo video: https://youtu.be/77ZOa_HV2Tk
 - Slides (PDF): https://drive.google.com/file/d/1aimYU6n5NHwdCdz13PDLWXsLDtO5E4b1/view?usp=sharing
-- Live app (preview of `open-agent`, replays the recorded v7 runs; evidence badge reads "offline mirror" because Zetaris runs on the author's machine): https://cargopilot-git-open-agent-makabeezs-projects.vercel.app
+- Live app (preview of `open-agent`: replays the recorded v7 runs with their recorded Zetaris answers; a fresh run there uses the offline mirror, because Zetaris runs on the author's machine): https://cargopilot-git-open-agent-makabeezs-projects.vercel.app
